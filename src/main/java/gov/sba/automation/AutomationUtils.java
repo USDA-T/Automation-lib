@@ -1,0 +1,77 @@
+package gov.sba.automation;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class AutomationUtils {
+    
+    private static final Logger logger = LoggerFactory.getLogger(AutomationUtils.class);
+
+    private WebDriverWait wdriver;
+    private WebDriver driver;
+
+    public AutomationUtils() {
+
+        BrowserUtils browserUtils = new BrowserUtils();
+        browserUtils.initFirefox();
+
+        wdriver = browserUtils.getWaitDriver();
+        driver = browserUtils.getWebDriver();
+    }
+
+    public void login(String username, String password) {
+        driver.findElement(By.cssSelector(".button-full")).click();
+        wdriver.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#user_email")));
+
+        driver.findElement(By.cssSelector("#user_email")).sendKeys(username);
+        driver.findElement(By.cssSelector("#user_password")).sendKeys(password);
+        driver.findElement(By.cssSelector("#business_signin")).click();
+    }
+
+    public void startNewProgram(String programName) throws Exception {
+    	// TODO: read this from property file
+        driver.get("http://localhost:3000");
+
+        CoreWait.waitForPresenceOfElement(driver, wdriver, By.cssSelector(".button-full"));
+        
+        login("john@mailinator.com", "password");
+
+        By locator = By.partialLinkText("Programs");
+        CoreWait.waitForElementToBeClickable(driver, wdriver, locator);
+
+        String actual = driver.findElement(locator).getText();
+        CoreUtils.assertContentEquals("Programs", actual);
+        
+        // Now let's click the program link
+        CoreUtils.locateAndClick(driver, locator);
+        
+        logger.debug("FYI: about to call deleteDrafProgram()");
+        // TODO: delete the 'Draft' application if any?
+        CoreUtils.deleteDraftProgram(driver, programName);
+        Thread.sleep(5000);
+        
+        // Get the program name
+        String programDesc = CoreUtils.lookupProgram(programName);
+        logger.debug("FYI: using : " + programDesc);
+        
+        // Need to click "#certificate_type_" + programName here
+        locator = By.cssSelector("#certificate_type_" + programName);
+        CoreUtils.locateAndClick(driver, locator);
+        
+        locator = By.cssSelector("#add_certification");
+        CoreUtils.locateAndClick(driver, locator);
+        
+        // Then we click Continue button
+        CoreUtils.clickContinue(driver);
+    }
+
+    public static void main(String... args) throws Exception {
+        AutomationUtils app = new AutomationUtils();
+        app.startNewProgram("wosb");
+        System.out.println("Done!");
+    }
+}

@@ -1,0 +1,72 @@
+*** README.org
+
+Re-usable library to make sba-automation code re-use possible.
+
+**** Why do we need this?
+
+- Many code duplication exists in =sba-automation= that make it difficult to use/maintain.
+- We want to move the host server that currently running on Windows system to Linux system this code will make it possible.
+- We want to reduce the wait-time by waiting implicitly so that the tests run fast and yet still producing consistent result.
+- This code provide basic structure so that we can drive the test through data thus making it easy to adapt to changes.
+
+**** Installation
+
+You will need to install and download one of the following dependencies before it can
+be run locally for your local platform.
+
+-  [[https://maven.apache.org/][Apache Maven]]
+-  [[https://sites.google.com/a/chromium.org/chromedriver/downloads][Google Web Driver]]
+-  [[https://github.com/SeleniumHQ/selenium/wiki/FirefoxDriver][Firefox Web Driver]]
+
+For those who using MacOS you should be able to =brew install= these packages.
+
+**** Publish for =sba-automation=
+
+Publish the library for consumption by =sba-automation=
+
+#+BEGIN_SRC sh
+mvn install
+#+END_SRC
+
+You should get something like
+
+#+BEGIN_EXAMPLE
+$HOME/.m2/repository/gov/sba/automation/automation_libs/1.0-SNAPSHOT/automation_libs-1.0-SNAPSHOT.*
+#+END_EXAMPLE
+
+Which can then be consumed by the project via =pom.xml= dependency file
+
+**** Development
+
+-  Add [[https://maven.apache.org/][Apache Maven]] to your path e.g. =mvn= command
+-  Add [[https://sites.google.com/a/chromium.org/chromedriver/downloads][Google Web Driver]] or [[https://github.com/SeleniumHQ/selenium/wiki/FirefoxDriver][Firefox Web Driver]] to your path
+
+Then run the project using Maven
+
+-  If you like to run the test from within Eclipse IDE or IntelliJ then you can optionally
+
+#+BEGIN_SRC sh
+#!/bin/bash
+mvn clean
+mvn dependency:sources
+mvn dependency:resolve -Dclassifier=javadoc
+
+## Generate project meta-data for Eclipse user
+mvn eclipse:eclipse
+
+## Generate project meta-data for IntelliJ IDEA user
+mvn idea:idea
+#+END_SRC
+
+Then open up your favorite editor (Eclipse or IntelliJ IDEA).
+
+** Roadmaps & TODos
+
+**** TODO Adjust the configuration so that it work properly with the CI/CD pipeline
+**** TODO Migrate setup configuration from =sba-app= to this library
+**** TODO Read configuration and parameters from property file whenever possible/make sense!
+**** Done add proper logging using [[https://logback.qos.ch/][Logback]] the new logging framework where =log4j= left off.
+**** Add common code to use with different browsers
+***** DONE Firefox
+***** Chrome
+***** TODO Internet Explorer
