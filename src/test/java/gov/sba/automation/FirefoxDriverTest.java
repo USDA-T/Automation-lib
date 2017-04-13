@@ -24,13 +24,10 @@ public class FirefoxDriverTest extends TestCase {
 
     @Before
     public void setUp() throws Exception {
-        // TODO: add your setup here
     }
 
     @After
     public void tearDown() throws Exception {
-        // TODO: add your teardown code here!
-        // driver.quit();
     }
 
     @Test
@@ -38,14 +35,4 @@ public class FirefoxDriverTest extends TestCase {
         // Place holder to make maven install the library locally
         Assert.assertEquals(2, 1 + 1);
     }
-
-    // @Test
-    // public void testGoogleSearch() throws Exception {
-    //     System.out.println("Begin simple Google search...");
-    //     driver.get("https://www.google.com/webhp?gws_rd=ssl");
-    //     WebElement searchBox = driver.findElement(By.name("q"));
-    //     searchBox.sendKeys("ChromeDriver");
-    //     searchBox.submit();
-    //     Assert.assertEquals("Google", driver.getTitle());
-    // }
 }
