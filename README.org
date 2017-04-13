@@ -9,6 +9,51 @@ Re-usable library to make sba-automation code re-use possible.
 - We want to reduce the wait-time by waiting implicitly so that the tests run fast and yet still producing consistent result.
 - This code provide basic structure so that we can drive the test through data thus making it easy to adapt to changes.
 
+***** What is it look like when we use this library?
+
+Excerpted from [[src/main/java/gov/sba/automation/AutomationUtils.java][ClickThroughWosb()]]
+
+#+BEGIN_SRC java
+  // ...
+  public void clickThroughWosb(WebDriver driver) {
+    CoreUtils.yesOrNo(driver, "no", new int[] {198});
+    CoreUtils.clickContinue(driver);
+
+    CoreUtils.yesOrNo(driver, "no", new int[] {199});
+    CoreUtils.clickContinue(driver);
+
+    CoreUtils.yesOrNo(driver, "no", new int[] {201});
+    CoreUtils.clickContinue(driver);
+
+    CoreUtils.yesOrNo(driver, "no", new int[] {211});
+    CoreUtils.comment(driver, 211);
+
+    CoreUtils.yesOrNo(driver, "no", new int[] {212});
+    CoreUtils.comment(driver, 212);
+    CoreUtils.clickContinue(driver);
+
+    CoreUtils.yesOrNo(driver, "no", new int[] {213});
+    CoreUtils.clickContinue(driver);
+
+    CoreUtils.yesOrNo(driver, "no", new int[] {214, 215, 216});
+    CoreUtils.comment(driver, 216);
+    CoreUtils.clickContinue(driver);
+
+    CoreUtils.yesOrNo(driver, "no", new int[] {217, 218, 219, 220, 221, 222});
+    CoreUtils.comment(driver, 222);
+    CoreUtils.clickContinue(driver);
+
+    CoreUtils.yesOrNo(driver, "no", new int[] {223});
+    CoreUtils.clickContinue(driver);
+
+    CoreWait.waitForUrlContains(wdriver, "/wosb/review_sections/review/edit");
+    CoreUtils.clickContinue(driver);
+
+    CoreUtils.accepTermsAndConditions(driver, new int[] {0, 1, 2, 3, 4, 5});
+    // Note: but don't click continue for now to simplify the test
+  }
+#+END_SRC
+
 **** Installation
 
 You will need to install and download one of the following dependencies before it can
