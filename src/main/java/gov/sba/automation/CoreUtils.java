@@ -130,12 +130,8 @@ public class CoreUtils {
     }
 
     public static void acceptPopupAlert(WebDriver driver) {
-        System.out.println("FYI: beginning of accept..");
-        // http://stackoverflow.com/questions/16448173/selenium-automatically-accepting-alerts
-        WebDriverWait wait = new WebDriverWait(driver, 10); // wait for 5 seconds
+        WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().accept();
-        System.out.println("FYI: end of accept..");
-    }
-    
+    }    
 }

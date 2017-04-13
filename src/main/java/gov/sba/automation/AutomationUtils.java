@@ -41,10 +41,9 @@ public class AutomationUtils {
     }
 
     public void startNewProgram(String programName) throws Exception {
-    	// TODO: read this from property file
         driver.get("http://localhost:3000");
 
-        CoreWait.waitForPresenceOfElement(driver, wdriver, By.cssSelector(".button-full"));
+        CoreWait.waitForPresenceOfElementLocated(wdriver, By.cssSelector(".button-full"));
         
         login("john@mailinator.com", "password");
 
