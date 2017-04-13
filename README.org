@@ -105,6 +105,14 @@ mvn idea:idea
 
 Then open up your favorite editor (Eclipse or IntelliJ IDEA).
 
+**** Run sample smoke-test locally
+
+Which run the main class in =AutomationUtils=
+
+#+BEGIN_SRC sh :results nil
+./run-smoke-test
+#+END_SRC
+
 ** Roadmaps & TODos
 
 **** DONE Use [[Google - style guide][https://github.com/google/styleguide/blob/gh-pages/eclipse-java-google-style.xml]] for the code
