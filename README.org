@@ -62,6 +62,7 @@ Then open up your favorite editor (Eclipse or IntelliJ IDEA).
 
 ** Roadmaps & TODos
 
+**** DONE Use [[Google - style guide][https://github.com/google/styleguide/blob/gh-pages/eclipse-java-google-style.xml]] for the code
 **** TODO Adjust the configuration so that it work properly with the CI/CD pipeline
 **** TODO Migrate setup configuration from =sba-app= to this library
 **** TODO Read configuration and parameters from property file whenever possible/make sense!
