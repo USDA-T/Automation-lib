@@ -56,7 +56,7 @@ public class AutomationUtils {
     // Now let's click the program link
     CoreUtils.locateAndClick(driver, locator);
 
-    boolean deleteDraft = false;
+    boolean deleteDraft = true;
 
     if (deleteDraft) {
       logger.debug("FYI: about to call deleteDrafProgram()");
