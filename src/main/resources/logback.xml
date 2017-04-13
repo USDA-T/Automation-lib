@@ -8,6 +8,5 @@
     <root level="INFO">
         <appender-ref ref="STDOUT" />
     </root>
-    <!-- TODO: update this name -->
     <logger name="gov.sba.automation" level="WARN"/>
 </configuration>

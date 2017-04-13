@@ -110,6 +110,12 @@ public class AutomationUtils {
 
     CoreUtils.yesOrNo(driver, "no", new int[] {223});
     CoreUtils.clickContinue(driver);
+
+    CoreWait.waitForUrlContains(wdriver, "/wosb/review_sections/review/edit");
+    CoreUtils.clickContinue(driver);
+
+    CoreUtils.accepTermsAndConditions(driver, new int[] {0, 1, 2, 3, 4, 5});
+    // Note: but don't click continue for now to simplify the test
   }
 
   public static void main(String... args) throws Exception {
