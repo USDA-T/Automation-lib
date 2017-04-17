@@ -83,9 +83,10 @@ Which can then be consumed by the project via =pom.xml= dependency file
 
 **** Development
 
--  Add [[https://maven.apache.org/][Apache Maven]] to your path e.g. =mvn= command
--  Add [[https://sites.google.com/a/chromium.org/chromedriver/downloads][Google Web Driver]] or [[https://github.com/SeleniumHQ/selenium/wiki/FirefoxDriver][Firefox Web Driver]] to your path
--  Download [[https://github.com/mozilla/geckodriver/releases][gecko driver]] and put it in =~/apps/geckodriver= directory or adjust the script to your path
+- Add [[https://maven.apache.org/][Apache Maven]] to your path e.g. =mvn= command
+- Add [[https://sites.google.com/a/chromium.org/chromedriver/downloads][Google Web Driver]] or [[https://github.com/SeleniumHQ/selenium/wiki/FirefoxDriver][Firefox Web Driver]] to your path
+- Download [[https://github.com/mozilla/geckodriver/releases][gecko driver]] and put it in =~/apps/geckodriver= directory or adjust the script to your path
+- Currently support the latest version of Firefox e.g. =52.0.2=
 
 Then run the project using Maven
 
