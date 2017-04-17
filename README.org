@@ -76,7 +76,7 @@ mvn install
 You should get something like
 
 #+BEGIN_EXAMPLE
-$HOME/.m2/repository/gov/sba/automation/automation_libs/1.0-SNAPSHOT/automation_libs-1.0-SNAPSHOT.*
+$HOME/.m2/repository/gov/sba/automation/automation_libs/1.0-SNAPSHOT/automation_libs-1.0.0.*
 #+END_EXAMPLE
 
 Which can then be consumed by the project via =pom.xml= dependency file
@@ -85,6 +85,7 @@ Which can then be consumed by the project via =pom.xml= dependency file
 
 -  Add [[https://maven.apache.org/][Apache Maven]] to your path e.g. =mvn= command
 -  Add [[https://sites.google.com/a/chromium.org/chromedriver/downloads][Google Web Driver]] or [[https://github.com/SeleniumHQ/selenium/wiki/FirefoxDriver][Firefox Web Driver]] to your path
+-  Download [[https://github.com/mozilla/geckodriver/releases][gecko driver]] and put it in =~/apps/geckodriver= directory or adjust the script to your path
 
 Then run the project using Maven
 
