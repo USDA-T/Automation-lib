@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>gov.sba.automation</groupId>
   <artifactId>automation_libs</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
   <name>Common reusable component for sba-automation</name>
   <url>http://maven.apache.org</url>
