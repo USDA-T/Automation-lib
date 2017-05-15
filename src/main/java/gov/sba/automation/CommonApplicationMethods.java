@@ -156,63 +156,63 @@ public class CommonApplicationMethods {
 	public static WebElement find_Element_Loc(WebDriver webdriver, String type_Locator, String value_Locator)
 			throws Exception {
 
-		Wait<WebDriver> wait = new FluentWait<WebDriver>(webdriver).withTimeout(7, TimeUnit.SECONDS)
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(webdriver).withTimeout(15, TimeUnit.SECONDS)
 				.pollingEvery(100, TimeUnit.MILLISECONDS).ignoring(NoSuchElementException.class);
 
 		try {
 			switch (type_Locator.toLowerCase()) {
 			case "xpath":
+				display("Hey this came in Xpa");
 				WebElement element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webDriver.findElement(By.xpath(value_Locator));
 					}
 				});
-				display("Hey this came in Xpa");
 				return element_01;
 			case "id":
+				display("Hey this came in ID");
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webDriver.findElement(By.id(value_Locator));
 					}
 				});
-				display("Hey this came in ID");
 				return element_01;
 			case "classname":
+				display("Hey this came in CName");
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webdriver.findElement(By.className(value_Locator));
 					}
 				});
-				display("Hey this came in CName");
 				return element_01;
 			case "name":
+				display("Hey this came in Name");
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webdriver.findElement(By.name(value_Locator));
 					}
 				});
-				display("Hey this came in Name");
 				return element_01;
 			case "cssselector":
+				display("Hey this came in Css");
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webdriver.findElement(By.cssSelector(value_Locator));
 					}
 				});
-				display("Hey this came in Css");
 				return element_01;
 			case "linktext":
+				display("Hey this came in Lt");
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webdriver.findElement(By.linkText(value_Locator));
 					}
 				});
-				display("Hey this came in Lt");
 				return element_01;
 			}
 		} catch (Exception e) {
-			display("Trying to find BY " + type_Locator + ":" + value_Locator);
-			throw new Exception("Tried to find BY " + type_Locator + ":" + value_Locator);
+			display("Trying to find BY:" + type_Locator + ":" + value_Locator);
+			throw  e;
 		}
 		return null;
 	};
