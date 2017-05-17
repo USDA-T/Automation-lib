@@ -31,6 +31,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
@@ -162,7 +163,7 @@ public class CommonApplicationMethods {
 		try {
 			switch (type_Locator.toLowerCase()) {
 			case "xpath":
-				display("Hey this came in Xpa");
+
 				WebElement element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webDriver.findElement(By.xpath(value_Locator));
@@ -170,7 +171,7 @@ public class CommonApplicationMethods {
 				});
 				return element_01;
 			case "id":
-				display("Hey this came in ID");
+
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webDriver.findElement(By.id(value_Locator));
@@ -178,7 +179,7 @@ public class CommonApplicationMethods {
 				});
 				return element_01;
 			case "classname":
-				display("Hey this came in CName");
+
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webdriver.findElement(By.className(value_Locator));
@@ -186,7 +187,7 @@ public class CommonApplicationMethods {
 				});
 				return element_01;
 			case "name":
-				display("Hey this came in Name");
+
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webdriver.findElement(By.name(value_Locator));
@@ -194,7 +195,7 @@ public class CommonApplicationMethods {
 				});
 				return element_01;
 			case "cssselector":
-				display("Hey this came in Css");
+
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webdriver.findElement(By.cssSelector(value_Locator));
@@ -202,7 +203,7 @@ public class CommonApplicationMethods {
 				});
 				return element_01;
 			case "linktext":
-				display("Hey this came in Lt");
+
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webdriver.findElement(By.linkText(value_Locator));
@@ -215,6 +216,8 @@ public class CommonApplicationMethods {
 			throw  e;
 		}
 		return null;
+
+
 	};
 
 	public static WebElement find_Element(WebDriver webdriver, String locator_Yaml) throws Exception {
@@ -228,6 +231,7 @@ public class CommonApplicationMethods {
 	}
 
 	public static void accept_Alert(WebDriver webDriver) throws Exception {
+		// If alert not present Throw error after few tries
 		for (int i = 0; i < 15; i++) {
 			try {
 				webDriver.switchTo().alert().accept();
@@ -244,6 +248,7 @@ public class CommonApplicationMethods {
 	}
 
 	public static void accept_Optional_Alert(WebDriver webDriver, int counter) throws Exception {
+		// If alert not present its fine.
 		for (int i = 0; i < counter; i++) {
 			try {
 				webDriver.switchTo().alert().accept();
