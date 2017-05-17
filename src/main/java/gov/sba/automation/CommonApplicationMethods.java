@@ -149,8 +149,6 @@ public class CommonApplicationMethods {
 		return element_01;
 	};
 
-
-
 	public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception {
 		Map locator = getLocator(locator_Yaml);
 		return find_Elements_Loc_InPrg(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
