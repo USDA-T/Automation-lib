@@ -1,42 +1,28 @@
 package gov.sba.automation;
 
-import java.awt.AWTException;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-//import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
-
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
 import com.google.common.base.Function;
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+//import org.junit.Assert;
 
 // import gov.sba.utils.integration.LoginPageWithReference;
 
@@ -51,7 +37,7 @@ public class CommonApplicationMethods {
 		Object object = reader.read(); // System.out.println(object);
 		Map map = (Map) object; // System.out.println(map.get(locatorName));
 		return (Map) map.get(locatorName);
-	};
+	}
 
 	public static void take_ScreenShot_TestCaseName(WebDriver webDriver, String[] stringValueArray) throws Exception {
 		File src = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
@@ -73,7 +59,7 @@ public class CommonApplicationMethods {
 			throw e;
 		}
 
-	};
+	}
 
 	public static void take_Desktop_SShot_TestCaseName(String[] stringValueArray) throws Exception {
 		Robot robot = new Robot();
@@ -89,7 +75,7 @@ public class CommonApplicationMethods {
 					new File(FixtureUtils.get_SS_Dir() + stringValueArray[0] + "_Exception" + ".jpg"));
 		}
 
-	};
+	}
 
 	public static Boolean checkApplicationExists(WebDriver webDriver, String type_Of_App, String status_Of_App)
 			throws Exception {
@@ -146,7 +132,7 @@ public class CommonApplicationMethods {
 			}
 		}
 		return element_01;
-	};
+	}
 
 	public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception {
 		Map locator = getLocator(locator_Yaml);
@@ -215,7 +201,7 @@ public class CommonApplicationMethods {
 			throw new Exception("Tried to find BY " + type_Locator + ":" + value_Locator);
 		}
 		return null;
-	};
+	}
 
 	public static WebElement find_Element(WebDriver webdriver, String locator_Yaml) throws Exception {
 		Map locator = getLocator(locator_Yaml);
@@ -387,30 +373,6 @@ public class CommonApplicationMethods {
 			throw e;
 		}
 		return organization_Id;
-	};
-
-
-	public static void createApplication(WebDriver webDriver, String type_Of_App) throws Exception {
-		navigationMenuClick(webDriver, "Programs");
-		switch (type_Of_App.toUpperCase()) {
-		case "EDWOSB":
-			click_Element(webDriver, "JoinNewPgm_Create_App_EDWOSB");
-			break;
-		case "WOSB":
-			click_Element(webDriver, "JoinNewPgm_Create_App_WOSB");
-			break;
-		case "MPP":
-			click_Element(webDriver, "JoinNewPgm_Create_App_MPP");
-			break;
-		case "8A":
-			click_Element(webDriver, "JoinNewPgm_Create_App_8A");
-			break;
-		default:
-			//Assert.assertEquals("Edwosb or WOSB or MPP or 8a", "Not Found");
-		}
-		click_Element(webDriver, "JoinNewPgm_Add_Cert");
-		click_Element(webDriver, "Application_Common_Accept_Button");
-
 	}
 
 	public static void searchDuns_Number(WebDriver webDriver, String search_Text) throws Exception {
