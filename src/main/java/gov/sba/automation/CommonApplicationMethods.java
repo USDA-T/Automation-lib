@@ -23,6 +23,20 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 //import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+
+import com.esotericsoftware.yamlbeans.YamlException;
+import com.esotericsoftware.yamlbeans.YamlReader;
+import com.google.common.base.Function;
+
 
 // import gov.sba.utils.integration.LoginPageWithReference;
 
@@ -142,66 +156,68 @@ public class CommonApplicationMethods {
 	public static WebElement find_Element_Loc(WebDriver webdriver, String type_Locator, String value_Locator)
 			throws Exception {
 
-		Wait<WebDriver> wait = new FluentWait<WebDriver>(webdriver).withTimeout(7, TimeUnit.SECONDS)
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(webdriver).withTimeout(15, TimeUnit.SECONDS)
 				.pollingEvery(100, TimeUnit.MILLISECONDS).ignoring(NoSuchElementException.class);
 
 		try {
 			switch (type_Locator.toLowerCase()) {
 			case "xpath":
+
 				WebElement element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webDriver.findElement(By.xpath(value_Locator));
 					}
 				});
-				display("Hey this came in Xpa");
 				return element_01;
 			case "id":
+
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webDriver.findElement(By.id(value_Locator));
 					}
 				});
-				display("Hey this came in ID");
 				return element_01;
 			case "classname":
+
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webdriver.findElement(By.className(value_Locator));
 					}
 				});
-				display("Hey this came in CName");
 				return element_01;
 			case "name":
+
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webdriver.findElement(By.name(value_Locator));
 					}
 				});
-				display("Hey this came in Name");
 				return element_01;
 			case "cssselector":
+
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webdriver.findElement(By.cssSelector(value_Locator));
 					}
 				});
-				display("Hey this came in Css");
 				return element_01;
 			case "linktext":
+
 				element_01 = wait.until(new Function<WebDriver, WebElement>() {
 					public WebElement apply(WebDriver webDriver) {
 						return webdriver.findElement(By.linkText(value_Locator));
 					}
 				});
-				display("Hey this came in Lt");
 				return element_01;
 			}
 		} catch (Exception e) {
-			display("Trying to find BY " + type_Locator + ":" + value_Locator);
-			throw new Exception("Tried to find BY " + type_Locator + ":" + value_Locator);
+			display("Trying to find BY:" + type_Locator + ":" + value_Locator);
+			throw  e;
 		}
 		return null;
+
 	}
+
 
 	public static WebElement find_Element(WebDriver webdriver, String locator_Yaml) throws Exception {
 		Map locator = getLocator(locator_Yaml);
@@ -214,6 +230,7 @@ public class CommonApplicationMethods {
 	}
 
 	public static void accept_Alert(WebDriver webDriver) throws Exception {
+		// If alert not present Throw error after few tries
 		for (int i = 0; i < 15; i++) {
 			try {
 				webDriver.switchTo().alert().accept();
@@ -230,6 +247,7 @@ public class CommonApplicationMethods {
 	}
 
 	public static void accept_Optional_Alert(WebDriver webDriver, int counter) throws Exception {
+		// If alert not present its fine.
 		for (int i = 0; i < counter; i++) {
 			try {
 				webDriver.switchTo().alert().accept();

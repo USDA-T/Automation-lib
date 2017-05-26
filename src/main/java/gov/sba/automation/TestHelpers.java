@@ -1,5 +1,7 @@
 package gov.sba.automation;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -54,7 +56,13 @@ public class TestHelpers {
 			configKeys = new String[] { "webdriver.chrome.driver" };
 			setSystemProperties(configKeys, props);
 			ChromeOptions options = new ChromeOptions();
-			options.addArguments("start-maximized");
+			options.addArguments("--start-maximized");
+			options.addArguments("--disable-web-security");
+			options.addArguments("--no-proxy-server");
+			Map<String, Object> prefs = new HashMap<String, Object>();
+			prefs.put("credentials_enable_service", false);
+			prefs.put("profile.password_manager_enabled", false);
+			options.setExperimentalOption("prefs", prefs);
 			driver = new ChromeDriver(options);
 			break;
 		case Constants.BROWSER_FIREFOX:
