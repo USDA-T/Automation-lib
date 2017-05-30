@@ -288,7 +288,11 @@ public class CommonApplicationMethods {
 
                 if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
                     get_Element.click();
-                    get_Element.clear();
+                    try {
+                        get_Element.clear();
+                    } catch (Exception e) {
+                        display("We are good");
+                    }
                     get_Element.sendKeys(textVal);
                     i += 99900001; // Break Loop if satisfied
                 }
@@ -460,8 +464,6 @@ public class CommonApplicationMethods {
 	}
 
 	public static void navigationMenuClick(WebDriver webDriver, String which_Button) throws Exception {
-		String part_01 = "//nav[@role='navigation']/div/ul/li/a/span[contains(text(),'";
-		String part_03 = "')]";
 		switch (which_Button.toUpperCase()) {
             case "LOGOUT":
                 click_Element(webDriver, "Navigation_Logout");
