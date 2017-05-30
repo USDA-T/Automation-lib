@@ -286,7 +286,7 @@ public class CommonApplicationMethods {
                 Map        locator                      = getLocator(locator_Yaml);
                 WebElement get_Element                  = find_Element_Loc(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
 
-                if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0) {
+                if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
                     get_Element.click();
                     get_Element.clear();
                     get_Element.sendKeys(textVal);
