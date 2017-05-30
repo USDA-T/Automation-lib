@@ -73,6 +73,9 @@ local.properties
 *.iws
 *.ipr
 *.iml
+.idea/*
+.idea/
+.idea
 
 ### Eclipse ###
 

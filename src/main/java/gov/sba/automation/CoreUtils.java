@@ -1,10 +1,6 @@
 package gov.sba.automation;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
+import com.google.common.base.Function;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -15,10 +11,25 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class CoreUtils {
 	private static final Logger logger = LoggerFactory.getLogger(CoreUtils.class);
+	private static final Map<String, String> programsMap;
+
+	static {
+		Map<String, String> aMap = new HashMap<String, String>();
+
+		aMap.put("mpp", "MPP");
+		aMap.put("wosb", "WOSB Self-Certification");
+		aMap.put("eight_a", "8(a) Document Upload");
+		aMap.put("edwosg", "EDWOSB");
+
+		programsMap = Collections.unmodifiableMap(aMap);
+	}
 
 	/**
 	 * Poll for element until the element is presented or timeout
@@ -81,19 +92,6 @@ public class CoreUtils {
 		if (!(expected.equals(actual))) {
 			throw new RuntimeException("Expected: " + expected + ", Actual: " + actual);
 		}
-	}
-
-	private static final Map<String, String> programsMap;
-
-	static {
-		Map<String, String> aMap = new HashMap<String, String>();
-
-		aMap.put("mpp", "MPP");
-		aMap.put("wosb", "WOSB Self-Certification");
-		aMap.put("eight_a", "8(a) Document Upload");
-		aMap.put("edwosg", "EDWOSB");
-
-		programsMap = Collections.unmodifiableMap(aMap);
 	}
 
 	public static String lookupProgram(String programName) {

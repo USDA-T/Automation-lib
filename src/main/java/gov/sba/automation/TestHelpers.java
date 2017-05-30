@@ -1,8 +1,5 @@
 package gov.sba.automation;
 
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -11,17 +8,23 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+
 public class TestHelpers {
-	private static final Logger logger = LogManager.getLogger(TestHelpers.class.getName());
-	final public static String BASE_URL = "base_url_";
+    final public static  String BASE_URL = "base_url_";
+    private static final Logger logger   = LogManager.getLogger(TestHelpers.class.getName());
 
 	public static WebDriver getDefaultWebDriver() {
 		Properties props = ConfigUtils.loadDefaultProperties();
 		WebDriver driver = null;
 
 		// Setup the configuration based on the browser we are using
-		System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\chrome\\firefox.exe");
-		String browser = props.getProperty(Constants.BROWSER);
+        System.setProperty("webdriver.chrome.driver", props.getProperty("webdriver.chrome.driver"));
+        // Update the Property File Instead Of Hardcoding
+        String browser = props.getProperty(Constants.BROWSER);
 		System.setProperty(Constants.BROWSER, browser);
 		String envUnderTest = System.getenv(Constants.TEST_ENV);
 
@@ -54,7 +57,13 @@ public class TestHelpers {
 			configKeys = new String[] { "webdriver.chrome.driver" };
 			setSystemProperties(configKeys, props);
 			ChromeOptions options = new ChromeOptions();
-			options.addArguments("start-maximized");
+			options.addArguments("--start-maximized");
+			options.addArguments("--disable-web-security");
+			options.addArguments("--no-proxy-server");
+			Map<String, Object> prefs = new HashMap<String, Object>();
+			prefs.put("credentials_enable_service", false);
+			prefs.put("profile.password_manager_enabled", false);
+			options.setExperimentalOption("prefs", prefs);
 			driver = new ChromeDriver(options);
 			break;
 		case Constants.BROWSER_FIREFOX:
@@ -85,9 +94,8 @@ public class TestHelpers {
 		default:
 			throw new RuntimeException("Unknown browser: " + browser);
 		}
-		;
 
-		String currentWindowHandle = driver.getWindowHandle();
+        String currentWindowHandle = driver.getWindowHandle();
 
 		// NOTE: additional settings to make the driver more robust
 		driver.manage().deleteAllCookies();
