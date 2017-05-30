@@ -248,6 +248,7 @@ public class CommonApplicationMethods {
             double     elapsedSeconds_Divided_By_12 = elapsed_Seconds % 12;  //Set max 12 seconds
             Map        locator                      = getLocator(locator_Yaml);
             WebElement get_Element                  = find_Element_Loc(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+            // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
 
             if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0) {
                 get_Element.click();
@@ -353,7 +354,7 @@ public class CommonApplicationMethods {
                         "//*[@id='certifications']/tbody/tr[ (td[position()=1]/a[contains(text(),'WOSB') and not(contains(text(),'EDWOSB'))]) and ( td[ position()=5 and contains(text(),'Draft') ] )  ]/td[ position()=7 ]/a[ contains(text(),'Delete') ]  "));
                 if (deleteElem_01.size() > 0) {
                     deleteElem_01.get(0).click();
-                    webDriver.switchTo().alert().accept();
+                    accept_Optional_Alert(webDriver, 22);
                 }
                 break;
             case "mppdraft":
@@ -363,7 +364,7 @@ public class CommonApplicationMethods {
                         + " ( td[ position()=7 ]/a[ contains(text(),'Delete') ] )  " + "]" + "/td[position()=7]/a"));
                 if (deleteElem_02.size() > 0) {
                     deleteElem_02.get(0).click();
-                    webDriver.switchTo().alert().accept();
+                    accept_Optional_Alert(webDriver, 22);
                 }
                 break;
         }
