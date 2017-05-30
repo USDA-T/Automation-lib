@@ -23,6 +23,7 @@ public class TestHelpers {
 
 		// Setup the configuration based on the browser we are using
         System.setProperty("webdriver.chrome.driver", props.getProperty("webdriver.chrome.driver"));
+        // Update the Property File Instead Of Hardcoding
         String browser = props.getProperty(Constants.BROWSER);
 		System.setProperty(Constants.BROWSER, browser);
 		String envUnderTest = System.getenv(Constants.TEST_ENV);
