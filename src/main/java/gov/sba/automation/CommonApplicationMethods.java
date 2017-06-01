@@ -250,7 +250,6 @@ public class CommonApplicationMethods {
             for (int i = 0; i < 9900000; i++) {
                 // Start Measuring
                 double     elapsed_Seconds              = (System.currentTimeMillis() - tStart) / 1000.0;
-                double     elapsedSeconds_Divided_By_12 = elapsed_Seconds % 12;  //Set max 12 seconds
                 Map        locator                      = getLocator(locator_Yaml);
                 WebElement get_Element                  = find_Element_Loc(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
                 // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
@@ -260,10 +259,8 @@ public class CommonApplicationMethods {
                     i += 99900001; // Break Loop if satisfied
                 }
 
-                if ((elapsedSeconds_Divided_By_12 == 0) && (elapsed_Seconds > 4)) {
+                if (elapsed_Seconds > 12)
                     throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
-                }
-
             }
         } catch (Exception e) {
             display(e.toString());
@@ -282,9 +279,9 @@ public class CommonApplicationMethods {
             for (int i = 0; i < 9900000; i++) {
                 // Start Measuring
                 double     elapsed_Seconds              = (System.currentTimeMillis() - tStart) / 1000.0;
-                double     elapsedSeconds_Divided_By_12 = elapsed_Seconds % 12;  //Set max 12 seconds
                 Map        locator                      = getLocator(locator_Yaml);
                 WebElement get_Element                  = find_Element_Loc(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
+                // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
 
                 if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
                     get_Element.click();
@@ -297,10 +294,8 @@ public class CommonApplicationMethods {
                     i += 99900001; // Break Loop if satisfied
                 }
 
-                if ((elapsedSeconds_Divided_By_12 == 0) && (elapsed_Seconds > 4)) {
+                if (elapsed_Seconds > 12)
                     throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
-                }
-
             }
 
         } catch (Exception e) {
