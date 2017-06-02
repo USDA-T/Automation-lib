@@ -320,6 +320,7 @@ public class CommonApplicationMethods {
             Map        map    = (Map) object; // System.out.println(map.get(locatorName));
             String     value  = map.get("Should_Execution_Stop").toString();
             if (value.toUpperCase().equals("TRUE")) {
+                reader.close();
                 throw new Error("Stop Execution");
             }
         }
