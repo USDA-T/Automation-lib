@@ -321,7 +321,7 @@ public class CommonApplicationMethods {
             String     value  = map.get("Should_Execution_Stop").toString();
             if (value.toUpperCase().equals("TRUE")) {
                 reader.close();
-                throw new Error("Stop Execution");
+                throw new Error("Stop Execution - Hard Stop Requested Was Requested, Should Reset Automatically At the end");
             }
         }
         return false;
