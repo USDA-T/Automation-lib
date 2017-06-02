@@ -272,6 +272,7 @@ public class CommonApplicationMethods {
 
     }
 
+
     public static void setText_Element(WebDriver webDriver, String locator_Yaml, String textVal) throws Exception {
         try {
 
@@ -306,6 +307,23 @@ public class CommonApplicationMethods {
         }
 
 
+    }
+
+
+    public static boolean get_Stop_Execution_Flag() throws Exception {
+
+        String filePath = FixtureUtils.rootDirExecutionFile();
+        File   f        = new File(filePath);
+        if (f.exists() && !f.isDirectory()) {
+            YamlReader reader = new YamlReader(new FileReader(filePath));
+            Object     object = reader.read(); // System.out.println(object);
+            Map        map    = (Map) object; // System.out.println(map.get(locatorName));
+            String     value  = map.get("Should_Execution_Stop").toString();
+            if (value.toUpperCase().equals("TRUE")) {
+                throw new Error("Stop Execution");
+            }
+        }
+        return false;
     }
 
     public static void verify_Element_Attribute(WebDriver webdriver, String locator_Yaml, String property_Yaml) throws Exception {
