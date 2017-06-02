@@ -121,7 +121,7 @@ public class CommonApplicationMethods {
 
 			} catch (Exception e) {
 				display("Trying to find BY " + type_Locator + ":" + value_Locator);
-				Thread.sleep(100); // DEEPA: is needed here since we are
+                Thread.sleep(250); // DEEPA: is needed here since we are
                 // Repeatedly Finding
             }
 		}
