@@ -15,6 +15,10 @@ public class FixtureUtils {
 				+ "DataFiles" + File.separator;
 	}
 
+	public static String rootDirExecutionFile() {
+		return System.getProperty("user.dir") + File.separator + "Stop_Execution.yaml";
+	}
+
 	public static String get_SS_Dir() {
 		return System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator
 				+ "Screenshots" + File.separator;
