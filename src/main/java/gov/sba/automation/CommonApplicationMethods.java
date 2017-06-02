@@ -257,6 +257,7 @@ public class CommonApplicationMethods {
                 if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
                     get_Element.click();
                     i += 99900001; // Break Loop if satisfied
+                    return;
                 }
 
                 if (elapsed_Seconds > 12)
@@ -266,7 +267,7 @@ public class CommonApplicationMethods {
             display(e.toString());
             take_ScreenShot_TestCaseName(webDriver,
                     new String[]{"click_Element", "Exception"});
-            throw new Exception("Error: ", e);
+            throw e;
         }
 
 
@@ -292,6 +293,7 @@ public class CommonApplicationMethods {
                     }
                     get_Element.sendKeys(textVal);
                     i += 99900001; // Break Loop if satisfied
+                    return;
                 }
 
                 if (elapsed_Seconds > 12)
@@ -302,7 +304,7 @@ public class CommonApplicationMethods {
             display(e.toString());
             take_ScreenShot_TestCaseName(webDriver,
                     new String[]{"setText_Element", "Exception"});
-            throw new Exception("Error: ", e);
+            throw e;
         }
 
 
