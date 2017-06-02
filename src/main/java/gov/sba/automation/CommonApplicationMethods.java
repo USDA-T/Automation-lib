@@ -265,8 +265,7 @@ public class CommonApplicationMethods {
             }
         } catch (Exception e) {
             display(e.toString());
-            take_ScreenShot_TestCaseName(webDriver,
-                    new String[]{"click_Element", "Exception"});
+            take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
             throw e;
         }
 
@@ -302,8 +301,7 @@ public class CommonApplicationMethods {
 
         } catch (Exception e) {
             display(e.toString());
-            take_ScreenShot_TestCaseName(webDriver,
-                    new String[]{"setText_Element", "Exception"});
+            take_ScreenShot_TestCaseName(webDriver, new String[]{"setText_Element", "Exception"});
             throw e;
         }
 
