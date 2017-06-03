@@ -245,14 +245,44 @@ public class CommonApplicationMethods {
     }
 
     public static void click_Element(WebDriver webDriver, String locator_Yaml) throws Exception {
-        try {
-
             long tStart = System.currentTimeMillis();
+
             for (int i = 0; i < 9900000; i++) {
                 // Start Measuring
-                double     elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
-                Map        locator         = getLocator(locator_Yaml);
-                WebElement get_Element     = find_Element_Loc(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
+                double elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
+                Map    locator         = getLocator(locator_Yaml);
+                try {
+                    WebElement get_Element = find_Element_Loc(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
+                    // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
+
+                    if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
+                        get_Element.click();
+                        i += 99900001; // Break Loop if satisfied
+                        return;
+                    }
+                } catch (Exception e) {
+                    display(e.toString());
+                    take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
+                }
+
+                if (elapsed_Seconds > 12) {
+                    throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
+                }
+            }
+
+
+    }
+
+
+    public static void click_Element_Locators(WebDriver webDriver, String locator_Yaml, String value_Yaml) throws Exception {
+        long tStart = System.currentTimeMillis();
+
+        for (int i = 0; i < 9900000; i++) {
+            // Start Measuring
+            double elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
+            Map    locator         = getLocator(locator_Yaml);
+            try {
+                WebElement get_Element = find_Element_Loc(webDriver, locator_Yaml, value_Yaml);
                 // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
 
                 if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
@@ -260,29 +290,27 @@ public class CommonApplicationMethods {
                     i += 99900001; // Break Loop if satisfied
                     return;
                 }
-
-                if (elapsed_Seconds > 12) {
-                    throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
-                }
-
+            } catch (Exception e) {
+                display(e.toString());
+                take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
             }
-        } catch (Exception e) {
-            display(e.toString());
-            take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
-            throw e;
+
+            if (elapsed_Seconds > 12) {
+                throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
+            }
         }
     }
 
 
     public static void setText_Element(WebDriver webDriver, String locator_Yaml, String textVal) throws Exception {
-        try {
+        long tStart = System.currentTimeMillis();
 
-            long tStart = System.currentTimeMillis();
-            for (int i = 0; i < 9900000; i++) {
-                // Start Measuring
-                double     elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
-                Map        locator         = getLocator(locator_Yaml);
-                WebElement get_Element     = find_Element_Loc(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
+        for (int i = 0; i < 9900000; i++) {
+            // Start Measuring
+            double elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
+            Map    locator         = getLocator(locator_Yaml);
+            try {
+                WebElement get_Element = find_Element_Loc(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
                 // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
 
                 if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
@@ -296,18 +324,15 @@ public class CommonApplicationMethods {
                     i += 99900001; // Break Loop if satisfied
                     return;
                 }
-
-                if (elapsed_Seconds > 12) {
-                    throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
-                }
+            } catch (Exception e) {
+                display(e.toString());
+                take_ScreenShot_TestCaseName(webDriver, new String[]{"setText_Element", "Exception"});
             }
 
-        } catch (Exception e) {
-            display(e.toString());
-            take_ScreenShot_TestCaseName(webDriver, new String[]{"setText_Element", "Exception"});
-            throw e;
+            if (elapsed_Seconds > 12) {
+                throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
+            }
         }
-
 
     }
 
@@ -318,8 +343,8 @@ public class CommonApplicationMethods {
         File   f        = new File(filePath);
         if (f.exists() && !f.isDirectory()) {
             YamlReader reader = new YamlReader(new FileReader(filePath));
-            Object     object = reader.read(); // System.out.println(object);
-            Map        map    = (Map) object; // System.out.println(map.get(locatorName));
+            Object     object = reader.read();
+            Map        map    = (Map) object;
             String     value  = map.get("Should_Execution_Stop").toString();
             if (value.toUpperCase().equals("TRUE")) {
                 reader.close();
@@ -338,7 +363,6 @@ public class CommonApplicationMethods {
         Map    prop       = getLocator(property_Yaml);
         String prop_Name  = prop.get("PropName").toString();
         String prop_Value = prop.get("PropValue").toString();
-
         //Assert.assertEquals(click_element.getAttribute(prop_Name), prop_Value);
 
     }
@@ -411,21 +435,6 @@ public class CommonApplicationMethods {
                 break;
         }
 
-    }
-
-    public static void clickOnApplicationAllCasesPage(WebDriver webDriver, String type_Of_App) throws Exception {
-        // It should be in Vendor Dashboard
-        switch (type_Of_App.toLowerCase()) {
-            case "wosb":
-                webDriver.findElement(By.xpath("//*[@id='certifications']/tbody/tr" + "["
-                        + "td[position()=1]/a[contains(text(),'WOSB')]" + "]" + "/td[position()=1]/a")).click();
-            case "edwosb":
-                webDriver.findElement(By.xpath("//*[@id='certifications']/tbody/tr" + "["
-                        + "td[position()=1]/a[contains(text(),'EDWOSB')]" + "]" + "/td[position()=1]/a")).click();
-            case "mpp":
-                webDriver.findElement(By.xpath("//*[@id='certifications']/tbody/tr" + "["
-                        + "td[position()=1]/a[contains(text(),'MPP')]" + "]" + "/td[position()=1]/a")).click();
-        }
     }
 
     public static String returnOrganization_Id(String duns_Number) throws Exception {
