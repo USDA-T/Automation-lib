@@ -97,7 +97,7 @@ public class CommonApplicationMethods {
         }
     }
 
-    public static List<WebElement> find_Elements_Loc_InPrg(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
+    public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
         List<WebElement> element_01 = null;
         for (int i = 0; i < 10; i++) {
             try {
@@ -121,7 +121,7 @@ public class CommonApplicationMethods {
                 }
 
             } catch (Exception e) {
-                display("Trying to find BY " + type_Locator + ":" + value_Locator);
+                display("Trying to find BY " + type_Locator + ":" + value_Locator + ":" + e.toString());
                 Thread.sleep(250); // DEEPA: is needed here since we are
                 // Repeatedly Finding
             }
@@ -131,7 +131,7 @@ public class CommonApplicationMethods {
 
     public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception {
         Map locator = getLocator(locator_Yaml);
-        return find_Elements_Loc_InPrg(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+        return find_Elements(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
     }
 
     public static WebElement find_Element_Loc(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
