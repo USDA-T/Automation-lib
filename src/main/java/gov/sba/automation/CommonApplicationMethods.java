@@ -261,9 +261,9 @@ public class CommonApplicationMethods {
                         return;
                     }
                 } catch (Exception e) {
-                    display(e.toString());
-                    take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
                     if (elapsed_Seconds > 12) {
+                        display(e.toString());
+                        take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
                         throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
                     }
                 }
@@ -292,9 +292,9 @@ public class CommonApplicationMethods {
                     return;
                 }
             } catch (Exception e) {
-                display(e.toString());
-                take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
                 if (elapsed_Seconds > 12) {
+                    display(e.toString());
+                    take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
                     throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
                 }
             }
@@ -327,9 +327,9 @@ public class CommonApplicationMethods {
                     return;
                 }
             } catch (Exception e) {
-                display(e.toString());
-                take_ScreenShot_TestCaseName(webDriver, new String[]{"setText_Element", "Exception"});
                 if (elapsed_Seconds > 12) {
+                    display(e.toString());
+                    take_ScreenShot_TestCaseName(webDriver, new String[]{"setText_Element", "Exception"});
                     throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
                 }
             }
