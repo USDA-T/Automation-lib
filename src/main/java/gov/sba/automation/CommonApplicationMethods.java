@@ -261,16 +261,16 @@ public class CommonApplicationMethods {
                     return;
                 }
 
-                if (elapsed_Seconds > 12)
+                if (elapsed_Seconds > 12) {
                     throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
+                }
+
             }
         } catch (Exception e) {
             display(e.toString());
             take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
             throw e;
         }
-
-
     }
 
 
@@ -290,15 +290,16 @@ public class CommonApplicationMethods {
                     try {
                         get_Element.clear();
                     } catch (Exception e) {
-                        display("We are good");
+                        display("We are good - Optional for Some fields Like Date etc");
                     }
                     get_Element.sendKeys(textVal);
                     i += 99900001; // Break Loop if satisfied
                     return;
                 }
 
-                if (elapsed_Seconds > 12)
+                if (elapsed_Seconds > 12) {
                     throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
+                }
             }
 
         } catch (Exception e) {
