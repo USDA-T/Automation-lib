@@ -117,7 +117,7 @@ public class CommonApplicationMethods {
                 }
 
                 if (element_01.size() > 0) {
-                    break;
+                    return element_01;
                 }
 
             } catch (Exception e) {
@@ -210,10 +210,6 @@ public class CommonApplicationMethods {
         return find_Element_Loc(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
     }
 
-    public static void click_Element_Loc(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
-        find_Element_Loc(webdriver, type_Locator, value_Locator).click();
-    }
-
     public static void accept_Alert(WebDriver webDriver) throws Exception {
         // If alert not present Throw error after few tries
         for (int i = 0; i < 15; i++) {
@@ -237,7 +233,7 @@ public class CommonApplicationMethods {
             try {
                 webDriver.switchTo().alert().accept();
                 return;
-            } catch (Exception e) {
+        } catch (Exception e) {
                 display("Trying to Accept Alert");
                 Thread.sleep(300);
             }
@@ -259,12 +255,19 @@ public class CommonApplicationMethods {
                         return;
                     }
                 } catch (Exception e) {
-                    if (((System.currentTimeMillis() - tStart) / 1000.0) > 12) {
+                    double elapsed = ((System.currentTimeMillis() - tStart) / 1000.0);
+                    if ( elapsed > 15) {
                         display(e.toString());
                         take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
-                        throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
+                        throw e;
                     }
                 }
+                double elapsed = ((System.currentTimeMillis() - tStart) / 1000.0);
+                if ( elapsed > 12) {
+                    take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
+                    throw new Exception("Unable to click element in displayed mode");
+                }
+
             }
 
     }
@@ -284,11 +287,17 @@ public class CommonApplicationMethods {
                     return;
                 }
             } catch (Exception e) {
-                if (((System.currentTimeMillis() - tStart) / 1000.0) > 12) {
+                double elapsed = ((System.currentTimeMillis() - tStart) / 1000.0);
+                if ( elapsed > 15) {
                     display(e.toString());
                     take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
-                    throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
+                    throw e;
                 }
+            }
+            double elapsed = ((System.currentTimeMillis() - tStart) / 1000.0);
+            if ( elapsed > 12) {
+                take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
+                throw new Exception("Unable to click element in displayed mode");
             }
 
 
@@ -313,11 +322,16 @@ public class CommonApplicationMethods {
                     return;
                 }
             } catch (Exception e) {
-                if (((System.currentTimeMillis() - tStart) / 1000.0) > 12) {
-                    display(e.toString());
+                double elapsed = ((System.currentTimeMillis() - tStart) / 1000.0);
+                if ( elapsed > 15) {
                     take_ScreenShot_TestCaseName(webDriver, new String[]{"setText_Element", "Exception"});
-                    throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
+                    throw e;
                 }
+            }
+            double elapsed = ((System.currentTimeMillis() - tStart) / 1000.0);
+            if ( elapsed > 12) {
+                take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
+                throw new Exception("Unable to Send Text to an element in displayed mode");
             }
         }
 
@@ -517,9 +531,7 @@ public class CommonApplicationMethods {
     }
 
     public static void casesPageSearch(WebDriver webDriver, String searchValue) throws Exception {
-        Map locator = getLocator("Apllication_Case_Search_Text");
         CommonApplicationMethods.setText_Element(webDriver, "Apllication_Case_Search_Text", searchValue);
-        locator = getLocator("Apllication_Case_Search_Button");
         CommonApplicationMethods.click_Element(webDriver, "Apllication_Case_Search_Button");
     }
 }
