@@ -247,30 +247,25 @@ public class CommonApplicationMethods {
     public static void click_Element(WebDriver webDriver, String locator_Yaml) throws Exception {
             long tStart = System.currentTimeMillis();
 
-            for (int i = 0; i < 9900000; i++) {
+            for (int i = 0; i < 30000; i++) {
                 // Start Measuring
-                double elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
                 Map    locator         = getLocator(locator_Yaml);
                 try {
                     WebElement get_Element = find_Element_Loc(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
-                    // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
 
                     if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
                         get_Element.click();
-                        i += 99900001; // Break Loop if satisfied
+                        i += 99999999; // Break Loop if satisfied
                         return;
                     }
                 } catch (Exception e) {
-                    if (elapsed_Seconds > 12) {
+                    if (((System.currentTimeMillis() - tStart) / 1000.0) > 12) {
                         display(e.toString());
                         take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
                         throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
                     }
                 }
-
-
             }
-
 
     }
 
@@ -278,21 +273,18 @@ public class CommonApplicationMethods {
     public static void click_Element_Locators(WebDriver webDriver, String locator_Yaml, String value_Yaml) throws Exception {
         long tStart = System.currentTimeMillis();
 
-        for (int i = 0; i < 9900000; i++) {
+        for (int i = 0; i < 30000; i++) {
             // Start Measuring
-            double elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
-            Map    locator         = getLocator(locator_Yaml);
             try {
                 WebElement get_Element = find_Element_Loc(webDriver, locator_Yaml, value_Yaml);
-                // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
 
                 if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
                     get_Element.click();
-                    i += 99900001; // Break Loop if satisfied
+                    i += 99999999; // Break Loop if satisfied
                     return;
                 }
             } catch (Exception e) {
-                if (elapsed_Seconds > 12) {
+                if (((System.currentTimeMillis() - tStart) / 1000.0) > 12) {
                     display(e.toString());
                     take_ScreenShot_TestCaseName(webDriver, new String[]{"click_Element", "Exception"});
                     throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
@@ -307,27 +299,21 @@ public class CommonApplicationMethods {
     public static void setText_Element(WebDriver webDriver, String locator_Yaml, String textVal) throws Exception {
         long tStart = System.currentTimeMillis();
 
-        for (int i = 0; i < 9900000; i++) {
+        for (int i = 0; i < 30000; i++) {
             // Start Measuring
-            double elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
             Map    locator         = getLocator(locator_Yaml);
             try {
                 WebElement get_Element = find_Element_Loc(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
-                // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
 
                 if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
                     get_Element.click();
-                    try {
-                        get_Element.clear();
-                    } catch (Exception e) {
-                        display("We are good - Optional for Some fields Like Date etc");
-                    }
+                    try { get_Element.clear(); } catch (Exception e) { display("We are good - Optional for Some fields Like Date etc"); }
                     get_Element.sendKeys(textVal);
-                    i += 99900001; // Break Loop if satisfied
+                    i += 99999999; // Break Loop if satisfied
                     return;
                 }
             } catch (Exception e) {
-                if (elapsed_Seconds > 12) {
+                if (((System.currentTimeMillis() - tStart) / 1000.0) > 12) {
                     display(e.toString());
                     take_ScreenShot_TestCaseName(webDriver, new String[]{"setText_Element", "Exception"});
                     throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
