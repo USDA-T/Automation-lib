@@ -126,7 +126,7 @@ public class CommonApplicationMethods {
                 // Repeatedly Finding
             }
         }
-        return element_01;
+        throw new Exception("Elements Not Found");
     }
 
     public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception {
