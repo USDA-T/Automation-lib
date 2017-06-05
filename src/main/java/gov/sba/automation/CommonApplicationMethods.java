@@ -104,16 +104,22 @@ public class CommonApplicationMethods {
                 switch (type_Locator.toLowerCase()) {
                     case "xpath":
                         element_01 = webdriver.findElements(By.xpath(value_Locator));
+                        break;
                     case "id":
                         element_01 = webdriver.findElements(By.id(value_Locator));
+                        break;
                     case "classname":
                         element_01 = webdriver.findElements(By.className(value_Locator));
+                        break;
                     case "name":
                         element_01 = webdriver.findElements(By.name(value_Locator));
+                        break;
                     case "cssselector":
                         element_01 = webdriver.findElements(By.cssSelector(value_Locator));
+                        break;
                     case "linktext":
                         element_01 = webdriver.findElements(By.linkText(value_Locator));
+                        break;
                 }
 
                 if (element_01.size() > 0) {
