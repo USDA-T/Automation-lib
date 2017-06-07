@@ -135,6 +135,44 @@ public class CommonApplicationMethods {
         throw new Exception("Elements Not Found");
     }
 
+    public static List<WebElement> find_Elements_Optional(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
+        List<WebElement> element_01 = null;
+        for (int i = 0; i < 2; i++) {
+            try {
+                switch (type_Locator.toLowerCase()) {
+                    case "xpath":
+                        element_01 = webdriver.findElements(By.xpath(value_Locator));
+                        break;
+                    case "id":
+                        element_01 = webdriver.findElements(By.id(value_Locator));
+                        break;
+                    case "classname":
+                        element_01 = webdriver.findElements(By.className(value_Locator));
+                        break;
+                    case "name":
+                        element_01 = webdriver.findElements(By.name(value_Locator));
+                        break;
+                    case "cssselector":
+                        element_01 = webdriver.findElements(By.cssSelector(value_Locator));
+                        break;
+                    case "linktext":
+                        element_01 = webdriver.findElements(By.linkText(value_Locator));
+                        break;
+                }
+
+                if (element_01.size() > 0) {
+                    return element_01;
+                }
+
+            } catch (Exception e) {
+                display("Trying to find BY " + type_Locator + ":" + value_Locator + ":" + e.toString());
+                Thread.sleep(250); // DEEPA: is needed here since we are
+                // Repeatedly Finding
+            }
+        }
+        return element_01;
+    }
+
     public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception {
         Map locator = getLocator(locator_Yaml);
         return find_Elements(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
