@@ -209,7 +209,7 @@ public class CommonApplicationMethods {
 		return find_Element_Loc(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
 	}
 
-    public static void click_Element_Locators(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
+    public static void click_Element_Loc(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
         find_Element_Loc(webdriver, type_Locator, value_Locator).click();
 	}
 
@@ -391,23 +391,6 @@ public class CommonApplicationMethods {
         }
 
 	}
-
-    public static boolean get_Stop_Execution_Flag() throws Exception {
-
-        String filePath = FixtureUtils.rootDirExecutionFile();
-        File   f        = new File(filePath);
-        if (f.exists() && !f.isDirectory()) {
-            YamlReader reader = new YamlReader(new FileReader(filePath));
-            Object     object = reader.read();
-            Map        map    = (Map) object;
-            String     value  = map.get("Should_Execution_Stop").toString();
-            if (value.toUpperCase().equals("TRUE")) {
-                reader.close();
-                throw new Error("Stop Execution - Hard Stop Requested Was Requested, Should Reset Automatically At the end");
-            }
-        }
-        return false;
-    }
 
 	public static void clickOnApplicationAllCasesPage(WebDriver webDriver, String type_Of_App) throws Exception {
 		// It should be in Vendor Dashboard
