@@ -94,11 +94,10 @@ public class DatabaseUtils {
 			throw e;
 		}
 		return organization_Id;
-	};
+	}
 
-	/**
-	 * Simplify implementation of how we should find good row having the
-	 * available DUNS number to use!
+    /**
+	 * Simplify implementation of how we should find good row having the available DUNS number to use!
 	 * 
 	 * @return
 	 * @throws Exception
@@ -106,8 +105,7 @@ public class DatabaseUtils {
 	public static String[] findUnusedDunsNumber() throws Exception {
 		String csvFile = FixtureUtils.resourcesDir() + ConfigUtils.loadDefaultProperties().getProperty("fixture_file");
 
-		CSVReader reader = new CSVReader(new FileReader(csvFile), CSVParser.DEFAULT_SEPARATOR,
-				CSVParser.DEFAULT_QUOTE_CHARACTER, 1);
+		CSVReader reader = new CSVReader(new FileReader(csvFile), CSVParser.DEFAULT_SEPARATOR, CSVParser.DEFAULT_QUOTE_CHARACTER, 1);
 
 		String[] detailFields;
 
@@ -115,53 +113,44 @@ public class DatabaseUtils {
 
 			String email = detailFields[0];
 			String password = detailFields[1];
-
 			String dunsNumber = detailFields[2];
-
 			int rowsNeeded = 1;
 			int colsNeeded = 1;
 
-			String certificateQuery = "select count(*) from sbaone.certificates where organization_id in (select id from sbaone.organizations where duns_number = '"
-					+ dunsNumber + "')";
+			String certificateQuery = "select count(*) from sbaone.certificates where organization_id in (select id from sbaone.organizations where duns_number = '" + dunsNumber + "')";
 
 			String[][] certificateData = DatabaseUtils.queryForData(certificateQuery, rowsNeeded, colsNeeded);
 
-			String applicationQuery = "select count(*) from sbaone.sba_applications where organization_id in (select id from sbaone.organizations where duns_number = '"
-					+ dunsNumber + "')";
+			String applicationQuery = "select count(*) from sbaone.sba_applications where organization_id in (select id from sbaone.organizations where duns_number = '" + dunsNumber + "')";
 
 			String[][] applicationData = DatabaseUtils.queryForData(applicationQuery, rowsNeeded, colsNeeded);
 
-			// If we can't find any combination then it means it is
-			// available?
-			int counter = Integer.parseInt(certificateData[0][0].toString())
-					+ Integer.parseInt(applicationData[0][0].toString());
+			// If we can't find any combination then it means it is available?
+			int counter = Integer.parseInt(certificateData[0][0].toString()) + Integer.parseInt(applicationData[0][0].toString());
 
 			if (counter <= 0) {
 				logger.info(String.format("Found unused rows: %s->%s->%s", email, password, dunsNumber));
 				return detailFields;
 			}
 		}
-		// If we reach here we can't find any good Duns number, should just
-		// raise exception!
+		// If we reach here we can't find any good Duns number, should just raise exception!
 		throw new Exception("No valid Duns number available. Please check your fixture files");
 	}
 
-	public static void deleteApplication_SetCert_Set_App_Tables(WebDriver webDriver, Integer certificate_ID,
-			String duns_Number) throws Exception {
+	public static void deleteApplication_SetCert_Set_App_Tables(WebDriver webDriver, Integer certificate_ID, String duns_Number) throws Exception {
+
 		String organization_Id = returnOrganization_Id(duns_Number);
+		DatabaseUtils.executeSQLScript("update sbaone.certificates  set deleted_at = CURRENT_TIMESTAMP   where organization_id = " + organization_Id.toString());
+		DatabaseUtils.executeSQLScript("update sbaone.sba_applications  set deleted_at = CURRENT_TIMESTAMP  where organization_id = " + organization_Id.toString());
 
-		DatabaseUtils.executeSQLScript("update sbaone.certificates " + "   set deleted_at = CURRENT_TIMESTAMP "
-				+ "   where organization_id = " + organization_Id.toString());
-		DatabaseUtils.executeSQLScript("update sbaone.sba_applications " + "       set deleted_at = CURRENT_TIMESTAMP "
-				+ "   where organization_id = " + organization_Id.toString());
-	};
+	}
 
-	public static void deleteAllApplicationTypes(WebDriver webDriver, String duns_Number) throws Exception {
+    public static void deleteAllApplicationTypes(WebDriver webDriver, String duns_Number) throws Exception {
 		// It should be in Vendor Dashboard
 		deleteApplication_SetCert_Set_App_Tables(webDriver, 1, duns_Number);
 		deleteApplication_SetCert_Set_App_Tables(webDriver, 2, duns_Number);
 		deleteApplication_SetCert_Set_App_Tables(webDriver, 3, duns_Number);
 		deleteApplication_SetCert_Set_App_Tables(webDriver, 4, duns_Number);
 
-	};
+	}
 }
