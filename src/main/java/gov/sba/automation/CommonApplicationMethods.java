@@ -537,7 +537,7 @@ public class CommonApplicationMethods {
     }
 
     public static void searchDuns_Number(WebDriver webDriver, String search_Text) throws Exception {
-        click_Element(webDriver, "Search_Duns_Search_Text");
+        //click_Element(webDriver, "Search_Duns_Search_Text");
         setText_Element(webDriver, "Search_Duns_Search_Query", search_Text);
         click_Element(webDriver, "Search_Duns_Search_Submit");
     }
