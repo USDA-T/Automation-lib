@@ -116,7 +116,38 @@ public class CommonApplicationMethods {
                 }
 
 				if (element_01.size() > 0) {
-					break;
+                    return element_01;
+				}
+
+			} catch (Exception e) {
+				display("Trying to find BY " + type_Locator + ":" + value_Locator);
+				Thread.sleep(100); // DEEPA: is needed here since we are
+                // Repeatedly Finding
+            }
+		}
+		throw new Exception("Elements Not Found");
+	}
+    public static List<WebElement> find_Elements_Locators_Optional(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
+        List<WebElement> element_01 = null;
+		for (int i = 0; i < 10; i++) {
+			try {
+				switch (type_Locator.toLowerCase()) {
+                    case "xpath":
+                        element_01 = webdriver.findElements(By.xpath(value_Locator));
+                    case "id":
+                        element_01 = webdriver.findElements(By.id(value_Locator));
+                    case "classname":
+                        element_01 = webdriver.findElements(By.className(value_Locator));
+                    case "name":
+                        element_01 = webdriver.findElements(By.name(value_Locator));
+                    case "cssselector":
+                        element_01 = webdriver.findElements(By.cssSelector(value_Locator));
+                    case "linktext":
+                        element_01 = webdriver.findElements(By.linkText(value_Locator));
+                }
+
+				if (element_01.size() > 0) {
+                    return element_01;
 				}
 
 			} catch (Exception e) {
@@ -131,6 +162,11 @@ public class CommonApplicationMethods {
 	public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception {
 		Map locator = getLocator(locator_Yaml);
 		return find_Elements_Locators(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+	}
+
+	public static List<WebElement> find_Elements_Optional(WebDriver webdriver, String locator_Yaml) throws Exception {
+		Map locator = getLocator(locator_Yaml);
+		return find_Elements_Locators_Optional(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
 	}
 
     public static WebElement find_Element_Loc(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
