@@ -209,7 +209,7 @@ public class CommonApplicationMethods {
 		return find_Element_Loc(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
 	}
 
-    public static void click_Element_Loc(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
+    public static void click_Element_Locators(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
         find_Element_Loc(webdriver, type_Locator, value_Locator).click();
 	}
 
