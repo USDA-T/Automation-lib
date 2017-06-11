@@ -392,6 +392,23 @@ public class CommonApplicationMethods {
 
 	}
 
+    public static boolean get_Stop_Execution_Flag() throws Exception {
+
+        String filePath = FixtureUtils.rootDirExecutionFile();
+        File   f        = new File(filePath);
+        if (f.exists() && !f.isDirectory()) {
+            YamlReader reader = new YamlReader(new FileReader(filePath));
+            Object     object = reader.read();
+            Map        map    = (Map) object;
+            String     value  = map.get("Should_Execution_Stop").toString();
+            if (value.toUpperCase().equals("TRUE")) {
+                reader.close();
+                throw new Error("Stop Execution - Hard Stop Requested Was Requested, Should Reset Automatically At the end");
+            }
+        }
+        return false;
+    }
+
 	public static void clickOnApplicationAllCasesPage(WebDriver webDriver, String type_Of_App) throws Exception {
 		// It should be in Vendor Dashboard
 		switch (type_Of_App.toLowerCase()) {
