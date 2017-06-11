@@ -24,6 +24,8 @@ import java.util.concurrent.TimeUnit;
 
 import static gov.sba.automation.ConfigUtils.isUnix;
 import static gov.sba.automation.ConfigUtils.systemType;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class CommonApplicationMethods {
 
@@ -75,22 +77,17 @@ public class CommonApplicationMethods {
 
     public static Boolean checkApplicationExists(WebDriver webDriver, String type_Of_App, String status_Of_App) throws Exception {
         // It should be in Vendor Dashboard
+        String xp = "";
 		switch (type_Of_App.toLowerCase((Locale.ENGLISH)) + status_Of_App.toLowerCase((Locale.ENGLISH))) {
             case "edwosbactive":
-                List<WebElement> listOfActiveEDWOSB = webDriver.findElements(By.xpath("//table[@id='certifications']/tbody/"
-                        + "tr[  " + "		(td[position()=5 and contains(text(),'ctive')]) "
-                        + "and  (td[position()=1]/a[contains(text(),'EDWOSB')]) " + "	]"));
-                return listOfActiveEDWOSB.size() > 0;
+                xp = "//table[@id='certifications']/tbody/tr[ (td[position()=5 and contains(text(),'ctive')]) and  (td[position()=1]/a[contains(text(),'EDWOSB')]) ]";
+                return find_Elements_Locators_Optional(webDriver, "xpath", xp).size() > 0;
             case "wosbactive":
-                List<WebElement> listOfActiveWOSB = webDriver.findElements(By.xpath(
-                        "//table[@id='certifications']/tbody/tr[  " + "(td[position()=5 and contains(text(),'ctive')]) and "
-                                + "(td[position()=1]/a[contains(text(),'WOSB') and not(contains(text(),'EDWOSB'))]) ]"));
-                return listOfActiveWOSB.size() > 0;
+                xp = "//table[@id='certifications']/tbody/tr[ (td[position()=5 and contains(text(),'ctive')]) and (td[position()=1]/a[contains(text(),'WOSB') and not(contains(text(),'EDWOSB'))]) ]";
+                return find_Elements_Locators_Optional(webDriver, "xpath", xp).size() > 0;
             case "mpppending":
-                List<WebElement> listOfActiveMpp = webDriver.findElements(By.xpath(
-                        "//table[@id='certifications']/tbody/tr[  (td[position()=5 and contains(text(),'ending')]) and (td/a[position()=1 and contains(text(),'MPP')]) ]"));
-                return listOfActiveMpp.size() > 0;
-
+                xp = "//table[@id='certifications']/tbody/tr[  (td[position()=5 and contains(text(),'ending')]) and (td/a[position()=1 and contains(text(),'MPP')]) ]";
+                return find_Elements_Locators_Optional(webDriver, "xpath", xp).size() > 0;
             default:
                 return false;
         }
@@ -171,8 +168,7 @@ public class CommonApplicationMethods {
 
     public static WebElement find_Element_Loc(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
 
-        Wait<WebDriver> wait = new FluentWait<WebDriver>(webdriver).withTimeout(15, TimeUnit.SECONDS)
-                .pollingEvery(100, TimeUnit.MILLISECONDS).ignoring(NoSuchElementException.class);
+        Wait<WebDriver> wait = new FluentWait<WebDriver>(webdriver).withTimeout(15, SECONDS).pollingEvery(100, MILLISECONDS).ignoring(NoSuchElementException.class);
 
 		try {
 			switch (type_Locator.toLowerCase()) {
@@ -292,7 +288,7 @@ public class CommonApplicationMethods {
 
                 if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
                     get_Element.click();
-                    i += 99900001; // Break Loop if satisfied
+                    return;
                 }
 
                 if (elapsed_Seconds > 12)
@@ -321,13 +317,9 @@ public class CommonApplicationMethods {
 
                 if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
                     get_Element.click();
-                    try {
-                        get_Element.clear();
-                    } catch (Exception e) {
-                        display("We are good");
-                    }
+                    try { get_Element.clear(); } catch (Exception e) { display("We are good"); }
                     get_Element.sendKeys(textVal);
-                    i += 99900001; // Break Loop if satisfied
+                    return;
                 }
 
                 if (elapsed_Seconds > 12)
@@ -397,36 +389,21 @@ public class CommonApplicationMethods {
 
     public static void deleteApplication(WebDriver webDriver, String type_Of_App, String status_Of_App) throws Exception {
 
-		switch (type_Of_App.toLowerCase() + status_Of_App.toLowerCase()) {
+        List<WebElement> deleteElem = null;
+        switch (type_Of_App.toLowerCase() + status_Of_App.toLowerCase()) {
             case "edwosbdraft":
-                List<WebElement> deleteElem = webDriver.findElements(By.xpath(
-                        "//*[@id='certifications']/tbody/tr[ (td[position()=1]/a[contains(text(),'EDWOSB')]) and ( td[ position()=5 and contains(text(),'Draft') ] )  ]/td[ position()=7 ]/a[ contains(text(),'Delete') ]  "));
-                if (deleteElem.size() > 0) {
-                    deleteElem.get(0).click();
-                    accept_Optional_Alert(webDriver, 8);
-                }
-                break;
+                deleteElem = find_Elements_Optional(webDriver, "SBA_Application_All_Cases_Page_WOSB_Draft"); break;
             case "wosbdraft":
-                List<WebElement> deleteElem_01 = webDriver.findElements(By.xpath(
-                        "//*[@id='certifications']/tbody/tr[ (td[position()=1]/a[contains(text(),'WOSB') and not(contains(text(),'EDWOSB'))]) and ( td[ position()=5 and contains(text(),'Draft') ] )  ]/td[ position()=7 ]/a[ contains(text(),'Delete') ]  "));
-                if (deleteElem_01.size() > 0) {
-                    deleteElem_01.get(0).click();
-                    accept_Optional_Alert(webDriver, 22);
-                }
-                break;
+                deleteElem = find_Elements_Optional(webDriver, "SBA_Application_All_Cases_Page_EDWOSB_Draft"); break;
             case "mppdraft":
-                List<WebElement> deleteElem_02 = webDriver.findElements(By.xpath("//*[@id='certifications']/tbody/tr"
-                        + "[  " + " ( td[position()=1]/a[contains(text(),'MPP')]       )  and"
-                        + " ( td[ position()=5 and contains(text(),'Draft')  ] )  and "
-                        + " ( td[ position()=7 ]/a[ contains(text(),'Delete') ] )  " + "]" + "/td[position()=7]/a"));
-                if (deleteElem_02.size() > 0) {
-                    deleteElem_02.get(0).click();
-                    accept_Optional_Alert(webDriver, 22);
-                }
-                break;
+                deleteElem = find_Elements_Optional(webDriver, "SBA_Application_All_Cases_Page_MPP_Draft"); break;
+        }
+        if (deleteElem.size() > 0) {
+            deleteElem.get(0).click();
+            accept_Optional_Alert(webDriver, 8);
         }
 
-	}
+    }
 
     public static boolean get_Stop_Execution_Flag() throws Exception {
 
@@ -448,25 +425,19 @@ public class CommonApplicationMethods {
 		// It should be in Vendor Dashboard
 		switch (type_Of_App.toLowerCase()) {
             case "wosb":
-                webDriver.findElement(By.xpath("//*[@id='certifications']/tbody/tr" + "["
-                        + "td[position()=1]/a[contains(text(),'WOSB')]" + "]" + "/td[position()=1]/a")).click();
+                click_Element(webDriver, "SBA_Application_All_Cases_Page_WOSB");
             case "edwosb":
-                webDriver.findElement(By.xpath("//*[@id='certifications']/tbody/tr" + "["
-                        + "td[position()=1]/a[contains(text(),'EDWOSB')]" + "]" + "/td[position()=1]/a")).click();
+                click_Element(webDriver, "SBA_Application_All_Cases_Page_EDWOSB");
             case "mpp":
-                webDriver.findElement(By.xpath("//*[@id='certifications']/tbody/tr" + "["
-                        + "td[position()=1]/a[contains(text(),'MPP')]" + "]" + "/td[position()=1]/a")).click();
+                click_Element(webDriver, "SBA_Application_All_Cases_Page_MPP");
         }
 	}
 
 	public static String returnOrganization_Id(String duns_Number) throws Exception {
 		String organization_Id;
 		try {
-			// See below Start: Need Sleep
-			Thread.sleep(3000); // DEEPA: Sleep is needed here since we are
-            // querying SQL, and its too fast
-            // See below Start
 
+			Thread.sleep(3000); /* DEEPA: Sleep is needed here since we are querying SQL, and its too fast See below Start*/
 			organization_Id = DatabaseUtils.queryForData(
 					"select id from sbaone.organizations where duns_number = '" + duns_Number + "'", 1, 1)[0][0];
 		} catch (Exception e) {
@@ -543,11 +514,8 @@ public class CommonApplicationMethods {
 
 	public static String getflagvalue() throws Exception {
 		String flagforRunfile = FixtureUtils.fixturesDir() + "flagforRunEmailNotification.config";
-
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(flagforRunfile));
-
 		String detailFlag = bufferedReader.readLine();
-
 		return detailFlag;
 	}
 
