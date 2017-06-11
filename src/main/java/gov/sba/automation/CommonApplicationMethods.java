@@ -381,6 +381,20 @@ public class CommonApplicationMethods {
 
     }
 
+    public static void clickOnApplicationAllCasesPage(WebDriver webDriver, String type_Of_App) throws Exception {
+        // It should be in Vendor Dashboard
+        switch (type_Of_App.toLowerCase()) {
+            case "wosb":
+                webDriver.findElement(By.xpath("//*[@id='certifications']/tbody/tr" + "["
+                        + "td[position()=1]/a[contains(text(),'WOSB')]" + "]" + "/td[position()=1]/a")).click();
+            case "edwosb":
+                webDriver.findElement(By.xpath("//*[@id='certifications']/tbody/tr" + "["
+                        + "td[position()=1]/a[contains(text(),'EDWOSB')]" + "]" + "/td[position()=1]/a")).click();
+            case "mpp":
+                webDriver.findElement(By.xpath("//*[@id='certifications']/tbody/tr" + "["
+                        + "td[position()=1]/a[contains(text(),'MPP')]" + "]" + "/td[position()=1]/a")).click();
+        }
+    }
 
     public static boolean get_Stop_Execution_Flag() throws Exception {
 
