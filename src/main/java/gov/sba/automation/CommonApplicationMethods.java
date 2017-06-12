@@ -95,21 +95,27 @@ public class CommonApplicationMethods {
 
     public static List<WebElement> find_Elements_Locators(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
         List<WebElement> element_01 = null;
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 5; i++) {
 			try {
 				switch (type_Locator.toLowerCase()) {
                     case "xpath":
                         element_01 = webdriver.findElements(By.xpath(value_Locator));
+                        break;
                     case "id":
                         element_01 = webdriver.findElements(By.id(value_Locator));
+                        break;
                     case "classname":
                         element_01 = webdriver.findElements(By.className(value_Locator));
+                        break;
                     case "name":
                         element_01 = webdriver.findElements(By.name(value_Locator));
+                        break;
                     case "cssselector":
                         element_01 = webdriver.findElements(By.cssSelector(value_Locator));
+                        break;
                     case "linktext":
                         element_01 = webdriver.findElements(By.linkText(value_Locator));
+                        break;
                 }
 
 				if (element_01.size() > 0) {
@@ -131,16 +137,22 @@ public class CommonApplicationMethods {
 				switch (type_Locator.toLowerCase()) {
                     case "xpath":
                         element_01 = webdriver.findElements(By.xpath(value_Locator));
+                        break;
                     case "id":
                         element_01 = webdriver.findElements(By.id(value_Locator));
+                        break;
                     case "classname":
                         element_01 = webdriver.findElements(By.className(value_Locator));
+                        break;
                     case "name":
                         element_01 = webdriver.findElements(By.name(value_Locator));
+                        break;
                     case "cssselector":
                         element_01 = webdriver.findElements(By.cssSelector(value_Locator));
+                        break;
                     case "linktext":
                         element_01 = webdriver.findElements(By.linkText(value_Locator));
+                        break;
                 }
 
 				if (element_01.size() > 0) {
