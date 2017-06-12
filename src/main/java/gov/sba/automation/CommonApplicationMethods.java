@@ -126,7 +126,7 @@ public class CommonApplicationMethods {
 	}
     public static List<WebElement> find_Elements_Locators_Optional(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
         List<WebElement> element_01 = null;
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 2; i++) {
 			try {
 				switch (type_Locator.toLowerCase()) {
                     case "xpath":
