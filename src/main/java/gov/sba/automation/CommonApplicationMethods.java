@@ -476,6 +476,12 @@ public static boolean get_Stop_Execution_Flag() throws Exception {
 		click_Element(webDriver, "Search_Duns_Search_Submit");
 	}
 
+	public static void non_Vendor_searchDuns_Number(WebDriver webDriver, String search_Text) throws Exception {
+		click_Element(webDriver, "Search_Duns_Search_Text_Non_Vendor");
+		setText_Element(webDriver, "Search_Duns_Search_Text_Non_Vendor", search_Text);
+		click_Element(webDriver, "Search_Duns_Search_Submit_Non_Vendor");
+	}
+
 	public static void search_Cases_Duns_Number_Table(WebDriver webDriver, String search_Text) throws Exception {
 		CommonApplicationMethods.setText_Element(webDriver, "Search_Duns_Cases_Test", search_Text);
 		CommonApplicationMethods.click_Element(webDriver, "Search_Duns_Cases_Submit");
