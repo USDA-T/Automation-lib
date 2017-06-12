@@ -95,7 +95,7 @@ public class CommonApplicationMethods {
 
     public static List<WebElement> find_Elements_Locators(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
         List<WebElement> element_01 = null;
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			try {
 				switch (type_Locator.toLowerCase()) {
                     case "xpath":
@@ -259,7 +259,7 @@ public class CommonApplicationMethods {
 
 	public static void accept_Alert(WebDriver webDriver) throws Exception {
         // If alert not present Throw error after few tries
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 14; i++) {
 			try {
 				webDriver.switchTo().alert().accept();
 				return;
