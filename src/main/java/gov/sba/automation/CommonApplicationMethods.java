@@ -6,6 +6,7 @@ import com.google.common.base.Function;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
@@ -84,10 +85,10 @@ public class CommonApplicationMethods {
                 return find_Elements_Locators_Optional(webDriver, "xpath", xp).size() > 0;
             case "wosbactive":
                 xp = "//table[@id='certifications']/tbody/tr[ (td[position()=5 and contains(text(),'ctive')]) and (td[position()=1]/a[contains(text(),'WOSB') and not(contains(text(),'EDWOSB'))]) ]";
-                return find_Elements_Locators_Optional(webDriver, "xpath", xp).size() > 0;
+                return find_Elements_Locators(webDriver, "xpath", xp).size() > 0;
             case "mpppending":
                 xp = "//table[@id='certifications']/tbody/tr[  (td[position()=5 and contains(text(),'ending')]) and (td/a[position()=1 and contains(text(),'MPP')]) ]";
-                return find_Elements_Locators_Optional(webDriver, "xpath", xp).size() > 0;
+                return find_Elements_Locators(webDriver, "xpath", xp).size() > 0;
             default:
                 return false;
         }
@@ -95,7 +96,7 @@ public class CommonApplicationMethods {
 
     public static List<WebElement> find_Elements_Locators(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
         List<WebElement> element_01 = null;
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			try {
 				switch (type_Locator.toLowerCase()) {
                     case "xpath":
@@ -259,7 +260,7 @@ public class CommonApplicationMethods {
 
 	public static void accept_Alert(WebDriver webDriver) throws Exception {
         // If alert not present Throw error after few tries
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 14; i++) {
 			try {
 				webDriver.switchTo().alert().accept();
 				return;
@@ -297,8 +298,8 @@ public class CommonApplicationMethods {
                 Map        locator                      = getLocator(locator_Yaml);
                 WebElement get_Element                  = find_Element_Loc(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
                 // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
-
-                if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
+                Dimension get_Element_D = get_Element.getSize();
+                if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0 && get_Element.isEnabled()) {
                     get_Element.click();
                     return;
                 }
