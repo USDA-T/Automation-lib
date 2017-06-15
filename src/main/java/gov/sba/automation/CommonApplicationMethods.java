@@ -85,10 +85,10 @@ public class CommonApplicationMethods {
                 return find_Elements_Locators_Optional(webDriver, "xpath", xp).size() > 0;
             case "wosbactive":
                 xp = "//table[@id='certifications']/tbody/tr[ (td[position()=5 and contains(text(),'ctive')]) and (td[position()=1]/a[contains(text(),'WOSB') and not(contains(text(),'EDWOSB'))]) ]";
-                return find_Elements_Locators_Optional(webDriver, "xpath", xp).size() > 0;
+                return find_Elements_Locators(webDriver, "xpath", xp).size() > 0;
             case "mpppending":
                 xp = "//table[@id='certifications']/tbody/tr[  (td[position()=5 and contains(text(),'ending')]) and (td/a[position()=1 and contains(text(),'MPP')]) ]";
-                return find_Elements_Locators_Optional(webDriver, "xpath", xp).size() > 0;
+                return find_Elements_Locators(webDriver, "xpath", xp).size() > 0;
             default:
                 return false;
         }
