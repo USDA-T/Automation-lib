@@ -1,3 +1,4 @@
+//TS Created By Deepa_Patri
 package gov.sba.automation;
 
 import com.esotericsoftware.yamlbeans.YamlException;
@@ -5,6 +6,8 @@ import com.esotericsoftware.yamlbeans.YamlReader;
 import com.google.common.base.Function;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.util.Assert;
+import org.apache.xpath.operations.Bool;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
@@ -30,71 +33,19 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class CommonApplicationMethods {
 
-	public static void display(String smeThng) throws Exception {
-		LogManager.getLogger(gov.sba.automation.CommonApplicationMethods.class.getName()).info(smeThng);
-	}
+//------------------------------------------------------------------------------------------------------------
+//    Usage [ Repeat for Find Elements]
+//    1. Find element with Locator -  WebElement aa= find_Element(WebDriver webDriver, String locator_Yaml);
+//    2. Find element with Values -  WebElement aa= find_Element(WebDriver webDriver, String locator_Type, String locator_Value);
+//    3. Optional Find element with Locator -  WebElement aa= find_Element(WebDriver webDriver, String locator_Yaml, Boolean true);
+//    4. Optional Find element with Values -  WebElement aa= find_Element(WebDriver webDriver, String locator_Type, String locator_Value, Boolean true);
+//____________________________________________________________________________________________________________
+//------------------------------------------------------------------------------------------------------------
+//    All_Find_elements
+//____________________________________________________________________________________________________________
 
-	public static Map getLocator(String locatorName) throws YamlException, FileNotFoundException {
-		YamlReader reader = new YamlReader(new FileReader(FixtureUtils.fixturesDir() + "Locators.yaml"));
-        Object     object = reader.read(); // System.out.println(object);
-        Map        map    = (Map) object; // System.out.println(map.get(locatorName));
-        return (Map) map.get(locatorName);
-	}
-
-	public static void take_ScreenShot_TestCaseName(WebDriver webDriver, String[] stringValueArray) throws Exception {
-        File   src  = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
-        String time = Integer.toString((int) (new Date().getTime() / 1000));
-		display(time);
-
-		try {
-			// now copy the screenshot to the screenshot folder.
-			if (stringValueArray.length == 2) {
-				FileUtils.copyFile(src, new File(
-						FixtureUtils.get_SS_Dir() + stringValueArray[0] + stringValueArray[1] + time + ".png"));
-			} else {
-				FileUtils.copyFile(src,
-						new File(FixtureUtils.get_SS_Dir() + stringValueArray[0] + "Exception" + ".png"));
-			}
-        } catch (IOException e) {
-            throw e;
-		}
-
-	}
-
-	public static void take_Desktop_SShot_TestCaseName(String[] stringValueArray) throws Exception {
-        Robot            robot      = new Robot();
-        SimpleDateFormat formatter  = new SimpleDateFormat("yyyyMMdd hh mm ss a");
-        Calendar         now        = Calendar.getInstance();
-        BufferedImage    screenShot = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-        if (stringValueArray.length == 2) {
-			ImageIO.write(screenShot, "JPG",
-					new File(FixtureUtils.get_SS_Dir() + stringValueArray[0] + stringValueArray[1] + ".jpg"));
-		} else {
-			ImageIO.write(screenShot, "JPG",
-					new File(FixtureUtils.get_SS_Dir() + stringValueArray[0] + "_Exception" + ".jpg"));
-		}
-
-	}
-
-    public static Boolean checkApplicationExists(WebDriver webDriver, String type_Of_App, String status_Of_App) throws Exception {
-        // It should be in Vendor Dashboard
-        String xp = "";
-		switch (type_Of_App.toLowerCase((Locale.ENGLISH)) + status_Of_App.toLowerCase((Locale.ENGLISH))) {
-            case "edwosbactive":
-                xp = "//table[@id='certifications']/tbody/tr[ (td[position()=5 and contains(text(),'ctive')]) and  (td[position()=1]/a[contains(text(),'EDWOSB')]) ]";
-                return find_Elements_Locators_Optional(webDriver, "xpath", xp).size() > 0;
-            case "wosbactive":
-                xp = "//table[@id='certifications']/tbody/tr[ (td[position()=5 and contains(text(),'ctive')]) and (td[position()=1]/a[contains(text(),'WOSB') and not(contains(text(),'EDWOSB'))]) ]";
-                return find_Elements_Locators(webDriver, "xpath", xp).size() > 0;
-            case "mpppending":
-                xp = "//table[@id='certifications']/tbody/tr[  (td[position()=5 and contains(text(),'ending')]) and (td/a[position()=1 and contains(text(),'MPP')]) ]";
-                return find_Elements_Locators(webDriver, "xpath", xp).size() > 0;
-            default:
-                return false;
-        }
-	}
-
-    public static List<WebElement> find_Elements_Locators(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
+    public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception // Non Optional
+    {
         List<WebElement> element_01 = null;
 		for (int i = 0; i < 4; i++) {
 			try {
@@ -125,61 +76,47 @@ public class CommonApplicationMethods {
 
 			} catch (Exception e) {
 				display("Trying to find BY " + type_Locator + ":" + value_Locator);
-				Thread.sleep(100); // DEEPA: is needed here since we are
-                // Repeatedly Finding
+				Thread.sleep(100); // DEEPA: is needed here since we are // Repeatedly Finding
             }
 		}
 		throw new Exception("Elements Not Found");
 	}
-    public static List<WebElement> find_Elements_Locators_Optional(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
+
+    public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception //Non Optional
+    {
+        Map locator = getLocator(locator_Yaml);
+        return find_Elements(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+    }
+
+    public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator, String value_Locator, Boolean optional_Check) throws Exception //	Optional
+    {
         List<WebElement> element_01 = null;
-		for (int i = 0; i < 4; i++) {
-			try {
-				switch (type_Locator.toLowerCase()) {
-                    case "xpath":
-                        element_01 = webdriver.findElements(By.xpath(value_Locator));
-                        break;
-                    case "id":
-                        element_01 = webdriver.findElements(By.id(value_Locator));
-                        break;
-                    case "classname":
-                        element_01 = webdriver.findElements(By.className(value_Locator));
-                        break;
-                    case "name":
-                        element_01 = webdriver.findElements(By.name(value_Locator));
-                        break;
-                    case "cssselector":
-                        element_01 = webdriver.findElements(By.cssSelector(value_Locator));
-                        break;
-                    case "linktext":
-                        element_01 = webdriver.findElements(By.linkText(value_Locator));
-                        break;
-                }
+        try{
+            element_01 =   find_Elements(webdriver, type_Locator, value_Locator);
+            return element_01;
+        }catch (Exception e){
+            return null;
+        }
+    }
 
-				if (element_01.size() > 0) {
-                    return element_01;
-				}
+    public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml, Boolean optional_Check) throws Exception     //Optional
+    {
+        Map locator = getLocator(locator_Yaml);
+        List<WebElement> element_01 = null;
+        try{
+            element_01 =   find_Elements(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+            return element_01;
+        }catch (Exception e){
+            return null;
+        }
+    }
 
-			} catch (Exception e) {
-				display("Trying to find BY " + type_Locator + ":" + value_Locator);
-				Thread.sleep(100); // DEEPA: is needed here since we are
-                // Repeatedly Finding
-            }
-		}
-		return element_01;
-	}
+//------------------------------------------------------------------------------------------------------------
+//    All_Find_element Only
+//____________________________________________________________________________________________________________
 
-	public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception {
-		Map locator = getLocator(locator_Yaml);
-		return find_Elements_Locators(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
-	}
-
-	public static List<WebElement> find_Elements_Optional(WebDriver webdriver, String locator_Yaml) throws Exception {
-		Map locator = getLocator(locator_Yaml);
-		return find_Elements_Locators_Optional(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
-	}
-
-    public static WebElement find_Element_Loc(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
+    public static WebElement find_Element(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception // Non Optional
+    {
 
         Wait<WebDriver> wait = new FluentWait<WebDriver>(webdriver).withTimeout(15, SECONDS).pollingEvery(100, MILLISECONDS).ignoring(NoSuchElementException.class);
 
@@ -244,18 +181,59 @@ public class CommonApplicationMethods {
             display("Trying to find BY:" + type_Locator + ":" + value_Locator);
             throw e;
         }
-		return null;
 
+        throw new Exception("Element Not Found");
 
     }
 
-	public static WebElement find_Element(WebDriver webdriver, String locator_Yaml) throws Exception {
+	public static WebElement find_Element(WebDriver webdriver, String locator_Yaml) throws Exception  // Non Optional
+    {
 		Map locator = getLocator(locator_Yaml);
-		return find_Element_Loc(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+		return find_Element(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
 	}
 
-    public static void click_Element_Loc(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
-        find_Element_Loc(webdriver, type_Locator, value_Locator).click();
+    public static WebElement find_Element(WebDriver webdriver, String type_Locator, String value_Locator, Boolean optional_Check) throws Exception // Optional
+    {
+        WebElement element_01 = null;
+        try{
+            element_01 =   find_Element(webdriver, type_Locator, value_Locator);
+            return element_01;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    public static WebElement find_Element(WebDriver webdriver, String locator_Yaml, Boolean check_Optional) throws Exception  // Optional
+    {
+        Map locator = getLocator(locator_Yaml);
+        WebElement element_01 = null;
+        try{
+            element_01 =   find_Element(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+            return element_01;
+        }catch (Exception e){
+            return null;
+        }
+	}
+
+//------------------------------------------------------------------------------------------------------------
+//    Non Find elements
+//____________________________________________________________________________________________________________
+
+    public static void verify_Element_Attribute(WebDriver webdriver, String locator_Yaml, String property_Yaml) throws Exception {
+        Map locator = getLocator(locator_Yaml);
+
+        WebElement click_element = find_Element(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+
+        Map    prop       = getLocator(property_Yaml);
+        String prop_Name  = prop.get("PropName").toString();
+        String prop_Value = prop.get("PropValue").toString();
+
+        //Assert.assertEquals(click_element.getAttribute(prop_Name), prop_Value);
+
+    }
+
+    public static void click_Element(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
+        find_Element(webdriver, type_Locator, value_Locator).click();
 	}
 
 	public static void accept_Alert(WebDriver webDriver) throws Exception {
@@ -265,7 +243,7 @@ public class CommonApplicationMethods {
 				webDriver.switchTo().alert().accept();
 				return;
 			} catch (Exception e) {
-				if (i == 14) {
+				if (i >= 14) {
 					throw new Exception("Alert Not found");
 				} else {
 					display("Trying to Accept Alert");
@@ -275,7 +253,7 @@ public class CommonApplicationMethods {
 		}
 	}
 
-	public static void accept_Optional_Alert(WebDriver webDriver, int counter) throws Exception {
+	public static void accept_Alert(WebDriver webDriver, int counter) throws Exception {
         // If alert not present its fine.
         for (int i = 0; i < counter; i++) {
 			try {
@@ -296,7 +274,7 @@ public class CommonApplicationMethods {
                 // Start Measuring
                 double     elapsed_Seconds              = (System.currentTimeMillis() - tStart) / 1000.0;
                 Map        locator                      = getLocator(locator_Yaml);
-                WebElement get_Element                  = find_Element_Loc(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
+                WebElement get_Element                  = find_Element(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
                 // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
                 Dimension get_Element_D = get_Element.getSize();
                 if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0 && get_Element.isEnabled()) {
@@ -325,7 +303,7 @@ public class CommonApplicationMethods {
                 // Start Measuring
                 double     elapsed_Seconds              = (System.currentTimeMillis() - tStart) / 1000.0;
                 Map        locator                      = getLocator(locator_Yaml);
-                WebElement get_Element                  = find_Element_Loc(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
+                WebElement get_Element                  = find_Element(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
                 // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
 
                 if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
@@ -349,26 +327,11 @@ public class CommonApplicationMethods {
 
     }
 
-    public static void verify_Element_Attribute(WebDriver webdriver, String locator_Yaml, String property_Yaml) throws Exception {
-        Map locator = getLocator(locator_Yaml);
+//------------------------------------------------------------------------------------------------------------
+//   Common Methods
+//____________________________________________________________________________________________________________
 
-		WebElement click_element = find_Element_Loc(webdriver, locator.get("Locator").toString(),
-				locator.get("Value").toString());
-
-        Map    prop       = getLocator(property_Yaml);
-        String prop_Name  = prop.get("PropName").toString();
-        String prop_Value = prop.get("PropValue").toString();
-
-		//Assert.assertEquals(click_element.getAttribute(prop_Name), prop_Value);
-
-	}
-
-	public static void sendKeys_Element(WebDriver webdriver, String locator_Yaml, String textVal) throws Exception {
-		Map locator = getLocator(locator_Yaml);
-		WebElement click_element = find_Element_Loc(webdriver, locator.get("Locator").toString(),
-				locator.get("Value").toString());
-		click_element.sendKeys(textVal);
-	}
+    public static void display(String sme) throws Exception { LogManager.getLogger(gov.sba.automation.CommonApplicationMethods.class.getName()).info(sme);}
 
 	public static void focus_window() throws AWTException, InterruptedException {
 		final Robot robot = new Robot();
@@ -400,25 +363,7 @@ public class CommonApplicationMethods {
         }
     }
 
-    public static void deleteApplication(WebDriver webDriver, String type_Of_App, String status_Of_App) throws Exception {
-
-        List<WebElement> deleteElem = null;
-        switch (type_Of_App.toLowerCase() + status_Of_App.toLowerCase()) {
-            case "edwosbdraft":
-                deleteElem = find_Elements_Optional(webDriver, "SBA_Application_All_Cases_Page_WOSB_Draft"); break;
-            case "wosbdraft":
-                deleteElem = find_Elements_Optional(webDriver, "SBA_Application_All_Cases_Page_EDWOSB_Draft"); break;
-            case "mppdraft":
-                deleteElem = find_Elements_Optional(webDriver, "SBA_Application_All_Cases_Page_MPP_Draft"); break;
-        }
-        if (deleteElem.size() > 0) {
-            deleteElem.get(0).click();
-            accept_Optional_Alert(webDriver, 8);
-        }
-
-    }
-
-public static boolean get_Stop_Execution_Flag() throws Exception {
+    public static boolean get_Stop_Execution_Flag() throws Exception {
 
         String filePath = FixtureUtils.rootDirExecutionFile();
         File   f        = new File(filePath);
@@ -434,6 +379,71 @@ public static boolean get_Stop_Execution_Flag() throws Exception {
         }
         return false;
     }
+
+    public static Map getLocator(String locatorName) throws YamlException, FileNotFoundException {
+        YamlReader reader = new YamlReader(new FileReader(FixtureUtils.fixturesDir() + "Locators.yaml"));
+        Object     object = reader.read(); // System.out.println(object);
+        Map        map    = (Map) object; // System.out.println(map.get(locatorName));
+        return (Map) map.get(locatorName);
+    }
+
+    public static void take_ScreenShot_TestCaseName(WebDriver webDriver, String[] stringValueArray) throws Exception {
+        File   src  = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+        String time = Integer.toString((int) (new Date().getTime() / 1000));
+        display(time);
+
+        try {
+            // now copy the screenshot to the screenshot folder.
+            if (stringValueArray.length == 2) {
+                FileUtils.copyFile(src, new File(
+                        FixtureUtils.get_SS_Dir() + stringValueArray[0] + stringValueArray[1] + time + ".png"));
+            } else {
+                FileUtils.copyFile(src,
+                        new File(FixtureUtils.get_SS_Dir() + stringValueArray[0] + "Exception" + ".png"));
+            }
+        } catch (IOException e) {
+            throw e;
+        }
+
+    }
+
+    public static void take_Desktop_SShot_TestCaseName(String[] stringValueArray) throws Exception {
+        Robot            robot      = new Robot();
+        SimpleDateFormat formatter  = new SimpleDateFormat("yyyyMMdd hh mm ss a");
+        Calendar         now        = Calendar.getInstance();
+        BufferedImage    screenShot = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+        if (stringValueArray.length == 2) {
+            ImageIO.write(screenShot, "JPG",
+                    new File(FixtureUtils.get_SS_Dir() + stringValueArray[0] + stringValueArray[1] + ".jpg"));
+        } else {
+            ImageIO.write(screenShot, "JPG",
+                    new File(FixtureUtils.get_SS_Dir() + stringValueArray[0] + "_Exception" + ".jpg"));
+        }
+
+    }
+
+//------------------------------------------------------------------------------------------------------------
+//    Application Specific Common Methods
+//____________________________________________________________________________________________________________
+
+    public static void deleteApplication(WebDriver webDriver, String type_Of_App, String status_Of_App) throws Exception {
+
+        List<WebElement> deleteElem = null;
+        switch (type_Of_App.toLowerCase() + status_Of_App.toLowerCase()) {
+            case "edwosbdraft":
+                deleteElem = find_Elements(webDriver, "SBA_Application_All_Cases_Page_WOSB_Draft", true); break;
+            case "wosbdraft":
+                deleteElem = find_Elements(webDriver, "SBA_Application_All_Cases_Page_EDWOSB_Draft", true); break;
+            case "mppdraft":
+                deleteElem = find_Elements(webDriver, "SBA_Application_All_Cases_Page_MPP_Draft", true); break;
+        }
+        if (deleteElem.size() > 0) {
+            deleteElem.get(0).click();
+            accept_Alert(webDriver, 8);
+        }
+
+    }
+
 	public static void clickOnApplicationAllCasesPage(WebDriver webDriver, String type_Of_App) throws Exception {
 		// It should be in Vendor Dashboard
 		switch (type_Of_App.toLowerCase()) {
@@ -496,7 +506,7 @@ public static boolean get_Stop_Execution_Flag() throws Exception {
 	}
 
 	public static void search_Cases_Duns_Number_Table(WebDriver webDriver, String search_Text) throws Exception {
-		CommonApplicationMethods.setText_Element(webDriver, "Search_Duns_Cases_Test", search_Text);
+		CommonApplicationMethods.setText_Element(webDriver, "SBA_CaseTable_Search", search_Text);
 		CommonApplicationMethods.click_Element(webDriver, "Search_Duns_Cases_Submit");
 	}
 
@@ -530,6 +540,7 @@ public static boolean get_Stop_Execution_Flag() throws Exception {
                 //Assert.assertEquals("Navigation Menu Not correct", "among present Options");
         }
 	}
+
     public static void navigationBarClick(WebDriver webDriver, String which_Button) throws Exception {
         switch (which_Button.toUpperCase()) {
             case "LOGOUT":
@@ -565,6 +576,7 @@ public static boolean get_Stop_Execution_Flag() throws Exception {
                 //Assert.assertEquals("Navigation Menu Not correct", "among present Options");
         }
     }
+
 	public static String getflagvalue() throws Exception {
 		String flagforRunfile = FixtureUtils.fixturesDir() + "flagforRunEmailNotification.config";
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(flagforRunfile));
@@ -578,4 +590,23 @@ public static boolean get_Stop_Execution_Flag() throws Exception {
 		locator = getLocator("Apllication_Case_Search_Button");
 		CommonApplicationMethods.click_Element(webDriver, "Apllication_Case_Search_Button");
 	}
+
+    public static Boolean checkApplicationExists(WebDriver webDriver, String type_Of_App, String status_Of_App) throws Exception {
+        // It should be in Vendor Dashboard
+        String xp = "";
+        switch (type_Of_App.toLowerCase((Locale.ENGLISH)) + status_Of_App.toLowerCase((Locale.ENGLISH))) {
+            case "edwosbactive":
+                xp = "//table[@id='certifications']/tbody/tr[ (td[position()=5 and contains(text(),'ctive')]) and  (td[position()=1]/a[contains(text(),'EDWOSB')]) ]";
+                return find_Elements(webDriver, "xpath", xp).size() > 0;
+            case "wosbactive":
+                xp = "//table[@id='certifications']/tbody/tr[ (td[position()=5 and contains(text(),'ctive')]) and (td[position()=1]/a[contains(text(),'WOSB') and not(contains(text(),'EDWOSB'))]) ]";
+                return find_Elements(webDriver, "xpath", xp).size() > 0;
+            case "mpppending":
+                xp = "//table[@id='certifications']/tbody/tr[  (td[position()=5 and contains(text(),'ending')]) and (td/a[position()=1 and contains(text(),'MPP')]) ]";
+                return find_Elements(webDriver, "xpath", xp).size() > 0;
+            default:
+                return false;
+        }
+    }
+
 }
