@@ -85,7 +85,9 @@ public class CommonApplicationMethods {
     public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception //Non Optional
     {
         Map locator = getLocator(locator_Yaml);
-        return find_Elements(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+        String loc = locator.get("Locator").toString();
+        String val = locator.get("Value").toString();
+        return find_Elements(webdriver, loc , val);
     }
 
     public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator, String value_Locator, Boolean optional_Check) throws Exception //	Optional
@@ -102,9 +104,11 @@ public class CommonApplicationMethods {
     public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml, Boolean optional_Check) throws Exception     //Optional
     {
         Map locator = getLocator(locator_Yaml);
+        String loc = locator.get("Locator").toString();
+        String val = locator.get("Value").toString();
         List<WebElement> element_01 = null;
         try{
-            element_01 =   find_Elements(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+            element_01 =   find_Elements(webdriver, loc, val);
             return element_01;
         }catch (Exception e){
             return null;
@@ -189,7 +193,9 @@ public class CommonApplicationMethods {
 	public static WebElement find_Element(WebDriver webdriver, String locator_Yaml) throws Exception  // Non Optional
     {
 		Map locator = getLocator(locator_Yaml);
-		return find_Element(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+        String loc = locator.get("Locator").toString();
+        String val = locator.get("Value").toString();
+		return find_Element(webdriver, loc, val);
 	}
 
     public static WebElement find_Element(WebDriver webdriver, String type_Locator, String value_Locator, Boolean optional_Check) throws Exception // Optional
@@ -206,9 +212,11 @@ public class CommonApplicationMethods {
     public static WebElement find_Element(WebDriver webdriver, String locator_Yaml, Boolean check_Optional) throws Exception  // Optional
     {
         Map locator = getLocator(locator_Yaml);
+        String loc = locator.get("Locator").toString();
+        String val = locator.get("Value").toString();
         WebElement element_01 = null;
         try{
-            element_01 =   find_Element(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+            element_01 =   find_Element(webdriver, loc, val);
             return element_01;
         }catch (Exception e){
             return null;
@@ -221,8 +229,9 @@ public class CommonApplicationMethods {
 
     public static void verify_Element_Attribute(WebDriver webdriver, String locator_Yaml, String property_Yaml) throws Exception {
         Map locator = getLocator(locator_Yaml);
-
-        WebElement click_element = find_Element(webdriver, locator.get("Locator").toString(), locator.get("Value").toString());
+        String loc = locator.get("Locator").toString();
+        String val = locator.get("Value").toString();
+        WebElement click_element = find_Element(webdriver, loc, val);
 
         Map    prop       = getLocator(property_Yaml);
         String prop_Name  = prop.get("PropName").toString();
@@ -274,7 +283,9 @@ public class CommonApplicationMethods {
                 // Start Measuring
                 double     elapsed_Seconds              = (System.currentTimeMillis() - tStart) / 1000.0;
                 Map        locator                      = getLocator(locator_Yaml);
-                WebElement get_Element                  = find_Element(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
+                String loc = locator.get("Locator").toString();
+                String val = locator.get("Value").toString();
+                WebElement get_Element                  = find_Element(webDriver, loc, val);
                 // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
                 Dimension get_Element_D = get_Element.getSize();
                 if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0 && get_Element.isEnabled()) {
@@ -289,7 +300,7 @@ public class CommonApplicationMethods {
             display(e.toString());
             take_ScreenShot_TestCaseName(webDriver,
                     new String[]{"click_Element", "Exception"});
-            throw new Exception("Error: ", e);
+            throw e;
         }
 
 
@@ -303,7 +314,9 @@ public class CommonApplicationMethods {
                 // Start Measuring
                 double     elapsed_Seconds              = (System.currentTimeMillis() - tStart) / 1000.0;
                 Map        locator                      = getLocator(locator_Yaml);
-                WebElement get_Element                  = find_Element(webDriver, locator.get("Locator").toString(), locator.get("Value").toString());
+                String loc = locator.get("Locator").toString();
+                String val = locator.get("Value").toString();
+                WebElement get_Element                  = find_Element(webDriver, loc, val);
                 // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); // //Debug
 
                 if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0 && get_Element.isEnabled()) {
@@ -321,7 +334,7 @@ public class CommonApplicationMethods {
             display(e.toString());
             take_ScreenShot_TestCaseName(webDriver,
                     new String[]{"setText_Element", "Exception"});
-            throw new Exception("Error: ", e);
+            throw e;
         }
 
 
@@ -585,9 +598,7 @@ public class CommonApplicationMethods {
 	}
 
 	public static void casesPageSearch(WebDriver webDriver, String searchValue) throws Exception {
-		Map locator = getLocator("Apllication_Case_Search_Text");
 		CommonApplicationMethods.setText_Element(webDriver, "Apllication_Case_Search_Text", searchValue);
-		locator = getLocator("Apllication_Case_Search_Button");
 		CommonApplicationMethods.click_Element(webDriver, "Apllication_Case_Search_Button");
 	}
 

@@ -153,4 +153,36 @@ public class DatabaseUtils {
 		deleteApplication_SetCert_Set_App_Tables(webDriver, 4, duns_Number);
 
 	}
+	public static String[] findcontributoremail() throws Exception {
+		String csvFile = FixtureUtils.resourcesDir() + ConfigUtils.loadDefaultProperties().getProperty("fixture_file");
+
+		CSVReader reader = new CSVReader(new FileReader(csvFile), CSVParser.DEFAULT_SEPARATOR, CSVParser.DEFAULT_QUOTE_CHARACTER, 1);
+
+		String[] detailFields;
+
+		while ((detailFields = reader.readNext()) != null) {
+
+			String emailaddress = detailFields[0];
+			String password = detailFields[1];
+			int rowsNeeded = 1;
+			int colsNeeded = 1;
+
+			String emailQuery = "select count(*) from sbaone.contributors where email = '" + emailaddress + "')";
+
+			String[][] emailData = DatabaseUtils.queryForData(emailQuery, rowsNeeded, colsNeeded);
+
+
+			String[][] applicationData = DatabaseUtils.queryForData(emailQuery, rowsNeeded, colsNeeded);
+
+			// If we can't find any combination then it means it is available?
+			int counter = Integer.parseInt(emailData[0][0].toString()) + Integer.parseInt(applicationData[0][0].toString());
+
+			if (counter <= 0) {
+				logger.info(String.format("Found unused rows: %s->%s->%s", emailaddress, password));
+				return detailFields;
+			}
+		}
+		// If we reach here we can't find any good Duns number, should just raise exception!
+		throw new Exception("No valid email available. Please check your fixture files");
+	}
 }
