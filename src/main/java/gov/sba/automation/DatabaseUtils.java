@@ -35,6 +35,7 @@ public class DatabaseUtils {
 			}
 			if (dbConnection != null) {
 				dbConnection.close();
+
 			}
 		}
 	}
