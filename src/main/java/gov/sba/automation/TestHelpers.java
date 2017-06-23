@@ -57,7 +57,9 @@ public class TestHelpers {
         setSystemProperties(configKeys, props);
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-extensions");
-        options.addArguments("headless");
+        if (!props.containsKey("headless_Not_Flag")) {
+          options.addArguments("headless");
+        }
         options.addArguments("--window-size=1920,1080");
         driver = new ChromeDriver(options);
         break;
