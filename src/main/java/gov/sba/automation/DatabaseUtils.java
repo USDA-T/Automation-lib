@@ -1,20 +1,15 @@
 //created By deepa patri
 package gov.sba.automation;
 
-import java.io.FileReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.Properties;
-
+import com.opencsv.CSVParser;
+import com.opencsv.CSVReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVReader;
+import java.io.FileReader;
+import java.sql.*;
+import java.util.Properties;
 
 public class DatabaseUtils {
 
@@ -81,8 +76,8 @@ public class DatabaseUtils {
 
 	public static Connection getDatabaseConnection() throws Exception {
 		Properties props = ConfigUtils.loadDefaultProperties();
-		return DriverManager.getConnection(props.getProperty("db_url"), props.getProperty("db_username"),
-				props.getProperty("db_password"));
+		return DriverManager.getConnection("jdbc:postgresql://localhost:5432/sbaone_dev?user=postgres&password=password");
+		//return DriverManager.getConnection(props.getProperty("db_url"), props.getProperty("db_username"), props.getProperty("db_password"));
 	}
 
 	public static String returnOrganization_Id(String duns_Number) throws Exception {

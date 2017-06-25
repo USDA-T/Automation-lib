@@ -6,54 +6,27 @@ import com.esotericsoftware.yamlbeans.YamlReader;
 import com.google.common.base.Function;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.util.Assert;
-import org.apache.xpath.operations.Bool;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
+
 import static gov.sba.automation.ConfigUtils.isUnix;
 import static gov.sba.automation.ConfigUtils.systemType;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
-
-import java.awt.AWTException;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
-
-import com.esotericsoftware.yamlbeans.YamlException;
-import com.esotericsoftware.yamlbeans.YamlReader;
-import com.google.common.base.Function;
 
 public class CommonApplicationMethods {
 
@@ -531,6 +504,9 @@ public class CommonApplicationMethods {
 
     }
 
+//
+
+
 	public static void searchDuns_Number(WebDriver webDriver, String search_Text) throws Exception {
 		click_Element(webDriver, "Search_Duns_Search_Text");
 		setText_Element(webDriver, "Search_Duns_Search_Query", search_Text);
@@ -542,6 +518,11 @@ public class CommonApplicationMethods {
 		setText_Element(webDriver, "Search_Duns_Search_Text_Non_Vendor", search_Text);
 		click_Element(webDriver, "Search_Duns_Search_Submit_Non_Vendor");
 	}
+
+    public static void casesPageSearch(WebDriver webDriver, String searchValue) throws Exception {
+        CommonApplicationMethods.setText_Element(webDriver, "Apllication_Case_Search_Text", searchValue);
+        CommonApplicationMethods.click_Element(webDriver, "Apllication_Case_Search_Button");
+    }
 
 	public static void search_Cases_Duns_Number_Table(WebDriver webDriver, String search_Text) throws Exception {
 		CommonApplicationMethods.setText_Element(webDriver, "SBA_CaseTable_Search", search_Text);
@@ -620,11 +601,6 @@ public class CommonApplicationMethods {
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(flagforRunfile));
 		String detailFlag = bufferedReader.readLine();
 		return detailFlag;
-	}
-
-	public static void casesPageSearch(WebDriver webDriver, String searchValue) throws Exception {
-		CommonApplicationMethods.setText_Element(webDriver, "Apllication_Case_Search_Text", searchValue);
-		CommonApplicationMethods.click_Element(webDriver, "Apllication_Case_Search_Button");
 	}
 
     public static Boolean checkApplicationExists(WebDriver webDriver, String type_Of_App, String status_Of_App) throws Exception {
