@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AutomationUtils {
-
+  // example test
   private static final Logger logger = LoggerFactory.getLogger(AutomationUtils.class);
 
   private WebDriverWait wdriver;
