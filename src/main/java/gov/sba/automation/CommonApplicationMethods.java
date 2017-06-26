@@ -85,7 +85,6 @@ public class CommonApplicationMethods {
         return find_Elements(webdriver, loc , val);
     }
 
-
     public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator, String value_Locator, Boolean optional_Check) throws Exception //	Optional
     {
         List<WebElement> element_01 = null;
