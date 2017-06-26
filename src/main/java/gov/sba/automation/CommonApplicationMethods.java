@@ -3,14 +3,10 @@ package gov.sba.automation;
 
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
-import com.google.common.base.Function;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -25,8 +21,6 @@ import java.util.List;
 
 import static gov.sba.automation.ConfigUtils.isUnix;
 import static gov.sba.automation.ConfigUtils.systemType;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class CommonApplicationMethods {
 
@@ -43,11 +37,12 @@ public class CommonApplicationMethods {
 
     public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception // Non Optional
     {
+        long tStart                         = System.currentTimeMillis();
+        double elapsed_Seconds;
         List<WebElement> element_01 = null;
-
-        for (int i = 0; i < 4; i++) {
-			try {
-				switch (type_Locator.toLowerCase()) {
+        for (int i = 0; i < 1000; i++) {
+            try {
+                switch (type_Locator.toLowerCase()) {
                     case "xpath":
                         element_01 = webdriver.findElements(By.xpath(value_Locator));
                         break;
@@ -68,17 +63,19 @@ public class CommonApplicationMethods {
                         break;
                 }
 
-				if (element_01.size() > 0) {
+                if (element_01.size() > 0) {
                     return element_01;
-				}
+                }
 
-			} catch (Exception e) {
-				display("Trying to find BY " + type_Locator + ":" + value_Locator);
-				Thread.sleep(100); // DEEPA: is needed here since we are // Repeatedly Finding
+                elapsed_Seconds              = (System.currentTimeMillis() - tStart) / 1000.0;
+                if (elapsed_Seconds > 12){ i = 9999; }
+
+            } catch (Exception e) {
+                display("Trying to find BY " + type_Locator + ":" + value_Locator);
             }
-		}
-		throw new Exception("Elements Not Found");
-	}
+        }
+        throw new Exception("Elements Not Found");
+    }
 
     public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception //Non Optional
     {
@@ -120,81 +117,49 @@ public class CommonApplicationMethods {
     public static WebElement find_Element(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception // Non Optional
     {
 
-        Wait<WebDriver> wait = new FluentWait<WebDriver>(webdriver).withTimeout(15, SECONDS).pollingEvery(100, MILLISECONDS).ignoring(NoSuchElementException.class);
+        long tStart                         = System.currentTimeMillis();
+        double elapsed_Seconds;
+        WebElement  element_01;
+        for (int i = 0; i < 1000; i++) {
+            try {
+                switch (type_Locator.toLowerCase()) {
+                    case "xpath":
+                        element_01 = webdriver.findElement(By.xpath(value_Locator));
+                        return element_01;
+                    case "id":
+                        element_01 = webdriver.findElement(By.id(value_Locator));
+                        return element_01;
+                    case "classname":
+                        element_01 = webdriver.findElement(By.className(value_Locator));
+                        return element_01;
+                    case "name":
+                        element_01 = webdriver.findElement(By.name(value_Locator));
+                        return element_01;
+                    case "cssselector":
+                        element_01 = webdriver.findElement(By.cssSelector(value_Locator));
+                        return element_01;
+                    case "linktext":
+                        element_01 = webdriver.findElement(By.linkText(value_Locator));
+                        return element_01;
+                }
+            } catch (Exception e) {
+                display("Trying to find BY:" + type_Locator + ":" + value_Locator);
+            }
 
-		try {
-			switch (type_Locator.toLowerCase()) {
-                case "xpath":
-
-                    WebElement element_01 = wait.until(new Function<WebDriver, WebElement>() {
-                        public WebElement apply(WebDriver webDriver) {
-                            return webDriver.findElement(By.xpath(value_Locator));
-                        }
-                    });
-                    return element_01;
-
-                case "id":
-
-                    element_01 = wait.until(new Function<WebDriver, WebElement>() {
-                        public WebElement apply(WebDriver webDriver) {
-                            return webDriver.findElement(By.id(value_Locator));
-                        }
-                    });
-                    return element_01;
-
-                case "classname":
-
-                    element_01 = wait.until(new Function<WebDriver, WebElement>() {
-                        public WebElement apply(WebDriver webDriver) {
-                            return webdriver.findElement(By.className(value_Locator));
-                        }
-                    });
-                    return element_01;
-
-                case "name":
-
-                    element_01 = wait.until(new Function<WebDriver, WebElement>() {
-                        public WebElement apply(WebDriver webDriver) {
-                            return webdriver.findElement(By.name(value_Locator));
-                        }
-                    });
-                    return element_01;
-
-                case "cssselector":
-
-                    element_01 = wait.until(new Function<WebDriver, WebElement>() {
-                        public WebElement apply(WebDriver webDriver) {
-                            return webdriver.findElement(By.cssSelector(value_Locator));
-                        }
-                    });
-                    return element_01;
-
-                case "linktext":
-
-                    element_01 = wait.until(new Function<WebDriver, WebElement>() {
-                        public WebElement apply(WebDriver webDriver) {
-                            return webdriver.findElement(By.linkText(value_Locator));
-                        }
-                    });
-                    return element_01;
-
-			}
-		} catch (Exception e) {
-            display("Trying to find BY:" + type_Locator + ":" + value_Locator);
-            throw e;
+            elapsed_Seconds              = (System.currentTimeMillis() - tStart) / 1000.0;
+            if (elapsed_Seconds > 12){ i = 9999; }
         }
-
         throw new Exception("Element Not Found");
 
     }
 
-	public static WebElement find_Element(WebDriver webdriver, String locator_Yaml) throws Exception  // Non Optional
+    public static WebElement find_Element(WebDriver webdriver, String locator_Yaml) throws Exception  // Non Optional
     {
-		Map locator = getLocator(locator_Yaml);
+        Map locator = getLocator(locator_Yaml);
         String loc = locator.get("Locator").toString();
         String val = locator.get("Value").toString();
-		return find_Element(webdriver, loc, val);
-	}
+        return find_Element(webdriver, loc, val);
+    }
 
     public static WebElement find_Element(WebDriver webdriver, String type_Locator, String value_Locator, Boolean optional_Check) throws Exception // Optional
     {
@@ -219,7 +184,7 @@ public class CommonApplicationMethods {
         }catch (Exception e){
             return null;
         }
-	}
+    }
 
 //------------------------------------------------------------------------------------------------------------
 //    Non Find elements
@@ -241,38 +206,38 @@ public class CommonApplicationMethods {
 
     public static void click_Element(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception {
         find_Element(webdriver, type_Locator, value_Locator).click();
-	}
+    }
 
-	public static void accept_Alert(WebDriver webDriver) throws Exception {
+    public static void accept_Alert(WebDriver webDriver) throws Exception {
         // If alert not present Throw error after few tries
         for (int i = 0; i < 14; i++) {
-			try {
-				webDriver.switchTo().alert().accept();
-				return;
-			} catch (Exception e) {
-				if (i >= 14) {
-					throw new Exception("Alert Not found");
-				} else {
-					display("Trying to Accept Alert");
-					Thread.sleep(300);
-				}
-			}
-		}
+            try {
+                webDriver.switchTo().alert().accept();
+                return;
+            } catch (Exception e) {
+                if (i >= 14) {
+                    throw new Exception("Alert Not found");
+                } else {
+                    display("Trying to Accept Alert");
+                    Thread.sleep(300);
+                }
+            }
+        }
         throw new Exception("Alert Not found");
-	}
+    }
 
-	public static void accept_Alert(WebDriver webDriver, int counter) throws Exception {
+    public static void accept_Alert(WebDriver webDriver, int counter) throws Exception {
         // If alert not present its fine.
         for (int i = 0; i < counter; i++) {
-			try {
-				webDriver.switchTo().alert().accept();
-				return;
-			} catch (Exception e) {
-				display("Trying to Accept Alert");
-				Thread.sleep(300);
-			}
-		}
-	}
+            try {
+                webDriver.switchTo().alert().accept();
+                return;
+            } catch (Exception e) {
+                display("Trying to Accept Alert");
+                Thread.sleep(300);
+            }
+        }
+    }
 
     public static void click_Element(WebDriver webDriver, String locator_Yaml) throws Exception {
         try {
@@ -343,30 +308,30 @@ public class CommonApplicationMethods {
 //   Common Methods
 //____________________________________________________________________________________________________________
 
-    public static void display(String sme) throws Exception { LogManager.getLogger(gov.sba.automation.CommonApplicationMethods.class.getName()).info(sme);}
+    public static void display(String sme) throws Exception { LogManager.getLogger(CommonApplicationMethods.class.getName()).info(sme);}
 
-	public static void focus_window() throws AWTException, InterruptedException {
-		final Robot robot = new Robot();
-		robot.mouseMove(300, 300);
-		robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
-		Thread.sleep(700);
-		robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
-		Thread.sleep(700);
-		robot.keyPress(KeyEvent.VK_ESCAPE);
-		robot.keyRelease(KeyEvent.VK_ESCAPE);
-		Thread.sleep(700);
-		robot.keyPress(KeyEvent.VK_ESCAPE);
-		robot.keyRelease(KeyEvent.VK_ESCAPE);
-		Thread.sleep(700);
-	}
+    public static void focus_window() throws AWTException, InterruptedException {
+        final Robot robot = new Robot();
+        robot.mouseMove(300, 300);
+        robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+        Thread.sleep(700);
+        robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+        Thread.sleep(700);
+        robot.keyPress(KeyEvent.VK_ESCAPE);
+        robot.keyRelease(KeyEvent.VK_ESCAPE);
+        Thread.sleep(700);
+        robot.keyPress(KeyEvent.VK_ESCAPE);
+        robot.keyRelease(KeyEvent.VK_ESCAPE);
+        Thread.sleep(700);
+    }
 
-	public static void clear_Env_Chrome() throws InterruptedException, IOException {
-		if (System.getProperty("os.name").startsWith("Windows")) {
-			Runtime rt = Runtime.getRuntime();
-			rt.exec("Taskkill /IM chrome.exe /F");
-			rt.exec("Taskkill /IM firefox.exe /F");
-			Thread.sleep(1000); // Deepa Sleep needed here.
-		}
+    public static void clear_Env_Chrome() throws InterruptedException, IOException {
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            Runtime rt = Runtime.getRuntime();
+            rt.exec("Taskkill /IM chrome.exe /F");
+            rt.exec("Taskkill /IM firefox.exe /F");
+            Thread.sleep(1000); // Deepa Sleep needed here.
+        }
         if (isUnix(systemType())) {
             Runtime rt = Runtime.getRuntime();
             rt.exec("ps aux | grep chrome | awk ' { print $2 } ' | xargs kill	 -9");
@@ -456,9 +421,9 @@ public class CommonApplicationMethods {
 
     }
 
-	public static void clickOnApplicationAllCasesPage(WebDriver webDriver, String type_Of_App) throws Exception {
-		// It should be in Vendor Dashboard
-		switch (type_Of_App.toLowerCase()) {
+    public static void clickOnApplicationAllCasesPage(WebDriver webDriver, String type_Of_App) throws Exception {
+        // It should be in Vendor Dashboard
+        switch (type_Of_App.toLowerCase()) {
             case "wosb":
                 click_Element(webDriver, "SBA_Application_All_Cases_Page_WOSB");
             case "edwosb":
@@ -466,21 +431,21 @@ public class CommonApplicationMethods {
             case "mpp":
                 click_Element(webDriver, "SBA_Application_All_Cases_Page_MPP");
         }
-	}
+    }
 
-	public static String returnOrganization_Id(String duns_Number) throws Exception {
-		String organization_Id;
-		try {
+    public static String returnOrganization_Id(String duns_Number) throws Exception {
+        String organization_Id;
+        try {
 
-			Thread.sleep(3000); /* DEEPA: Sleep is needed here since we are querying SQL, and its too fast See below Start*/
-			organization_Id = DatabaseUtils.queryForData(
-					"select id from sbaone.organizations where duns_number = '" + duns_Number + "'", 1, 1)[0][0];
-		} catch (Exception e) {
-			display(e.toString() + ": The Duns number retreival has failed");
-			throw e;
-		}
-		return organization_Id;
-	}
+            Thread.sleep(3000); /* DEEPA: Sleep is needed here since we are querying SQL, and its too fast See below Start*/
+            organization_Id = DatabaseUtils.queryForData(
+                    "select id from sbaone.organizations where duns_number = '" + duns_Number + "'", 1, 1)[0][0];
+        } catch (Exception e) {
+            display(e.toString() + ": The Duns number retreival has failed");
+            throw e;
+        }
+        return organization_Id;
+    }
 
     public static void createApplication(WebDriver webDriver, String type_Of_App) throws Exception {
         navigationMenuClick(webDriver, "Programs");
@@ -508,30 +473,30 @@ public class CommonApplicationMethods {
 //
 
 
-	public static void searchDuns_Number(WebDriver webDriver, String search_Text) throws Exception {
-		click_Element(webDriver, "Search_Duns_Search_Text");
-		setText_Element(webDriver, "Search_Duns_Search_Query", search_Text);
-		click_Element(webDriver, "Search_Duns_Search_Submit");
-	}
+    public static void searchDuns_Number(WebDriver webDriver, String search_Text) throws Exception {
+        click_Element(webDriver, "Search_Duns_Search_Text");
+        setText_Element(webDriver, "Search_Duns_Search_Query", search_Text);
+        click_Element(webDriver, "Search_Duns_Search_Submit");
+    }
 
-	public static void non_Vendor_searchDuns_Number(WebDriver webDriver, String search_Text) throws Exception {
-		click_Element(webDriver, "Search_Duns_Search_Text_Non_Vendor");
-		setText_Element(webDriver, "Search_Duns_Search_Text_Non_Vendor", search_Text);
-		click_Element(webDriver, "Search_Duns_Search_Submit_Non_Vendor");
-	}
+    public static void non_Vendor_searchDuns_Number(WebDriver webDriver, String search_Text) throws Exception {
+        click_Element(webDriver, "Search_Duns_Search_Text_Non_Vendor");
+        setText_Element(webDriver, "Search_Duns_Search_Text_Non_Vendor", search_Text);
+        click_Element(webDriver, "Search_Duns_Search_Submit_Non_Vendor");
+    }
 
     public static void casesPageSearch(WebDriver webDriver, String searchValue) throws Exception {
         CommonApplicationMethods.setText_Element(webDriver, "Apllication_Case_Search_Text", searchValue);
         CommonApplicationMethods.click_Element(webDriver, "Apllication_Case_Search_Button");
     }
 
-	public static void search_Cases_Duns_Number_Table(WebDriver webDriver, String search_Text) throws Exception {
-		CommonApplicationMethods.setText_Element(webDriver, "SBA_CaseTable_Search", search_Text);
-		CommonApplicationMethods.click_Element(webDriver, "Search_Duns_Cases_Submit");
-	}
+    public static void search_Cases_Duns_Number_Table(WebDriver webDriver, String search_Text) throws Exception {
+        CommonApplicationMethods.setText_Element(webDriver, "SBA_CaseTable_Search", search_Text);
+        CommonApplicationMethods.click_Element(webDriver, "Search_Duns_Cases_Submit");
+    }
 
-	public static void navigationMenuClick(WebDriver webDriver, String which_Button) throws Exception {
-		switch (which_Button.toUpperCase()) {
+    public static void navigationMenuClick(WebDriver webDriver, String which_Button) throws Exception {
+        switch (which_Button.toUpperCase()) {
             case "LOGOUT":
                 click_Element(webDriver, "Navigation_Logout");
                 break;
@@ -559,7 +524,7 @@ public class CommonApplicationMethods {
             default:
                 //Assert.assertEquals("Navigation Menu Not correct", "among present Options");
         }
-	}
+    }
 
     public static void navigationBarClick(WebDriver webDriver, String which_Button) throws Exception {
         switch (which_Button.toUpperCase()) {
@@ -597,12 +562,12 @@ public class CommonApplicationMethods {
         }
     }
 
-	public static String getflagvalue() throws Exception {
-		String flagforRunfile = FixtureUtils.fixturesDir() + "flagforRunEmailNotification.config";
-		BufferedReader bufferedReader = new BufferedReader(new FileReader(flagforRunfile));
-		String detailFlag = bufferedReader.readLine();
-		return detailFlag;
-	}
+    public static String getflagvalue() throws Exception {
+        String flagforRunfile = FixtureUtils.fixturesDir() + "flagforRunEmailNotification.config";
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(flagforRunfile));
+        String detailFlag = bufferedReader.readLine();
+        return detailFlag;
+    }
 
     public static Boolean checkApplicationExists(WebDriver webDriver, String type_Of_App, String status_Of_App) throws Exception {
         // It should be in Vendor Dashboard
