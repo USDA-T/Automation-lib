@@ -70,10 +70,9 @@ public class CommonApplicationMethods {
                 elapsed_Seconds              = (System.currentTimeMillis() - tStart) / 1000.0;
                 if (elapsed_Seconds > 12){ i = 9999; }
 
-            } catch (Exception e) {
-                display("Trying to find BY " + type_Locator + ":" + value_Locator);
-            }
+            } catch (Exception e) { continue; }
         }
+        display("Trying to find BY " + type_Locator + ":" + value_Locator);
         throw new Exception("Elements Not Found");
     }
 
@@ -142,13 +141,12 @@ public class CommonApplicationMethods {
                         element_01 = webdriver.findElement(By.linkText(value_Locator));
                         return element_01;
                 }
-            } catch (Exception e) {
-                display("Trying to find BY:" + type_Locator + ":" + value_Locator);
-            }
+            } catch (Exception e) { continue; }
 
             elapsed_Seconds              = (System.currentTimeMillis() - tStart) / 1000.0;
             if (elapsed_Seconds > 12){ i = 9999; }
         }
+        display("Trying to find BY:" + type_Locator + ":" + value_Locator);
         throw new Exception("Element Not Found");
 
     }
@@ -262,8 +260,6 @@ public class CommonApplicationMethods {
             }
         } catch (Exception e) {
             display(e.toString());
-            take_ScreenShot_TestCaseName(webDriver,
-                    new String[]{"click_Element", "Exception"});
             throw e;
         }
 
@@ -296,8 +292,6 @@ public class CommonApplicationMethods {
 
         } catch (Exception e) {
             display(e.toString());
-            take_ScreenShot_TestCaseName(webDriver,
-                    new String[]{"setText_Element", "Exception"});
             throw e;
         }
 
