@@ -44,7 +44,8 @@ public class CommonApplicationMethods {
     public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception // Non Optional
     {
         List<WebElement> element_01 = null;
-		for (int i = 0; i < 4; i++) {
+
+        for (int i = 0; i < 4; i++) {
 			try {
 				switch (type_Locator.toLowerCase()) {
                     case "xpath":
