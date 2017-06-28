@@ -98,7 +98,7 @@ public class DatabaseUtils {
 
   /**
    * Simplify implementation of how we should find good row having the available DUNS number to use!
-   * 
+   *
    * @return
    * @throws Exception
    */
@@ -119,23 +119,16 @@ public class DatabaseUtils {
       int rowsNeeded = 1;
       int colsNeeded = 1;
 
-      String certificateQuery =
-          "select count(*) from sbaone.certificates where organization_id in (select id from sbaone.organizations where duns_number = '"
-              + dunsNumber + "')";
+      String certificateQuery = "select count(*) from sbaone.certificates where organization_id in (select id from sbaone.organizations where duns_number = '" + dunsNumber + "')";
 
-      String[][] certificateData =
-          DatabaseUtils.queryForData(certificateQuery, rowsNeeded, colsNeeded);
+      String[][] certificateData = DatabaseUtils.queryForData(certificateQuery, rowsNeeded, colsNeeded);
 
-      String applicationQuery =
-          "select count(*) from sbaone.sba_applications where organization_id in (select id from sbaone.organizations where duns_number = '"
-              + dunsNumber + "')";
+      String applicationQuery = "select count(*) from sbaone.sba_applications where organization_id in (select id from sbaone.organizations where duns_number = '" + dunsNumber + "')";
 
-      String[][] applicationData =
-          DatabaseUtils.queryForData(applicationQuery, rowsNeeded, colsNeeded);
+      String[][] applicationData = DatabaseUtils.queryForData(applicationQuery, rowsNeeded, colsNeeded);
 
       // If we can't find any combination then it means it is available?
-      int counter = Integer.parseInt(certificateData[0][0].toString())
-          + Integer.parseInt(applicationData[0][0].toString());
+      int counter = Integer.parseInt(certificateData[0][0].toString()) + Integer.parseInt(applicationData[0][0].toString());
 
       if (counter <= 0) {
         logger.info(String.format("Found unused rows: %s->%s->%s", email, password, dunsNumber));
