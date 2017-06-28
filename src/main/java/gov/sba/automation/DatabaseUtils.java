@@ -77,10 +77,10 @@ public class DatabaseUtils {
 
   public static Connection getDatabaseConnection() throws Exception {
     Properties props = ConfigUtils.loadDefaultProperties();
-    return DriverManager.getConnection(
-        "jdbc:postgresql://localhost:5432/sbaone_dev?user=postgres&password=password");
-    // return DriverManager.getConnection(props.getProperty("db_url"),
-    // props.getProperty("db_username"), props.getProperty("db_password"));
+  //  return DriverManager.getConnection(
+  //      "jdbc:postgresql://localhost:5432/sbaone_dev?user=postgres&password=password");
+     return DriverManager.getConnection(props.getProperty("db_url"),
+     props.getProperty("db_username"), props.getProperty("db_password"));
   }
 
   public static String returnOrganization_Id(String duns_Number) throws Exception {
