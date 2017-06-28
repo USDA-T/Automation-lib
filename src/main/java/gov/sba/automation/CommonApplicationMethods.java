@@ -255,7 +255,7 @@ public class CommonApplicationMethods {
         if (i >= 14) {
           throw new Exception("Alert Not found");
         } else {
-          display("Trying to Accept Alert");
+          //display("Trying to Accept Alert");
           Thread.sleep(300);
         }
       }
@@ -270,7 +270,7 @@ public class CommonApplicationMethods {
         webDriver.switchTo().alert().accept();
         return;
       } catch (Exception e) {
-        display("Trying to Accept Alert");
+        //display("Trying to Accept Alert");
         Thread.sleep(300);
       }
     }
