@@ -266,24 +266,19 @@ public class CommonApplicationMethods {
 
       long tStart = System.currentTimeMillis();
       for (int i = 0; i < 9900000; i++) {
-        // Start Measuring
+        /*Start Measuring*/
         double elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
         Map locator = getLocator(locator_Yaml);
         String loc = locator.get("Locator").toString();
         String val = locator.get("Value").toString();
         WebElement get_Element = find_Element(webDriver, loc, val);
-        // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); //
-        // //Debug
         Dimension get_Element_D = get_Element.getSize();
         if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0
             && get_Element.isEnabled()) {
           get_Element.click();
           return;
         }
-
-        if (elapsed_Seconds > 12)
-          throw new Exception(
-              "Unable to click element as Either not displayed to Selenium Click or Hidden");
+        if (elapsed_Seconds > 12) { throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");}
       }
     } catch (Exception e) {
       display(e.toString());
