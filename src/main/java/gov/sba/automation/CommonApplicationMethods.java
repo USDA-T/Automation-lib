@@ -1,41 +1,26 @@
 // TS Created By Deepa_Patri
 package gov.sba.automation;
 
-import static gov.sba.automation.ConfigUtils.isUnix;
-import static gov.sba.automation.ConfigUtils.systemType;
+import com.esotericsoftware.yamlbeans.YamlException;
+import com.esotericsoftware.yamlbeans.YamlReader;
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
 
-import java.awt.AWTException;
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
-import com.esotericsoftware.yamlbeans.YamlException;
-import com.esotericsoftware.yamlbeans.YamlReader;
+import static gov.sba.automation.ConfigUtils.isUnix;
+import static gov.sba.automation.ConfigUtils.systemType;
 
 public class CommonApplicationMethods {
 
@@ -572,6 +557,9 @@ public class CommonApplicationMethods {
         break;
       case "HOME":
         click_Element(webDriver, "Navigation_Home");
+        break;
+      case "PREPARE":
+        click_Element(webDriver, "Navigation_Prepare");
         break;
       default:
         // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
