@@ -1,8 +1,5 @@
 package gov.sba.automation;
 
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -11,12 +8,18 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+
+import static gov.sba.automation.CommonApplicationMethods.get_Stop_Execution_Flag;
+
 public class TestHelpers {
   final public static String BASE_URL = "base_url_";
   private static final Logger logger = LogManager.getLogger(TestHelpers.class.getName());
 
-  public static WebDriver getDefaultWebDriver() {
-    Properties props = ConfigUtils.loadDefaultProperties();
+  public static WebDriver getDefaultWebDriver() throws Exception {
+    get_Stop_Execution_Flag();
+      Properties props = ConfigUtils.loadDefaultProperties();
     WebDriver driver = null;
 
     // Setup the configuration based on the browser we are using
@@ -62,6 +65,7 @@ public class TestHelpers {
         }
         options.addArguments("--window-size=1920,1080");
         driver = new ChromeDriver(options);
+        driver.manage().window().maximize();
         break;
       case Constants.BROWSER_FIREFOX:
         if (ConfigUtils.isUnix(ConfigUtils.systemType())) {
