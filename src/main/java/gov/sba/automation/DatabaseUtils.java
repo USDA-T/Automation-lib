@@ -11,6 +11,11 @@ import java.io.FileReader;
 import java.sql.*;
 import java.util.Properties;
 
+import static com.opencsv.CSVWriter.DEFAULT_QUOTE_CHARACTER;
+import static com.opencsv.CSVWriter.DEFAULT_SEPARATOR;
+import static gov.sba.automation.ConfigUtils.loadDefaultProperties;
+import static gov.sba.automation.FixtureUtils.resourcesDir;
+
 public class DatabaseUtils {
 
   private static final Logger logger = LogManager.getLogger(DatabaseUtils.class.getName());
@@ -76,7 +81,7 @@ public class DatabaseUtils {
   }
 
   public static Connection getDatabaseConnection() throws Exception {
-    Properties props = ConfigUtils.loadDefaultProperties();
+    Properties props = loadDefaultProperties();
   //  return DriverManager.getConnection(
   //      "jdbc:postgresql://localhost:5432/sbaone_dev?user=postgres&password=password");
      return DriverManager.getConnection(props.getProperty("db_url"),
@@ -103,11 +108,9 @@ public class DatabaseUtils {
    * @throws Exception
    */
   public static String[] findUnusedDunsNumber() throws Exception {
-    String csvFile = FixtureUtils.resourcesDir()
-        + ConfigUtils.loadDefaultProperties().getProperty("fixture_file");
+    String csvFile = resourcesDir() + loadDefaultProperties().getProperty("fixture_file");
 
-    CSVReader reader = new CSVReader(new FileReader(csvFile), CSVParser.DEFAULT_SEPARATOR,
-        CSVParser.DEFAULT_QUOTE_CHARACTER, 1);
+    CSVReader reader = new CSVReader(new FileReader(csvFile), DEFAULT_SEPARATOR, DEFAULT_QUOTE_CHARACTER, 1);
 
     String[] detailFields;
 
@@ -163,8 +166,8 @@ public class DatabaseUtils {
   }
 
   public static String[] findcontributoremail() throws Exception {
-    String csvFile = FixtureUtils.resourcesDir()
-        + ConfigUtils.loadDefaultProperties().getProperty("fixture_file");
+    String csvFile = resourcesDir()
+        + loadDefaultProperties().getProperty("fixture_file");
 
     CSVReader reader = new CSVReader(new FileReader(csvFile), CSVParser.DEFAULT_SEPARATOR,
         CSVParser.DEFAULT_QUOTE_CHARACTER, 1);
