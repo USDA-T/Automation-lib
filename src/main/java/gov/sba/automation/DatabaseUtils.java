@@ -80,9 +80,8 @@ public class DatabaseUtils {
   }
 
   public static Connection getDatabaseConnection() throws Exception {
-    Properties props = loadDefaultProperties();
-     return DriverManager.getConnection(props.getProperty("db_url"),
-     props.getProperty("db_username"), props.getProperty("db_password"));
+    Properties p = loadDefaultProperties();
+     return DriverManager.getConnection(p.getProperty("db_url"), p.getProperty("db_username"), p.getProperty("db_password"));
   }
 
   public static String returnOrganization_Id(String duns_Number) throws Exception {
