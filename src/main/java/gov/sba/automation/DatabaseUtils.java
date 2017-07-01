@@ -40,8 +40,7 @@ public class DatabaseUtils {
     }
   }
 
-  public static String[][] queryForData(String sqlQuery, int rowsNeeded, int colsNeeded)
-      throws Exception {
+  public static String[][] queryForData(String sqlQuery, int rowsNeeded, int colsNeeded) throws Exception {
     Connection dbConnection = null;
     ResultSet resultSet = null;
 
@@ -82,8 +81,6 @@ public class DatabaseUtils {
 
   public static Connection getDatabaseConnection() throws Exception {
     Properties props = loadDefaultProperties();
-  //  return DriverManager.getConnection(
-  //      "jdbc:postgresql://localhost:5432/sbaone_dev?user=postgres&password=password");
      return DriverManager.getConnection(props.getProperty("db_url"),
      props.getProperty("db_username"), props.getProperty("db_password"));
   }
@@ -101,12 +98,6 @@ public class DatabaseUtils {
     return organization_Id;
   }
 
-  /**
-   * Simplify implementation of how we should find good row having the available DUNS number to use!
-   *
-   * @return
-   * @throws Exception
-   */
   public static String[] findUnusedDunsNumber() throws Exception {
     String csvFile = resourcesDir() + loadDefaultProperties().getProperty("fixture_file");
 
@@ -142,8 +133,7 @@ public class DatabaseUtils {
     throw new Exception("No valid Duns number available. Please check your fixture files");
   }
 
-  public static void deleteApplication_SetCert_Set_App_Tables(WebDriver webDriver,
-      Integer certificate_ID, String duns_Number) throws Exception {
+  public static void deleteApplication_SetCert_Set_App_Tables(WebDriver webDriver, Integer certificate_ID, String duns_Number) throws Exception {
 
     String organization_Id = returnOrganization_Id(duns_Number);
     DatabaseUtils.executeSQLScript(
@@ -155,8 +145,7 @@ public class DatabaseUtils {
 
   }
 
-  public static void deleteAllApplicationTypes(WebDriver webDriver, String duns_Number)
-      throws Exception {
+  public static void deleteAllApplicationTypes(WebDriver webDriver, String duns_Number) throws Exception {
     // It should be in Vendor Dashboard
     deleteApplication_SetCert_Set_App_Tables(webDriver, 1, duns_Number);
     deleteApplication_SetCert_Set_App_Tables(webDriver, 2, duns_Number);
