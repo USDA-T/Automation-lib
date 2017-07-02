@@ -97,36 +97,55 @@ public class DatabaseUtils {
     return organization_Id;
   }
 
-  public static String[] findUnusedDunsNumber() throws Exception {
+  public static String[] findUnusedDunsNumber(String type_Of_Business) throws Exception {
     String csvFile = resourcesDir() + loadDefaultProperties().getProperty("fixture_file");
 
     CSVReader reader = new CSVReader(new FileReader(csvFile), DEFAULT_SEPARATOR, DEFAULT_QUOTE_CHARACTER, 1);
 
     String[] detailFields;
+      int counter;
 
-    while ((detailFields = reader.readNext()) != null) {
+      while ((detailFields = reader.readNext()) != null) {
+          boolean business_Type_Flag_Matching = true;
+              counter = 0;
+          String email = detailFields[0];
+          String password = detailFields[1];
+          String dunsNumber = detailFields[2];
+          int rowsNeeded = 1;
+          int colsNeeded = 1;
 
-      String email = detailFields[0];
-      String password = detailFields[1];
-      String dunsNumber = detailFields[2];
-      int rowsNeeded = 1;
-      int colsNeeded = 1;
+          if (type_Of_Business.length() > 0){
+              String type_Of_Business_Query =   "select count(*) from sbaone.organizations where duns_number = 'replace_Duns_Number' and business_type = 'replace_Business'".
+                  replace("replace_Duns_Number", dunsNumber).
+                  replace("replace_Business", type_Of_Business)
+                  ;
+              String[][] business_data = DatabaseUtils.queryForData(type_Of_Business_Query, rowsNeeded, colsNeeded);
+               int business_Type = Integer.parseInt(business_data[0][0].toString());
+               if (business_Type > 0){
+                   business_Type_Flag_Matching = true;
+               }
+               else {
+                   business_Type_Flag_Matching = false;
+               }
+          }
 
-      String certificateQuery = "select count(*) from sbaone.certificates where organization_id in (select id from sbaone.organizations where duns_number = '" + dunsNumber + "')";
+          if (business_Type_Flag_Matching){
+              String certificateQuery = "select count(*) from sbaone.certificates where organization_id in (select id from sbaone.organizations where duns_number = '" + dunsNumber + "')";
 
-      String[][] certificateData = DatabaseUtils.queryForData(certificateQuery, rowsNeeded, colsNeeded);
+              String[][] certificateData = DatabaseUtils.queryForData(certificateQuery, rowsNeeded, colsNeeded);
 
-      String applicationQuery = "select count(*) from sbaone.sba_applications where organization_id in (select id from sbaone.organizations where duns_number = '" + dunsNumber + "')";
+              String applicationQuery = "select count(*) from sbaone.sba_applications where organization_id in (select id from sbaone.organizations where duns_number = '" + dunsNumber + "')";
 
-      String[][] applicationData = DatabaseUtils.queryForData(applicationQuery, rowsNeeded, colsNeeded);
+              String[][] applicationData = DatabaseUtils.queryForData(applicationQuery, rowsNeeded, colsNeeded);
+              // If we can't find any combination then it means it is available?
+              counter = Integer.parseInt(certificateData[0][0].toString()) + Integer.parseInt(applicationData[0][0].toString());
 
-      // If we can't find any combination then it means it is available?
-      int counter = Integer.parseInt(certificateData[0][0].toString()) + Integer.parseInt(applicationData[0][0].toString());
+              if (counter <= 0) {
+                  logger.info(String.format("Found unused rows: %s->%s->%s", email, password, dunsNumber));
+                  return detailFields;
+              }
+          }
 
-      if (counter <= 0) {
-        logger.info(String.format("Found unused rows: %s->%s->%s", email, password, dunsNumber));
-        return detailFields;
-      }
     }
     // If we reach here we can't find any good Duns number, should just raise exception!
     throw new Exception("No valid Duns number available. Please check your fixture files");

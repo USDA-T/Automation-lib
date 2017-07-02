@@ -5,6 +5,7 @@ import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 
@@ -24,6 +25,7 @@ import static gov.sba.automation.ConfigUtils.systemType;
 
 public class CommonApplicationMethods {
 
+    private static final Logger logger  = LogManager.getLogger(CommonApplicationMethods.class.getName());
     // ------------------------------------------------------------------------------------------------------------
     // Usage [ Repeat for Find Elements]
     // 1. Find element with Locator - WebElement aa= find_Element(WebDriver webDriver, String
@@ -42,7 +44,8 @@ public class CommonApplicationMethods {
     public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator,
                                                  String value_Locator) throws Exception {
         long tStart = System.currentTimeMillis();
-        double elapsed_Seconds;
+        double elapsed_Seconds = 0;
+        logger.info(elapsed_Seconds);
         List<WebElement> element_01 = null;
         for (int i = 0; i < 1000; i++) {
             try {
@@ -66,19 +69,21 @@ public class CommonApplicationMethods {
                         element_01 = webdriver.findElements(By.linkText(value_Locator));
                         break;
                 }
-
+                elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
                 if (element_01.size() > 0) {
+                    logger.info(elapsed_Seconds);
                     return element_01;
                 }
 
-                elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
                 if (elapsed_Seconds > 12) {
+                    logger.info(elapsed_Seconds);
                     i = 9999;
                 }
 
             } catch (Exception e) {
                 elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
                 if (elapsed_Seconds > 12) {
+                    logger.info(elapsed_Seconds);
                     i = 9999;
                 }
             }
@@ -87,8 +92,7 @@ public class CommonApplicationMethods {
         throw new Exception("Elements Not Found");
     }
 
-    public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml)
-        throws Exception // Non Optional
+    public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception // Non Optional
     {
         Map locator = getLocator(locator_Yaml);
         String loc = locator.get("Locator").toString();
@@ -96,8 +100,7 @@ public class CommonApplicationMethods {
         return find_Elements(webdriver, loc, val);
     }
 
-    public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator,
-                                                 String value_Locator, Boolean optional_Check) throws Exception // Optional
+    public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator, String value_Locator, Boolean optional_Check) throws Exception // Optional
     {
         List<WebElement> element_01 = null;
         try {
@@ -108,8 +111,7 @@ public class CommonApplicationMethods {
         }
     }
 
-    public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml,
-                                                 Boolean optional_Check) throws Exception // Optional
+    public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml, Boolean optional_Check) throws Exception // Optional
     {
         Map locator = getLocator(locator_Yaml);
         String loc = locator.get("Locator").toString();
@@ -133,8 +135,9 @@ public class CommonApplicationMethods {
     {
 
         long tStart = System.currentTimeMillis();
-        double elapsed_Seconds;
+        double elapsed_Seconds = 0;
         WebElement element_01;
+        logger.info(elapsed_Seconds);
         for (int i = 0; i < 1000; i++) {
             try {
                 switch (type_Locator.toLowerCase()) {
@@ -160,12 +163,16 @@ public class CommonApplicationMethods {
             } catch (Exception e) {
                 elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
                 if (elapsed_Seconds > 12) {
+                    logger.info(elapsed_Seconds);
+                    logger.info("After uccessfull Find");
                     i = 9999;
                 }
             }
 
             elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
             if (elapsed_Seconds > 12) {
+                logger.info(elapsed_Seconds);
+                logger.info("After Unsuccessfull Find");
                 i = 9999;
             }
         }
