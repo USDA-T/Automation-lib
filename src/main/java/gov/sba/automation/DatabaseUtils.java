@@ -11,6 +11,10 @@ import java.io.FileReader;
 import java.sql.*;
 import java.util.Properties;
 
+import static com.opencsv.CSVWriter.DEFAULT_QUOTE_CHARACTER;
+import static com.opencsv.CSVWriter.DEFAULT_SEPARATOR;
+import static gov.sba.automation.ConfigUtils.loadDefaultProperties;
+import static gov.sba.automation.FixtureUtils.resourcesDir;
 public class DatabaseUtils {
 
   private static final Logger logger = LogManager.getLogger(DatabaseUtils.class.getName());
@@ -35,8 +39,7 @@ public class DatabaseUtils {
     }
   }
 
-  public static String[][] queryForData(String sqlQuery, int rowsNeeded, int colsNeeded)
-      throws Exception {
+  public static String[][] queryForData(String sqlQuery, int rowsNeeded, int colsNeeded) throws Exception {
     Connection dbConnection = null;
     ResultSet resultSet = null;
 
@@ -76,11 +79,8 @@ public class DatabaseUtils {
   }
 
   public static Connection getDatabaseConnection() throws Exception {
-    Properties props = ConfigUtils.loadDefaultProperties();
-    return DriverManager.getConnection(
-        "jdbc:postgresql://localhost:5432/sbaone_dev?user=postgres&password=password");
-    // return DriverManager.getConnection(props.getProperty("db_url"),
-    // props.getProperty("db_username"), props.getProperty("db_password"));
+    Properties p = loadDefaultProperties();
+     return DriverManager.getConnection(p.getProperty("db_url"), p.getProperty("db_username"), p.getProperty("db_password"));
   }
 
   public static String returnOrganization_Id(String duns_Number) throws Exception {
@@ -96,58 +96,64 @@ public class DatabaseUtils {
     return organization_Id;
   }
 
-  /**
-   * Simplify implementation of how we should find good row having the available DUNS number to use!
-   * 
-   * @return
-   * @throws Exception
-   */
-  public static String[] findUnusedDunsNumber() throws Exception {
-    String csvFile = FixtureUtils.resourcesDir()
-        + ConfigUtils.loadDefaultProperties().getProperty("fixture_file");
+  public static String[] findUnusedDunsNumber(String type_Of_Business) throws Exception {
+    String csvFile = resourcesDir() + loadDefaultProperties().getProperty("fixture_file");
 
-    CSVReader reader = new CSVReader(new FileReader(csvFile), CSVParser.DEFAULT_SEPARATOR,
-        CSVParser.DEFAULT_QUOTE_CHARACTER, 1);
+    CSVReader reader = new CSVReader(new FileReader(csvFile), DEFAULT_SEPARATOR, DEFAULT_QUOTE_CHARACTER, 1);
 
     String[] detailFields;
+      int counter;
 
-    while ((detailFields = reader.readNext()) != null) {
+      while ((detailFields = reader.readNext()) != null) {
+          boolean business_Type_Matching_If_Passed = true;
+          counter = 0;
+          String email = detailFields[0];
+          String password = detailFields[1];
+          String dunsNumber = detailFields[2];
+          int rowsNeeded = 1;
+          int colsNeeded = 1;
 
-      String email = detailFields[0];
-      String password = detailFields[1];
-      String dunsNumber = detailFields[2];
-      int rowsNeeded = 1;
-      int colsNeeded = 1;
 
-      String certificateQuery =
-          "select count(*) from sbaone.certificates where organization_id in (select id from sbaone.organizations where duns_number = '"
-              + dunsNumber + "')";
+          if (type_Of_Business.length() > 0){
+              String type_Of_Business_Query =   "select count(*) from sbaone.organizations where duns_number = 'replace_Duns_Number' and business_type = 'replace_Business'".
+                  replace("replace_Duns_Number", dunsNumber).
+                  replace("replace_Business", type_Of_Business)
+                  ;
+              String[][] business_data = DatabaseUtils.queryForData(type_Of_Business_Query, rowsNeeded, colsNeeded);
+               int business_Type = Integer.parseInt(business_data[0][0].toString());
+               if (business_Type > 0){
+                   business_Type_Matching_If_Passed = true;
+               }
+               else {
+                   business_Type_Matching_If_Passed = false;
+               }
+          }
 
-      String[][] certificateData =
-          DatabaseUtils.queryForData(certificateQuery, rowsNeeded, colsNeeded);
+          if (business_Type_Matching_If_Passed){
+              String certificateQuery = "select count(*) from sbaone.certificates where organization_id in (select id from sbaone.organizations where duns_number = '" + dunsNumber + "')";
 
-      String applicationQuery =
-          "select count(*) from sbaone.sba_applications where organization_id in (select id from sbaone.organizations where duns_number = '"
-              + dunsNumber + "')";
+              String[][] certificateData = DatabaseUtils.queryForData(certificateQuery, rowsNeeded, colsNeeded);
 
-      String[][] applicationData =
-          DatabaseUtils.queryForData(applicationQuery, rowsNeeded, colsNeeded);
+              String applicationQuery = "select count(*) from sbaone.sba_applications where organization_id in (select id from sbaone.organizations where duns_number = '" + dunsNumber + "')";
 
-      // If we can't find any combination then it means it is available?
-      int counter = Integer.parseInt(certificateData[0][0].toString())
-          + Integer.parseInt(applicationData[0][0].toString());
+              String[][] applicationData = DatabaseUtils.queryForData(applicationQuery, rowsNeeded, colsNeeded);
+              // If we can't find any combination then it means it is available?
+              counter = Integer.parseInt(certificateData[0][0]) + Integer.parseInt(applicationData[0][0]);
 
-      if (counter <= 0) {
-        logger.info(String.format("Found unused rows: %s->%s->%s", email, password, dunsNumber));
-        return detailFields;
-      }
+              if (counter <= 0) {
+                  logger.info(String.format("Found unused rows: %s->%s->%s", email, password, dunsNumber));
+                  reader.close();
+                  return detailFields;
+              }
+          }
+
     }
+      reader.close();
     // If we reach here we can't find any good Duns number, should just raise exception!
     throw new Exception("No valid Duns number available. Please check your fixture files");
   }
 
-  public static void deleteApplication_SetCert_Set_App_Tables(WebDriver webDriver,
-      Integer certificate_ID, String duns_Number) throws Exception {
+  public static void deleteApplication_SetCert_Set_App_Tables(WebDriver webDriver, Integer certificate_ID, String duns_Number) throws Exception {
 
     String organization_Id = returnOrganization_Id(duns_Number);
     DatabaseUtils.executeSQLScript(
@@ -159,8 +165,7 @@ public class DatabaseUtils {
 
   }
 
-  public static void deleteAllApplicationTypes(WebDriver webDriver, String duns_Number)
-      throws Exception {
+  public static void deleteAllApplicationTypes(WebDriver webDriver, String duns_Number) throws Exception {
     // It should be in Vendor Dashboard
     deleteApplication_SetCert_Set_App_Tables(webDriver, 1, duns_Number);
     deleteApplication_SetCert_Set_App_Tables(webDriver, 2, duns_Number);
@@ -170,8 +175,8 @@ public class DatabaseUtils {
   }
 
   public static String[] findcontributoremail() throws Exception {
-    String csvFile = FixtureUtils.resourcesDir()
-        + ConfigUtils.loadDefaultProperties().getProperty("fixture_file");
+    String csvFile = resourcesDir()
+        + loadDefaultProperties().getProperty("fixture_file");
 
     CSVReader reader = new CSVReader(new FileReader(csvFile), CSVParser.DEFAULT_SEPARATOR,
         CSVParser.DEFAULT_QUOTE_CHARACTER, 1);
@@ -199,10 +204,12 @@ public class DatabaseUtils {
 
       if (counter <= 0) {
         logger.info(String.format("Found unused rows: %s->%s->%s", emailaddress, password));
+          reader.close();
         return detailFields;
       }
     }
     // If we reach here we can't find any good Duns number, should just raise exception!
+      reader.close();
     throw new Exception("No valid email available. Please check your fixture files");
   }
 }
