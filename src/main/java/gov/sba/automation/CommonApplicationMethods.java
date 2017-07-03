@@ -611,6 +611,7 @@ public class CommonApplicationMethods {
         String flagforRunfile = FixtureUtils.fixturesDir() + "flagforRunEmailNotification.config";
         BufferedReader bufferedReader = new BufferedReader(new FileReader(flagforRunfile));
         String detailFlag = bufferedReader.readLine();
+        bufferedReader.close();
         return detailFlag;
     }
 

@@ -15,7 +15,6 @@ import static com.opencsv.CSVWriter.DEFAULT_QUOTE_CHARACTER;
 import static com.opencsv.CSVWriter.DEFAULT_SEPARATOR;
 import static gov.sba.automation.ConfigUtils.loadDefaultProperties;
 import static gov.sba.automation.FixtureUtils.resourcesDir;
-
 public class DatabaseUtils {
 
   private static final Logger logger = LogManager.getLogger(DatabaseUtils.class.getName());
@@ -106,13 +105,14 @@ public class DatabaseUtils {
       int counter;
 
       while ((detailFields = reader.readNext()) != null) {
-          boolean business_Type_Flag_Matching = true;
-              counter = 0;
+          boolean business_Type_Matching_If_Passed = true;
+          counter = 0;
           String email = detailFields[0];
           String password = detailFields[1];
           String dunsNumber = detailFields[2];
           int rowsNeeded = 1;
           int colsNeeded = 1;
+
 
           if (type_Of_Business.length() > 0){
               String type_Of_Business_Query =   "select count(*) from sbaone.organizations where duns_number = 'replace_Duns_Number' and business_type = 'replace_Business'".
@@ -122,14 +122,14 @@ public class DatabaseUtils {
               String[][] business_data = DatabaseUtils.queryForData(type_Of_Business_Query, rowsNeeded, colsNeeded);
                int business_Type = Integer.parseInt(business_data[0][0].toString());
                if (business_Type > 0){
-                   business_Type_Flag_Matching = true;
+                   business_Type_Matching_If_Passed = true;
                }
                else {
-                   business_Type_Flag_Matching = false;
+                   business_Type_Matching_If_Passed = false;
                }
           }
 
-          if (business_Type_Flag_Matching){
+          if (business_Type_Matching_If_Passed){
               String certificateQuery = "select count(*) from sbaone.certificates where organization_id in (select id from sbaone.organizations where duns_number = '" + dunsNumber + "')";
 
               String[][] certificateData = DatabaseUtils.queryForData(certificateQuery, rowsNeeded, colsNeeded);
@@ -138,15 +138,17 @@ public class DatabaseUtils {
 
               String[][] applicationData = DatabaseUtils.queryForData(applicationQuery, rowsNeeded, colsNeeded);
               // If we can't find any combination then it means it is available?
-              counter = Integer.parseInt(certificateData[0][0].toString()) + Integer.parseInt(applicationData[0][0].toString());
+              counter = Integer.parseInt(certificateData[0][0]) + Integer.parseInt(applicationData[0][0]);
 
               if (counter <= 0) {
                   logger.info(String.format("Found unused rows: %s->%s->%s", email, password, dunsNumber));
+                  reader.close();
                   return detailFields;
               }
           }
 
     }
+      reader.close();
     // If we reach here we can't find any good Duns number, should just raise exception!
     throw new Exception("No valid Duns number available. Please check your fixture files");
   }
@@ -202,10 +204,12 @@ public class DatabaseUtils {
 
       if (counter <= 0) {
         logger.info(String.format("Found unused rows: %s->%s->%s", emailaddress, password));
+          reader.close();
         return detailFields;
       }
     }
     // If we reach here we can't find any good Duns number, should just raise exception!
+      reader.close();
     throw new Exception("No valid email available. Please check your fixture files");
   }
 }
