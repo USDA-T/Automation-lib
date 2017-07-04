@@ -78,14 +78,15 @@ public class TestHelpers {
                     };
                     setSystemProperties(configKeys, props);
                 }
-
                 // TODO: verify if we need to do the same for MacOs?
                 driver = new FirefoxDriver();
+                driver.manage().window().maximize();
                 break;
             case Constants.BROWSER_PHANTOMJS:
                 configKeys = new String[] {};
                 setSystemProperties(configKeys, props);
                 driver = new PhantomJSDriver();
+                driver.manage().window().maximize();
                 break;
             case "ie":
                 configKeys = new String[] {
