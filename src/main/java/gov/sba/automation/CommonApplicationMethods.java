@@ -19,6 +19,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static gov.sba.automation.ConfigUtils.isUnix;
 import static gov.sba.automation.ConfigUtils.systemType;
@@ -221,13 +222,13 @@ public class CommonApplicationMethods {
     // Non Find elements
     // ____________________________________________________________________________________________________________
     */
-    public static void verify_Text(WebDriver webdriver, String loc_Yml, String text) throws Exception {
-        Map loc = getLocator(loc_Yml);
-        assertEquals(find_Element(webdriver, loc.get("Locator").toString(), loc.get("Value").toString()).getText(), text);
+    public static void verify_Text(WebDriver webdriver, String locator_Yaml, String text_to_Verify) throws Exception {
+        Map loc = getLocator(locator_Yaml);
+        assertEquals(find_Element(webdriver, loc.get("Locator").toString(), loc.get("Value").toString()).getText(), text_to_Verify);
     }
 
-    public static void verify_Text(WebDriver webdriver, String loc_Yml, String val_Yml, String text) throws Exception {
-        assertEquals(find_Element(webdriver, loc_Yml,val_Yml ).getText(), text);
+    public static void verify_Text(WebDriver webdriver, String loc_Yml, String val_Yml, String text_to_Verify) throws Exception {
+        assertEquals(find_Element(webdriver, loc_Yml,val_Yml ).getText(), text_to_Verify);
     }
 
     public static void click_Element(WebDriver webdriver, String type_Locator, String value_Locator)
@@ -334,9 +335,18 @@ public class CommonApplicationMethods {
         }
     }
 
+    /*
     // ------------------------------------------------------------------------------------------------------------
     // Common Methods
     // ____________________________________________________________________________________________________________
+    */
+
+    public static WebDriver set_Timeouts(WebDriver webDriver) throws Exception {
+        webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().setScriptTimeout(40, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        return webDriver;
+    }
 
     public static void display(String sme) throws Exception {
         LogManager.getLogger(CommonApplicationMethods.class.getName()).info(sme);
