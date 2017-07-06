@@ -22,6 +22,7 @@ import java.util.List;
 
 import static gov.sba.automation.ConfigUtils.isUnix;
 import static gov.sba.automation.ConfigUtils.systemType;
+import static org.junit.Assert.assertEquals;
 
 public class CommonApplicationMethods {
 
@@ -125,10 +126,11 @@ public class CommonApplicationMethods {
         }
     }
 
+    /*
     // ------------------------------------------------------------------------------------------------------------
     // All_Find_element Only
     // ____________________________________________________________________________________________________________
-
+    */
 
     public static WebElement find_Element(WebDriver webdriver, String type_Locator,
                                           String value_Locator) throws Exception // Non Optional
@@ -214,23 +216,18 @@ public class CommonApplicationMethods {
         }
     }
 
+    /*
     // ------------------------------------------------------------------------------------------------------------
     // Non Find elements
     // ____________________________________________________________________________________________________________
+    */
+    public static void verify_Text(WebDriver webdriver, String loc_Yml, String text) throws Exception {
+        Map loc = getLocator(loc_Yml);
+        assertEquals(find_Element(webdriver, loc.get("Locator").toString(), loc.get("Value").toString()).getText(), text);
+    }
 
-    public static void verify_Element_Attribute(WebDriver webdriver, String locator_Yaml,
-                                                String property_Yaml) throws Exception {
-        Map locator = getLocator(locator_Yaml);
-        String loc = locator.get("Locator").toString();
-        String val = locator.get("Value").toString();
-        WebElement click_element = find_Element(webdriver, loc, val);
-
-        Map prop = getLocator(property_Yaml);
-        String prop_Name = prop.get("PropName").toString();
-        String prop_Value = prop.get("PropValue").toString();
-
-        // Assert.assertEquals(click_element.getAttribute(prop_Name), prop_Value);
-
+    public static void verify_Text(WebDriver webdriver, String loc_Yml, String val_Yml, String text) throws Exception {
+        assertEquals(find_Element(webdriver, loc_Yml,val_Yml ).getText(), text);
     }
 
     public static void click_Element(WebDriver webdriver, String type_Locator, String value_Locator)
@@ -436,9 +433,11 @@ public class CommonApplicationMethods {
         }
     }
 
+    /*
     // ------------------------------------------------------------------------------------------------------------
     // Application Specific Common Methods
     // ____________________________________________________________________________________________________________
+    */
 
     public static void deleteApplication(WebDriver webDriver, String type_Of_App,
                                          String status_Of_App) throws Exception {
@@ -634,4 +633,5 @@ public class CommonApplicationMethods {
                 return false;
         }
     }
+
 }
