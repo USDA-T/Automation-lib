@@ -32,9 +32,10 @@ public class TestHelpers {
 
     // Default to 'development' if none is provided
     // TODO: this should never be null, may be remove?
-    if (envUnderTest == null) {
-      envUnderTest = "development";
-    }
+    if (envUnderTest == null)   envUnderTest = "development";
+    
+    
+    
 
     logger.debug("Your system under test :" + envUnderTest);
     System.setProperty(Constants.TEST_ENV, envUnderTest);
