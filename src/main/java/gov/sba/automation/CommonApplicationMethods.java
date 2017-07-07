@@ -43,8 +43,14 @@ public class CommonApplicationMethods {
     // All_Find_elements
     // ____________________________________________________________________________________________________________
 
-    public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator,
-                                                 String value_Locator) throws Exception {
+    /*
+     ------------------------------------------------------------------------------------------------------------
+     All_Find_Elements Only
+     ____________________________________________________________________________________________________________
+    */
+
+    public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception /*Non Optional*/
+    {
         long tStart = System.currentTimeMillis();
         double elapsed_Seconds = 0;
         logger.info(elapsed_Seconds);
@@ -79,13 +85,15 @@ public class CommonApplicationMethods {
 
                 if (elapsed_Seconds > 12) {
                     logger.info(elapsed_Seconds);
+                    logger.info("After Successfull Find - Too Long - Check Performance");
                     i = 9999;
                 }
 
-            } catch (Exception e) {
+            } catch (Exception e){
                 elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
                 if (elapsed_Seconds > 12) {
                     logger.info(elapsed_Seconds);
+                    logger.info("After UnSuccessfull Find - Exception");
                     i = 9999;
                 }
             }
@@ -94,7 +102,7 @@ public class CommonApplicationMethods {
         throw new Exception("Elements Not Found");
     }
 
-    public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception // Non Optional
+    public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml) throws Exception /*Non Optional*/
     {
         Map locator = getLocator(locator_Yaml);
         String loc = locator.get("Locator").toString();
@@ -102,7 +110,7 @@ public class CommonApplicationMethods {
         return find_Elements(webdriver, loc, val);
     }
 
-    public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator, String value_Locator, Boolean optional_Check) throws Exception // Optional
+    public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator, String value_Locator, Boolean optional_Check) throws Exception /*Optional*/
     {
         List<WebElement> element_01 = null;
         try {
@@ -113,7 +121,7 @@ public class CommonApplicationMethods {
         }
     }
 
-    public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml, Boolean optional_Check) throws Exception // Optional
+    public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml, Boolean optional_Check) throws Exception /* Optional*/
     {
         Map locator = getLocator(locator_Yaml);
         String loc = locator.get("Locator").toString();
@@ -128,15 +136,13 @@ public class CommonApplicationMethods {
     }
 
     /*
-    // ------------------------------------------------------------------------------------------------------------
-    // All_Find_element Only
-    // ____________________________________________________________________________________________________________
+     ------------------------------------------------------------------------------------------------------------
+     All_Find_element Only
+     ____________________________________________________________________________________________________________
     */
 
-    public static WebElement find_Element(WebDriver webdriver, String type_Locator,
-                                          String value_Locator) throws Exception // Non Optional
+    public static WebElement find_Element(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception /*Non Optional*/
     {
-
         long tStart = System.currentTimeMillis();
         double elapsed_Seconds = 0;
         WebElement element_01;
@@ -167,7 +173,7 @@ public class CommonApplicationMethods {
                 elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
                 if (elapsed_Seconds > 12) {
                     logger.info(elapsed_Seconds);
-                    logger.info("After uccessfull Find");
+                    logger.info("After UnSuccessfull Find - Error");
                     i = 9999;
                 }
             }
@@ -175,7 +181,7 @@ public class CommonApplicationMethods {
             elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
             if (elapsed_Seconds > 12) {
                 logger.info(elapsed_Seconds);
-                logger.info("After Unsuccessfull Find");
+                logger.info("After Successfull Find - Too Long - Check Performance");
                 i = 9999;
             }
         }
@@ -183,15 +189,15 @@ public class CommonApplicationMethods {
         throw new Exception("Element Not Found");
     }
 
-    public static WebElement find_Element(WebDriver webdriver, String locator_Yaml) throws Exception {
+    public static WebElement find_Element(WebDriver webdriver, String locator_Yaml) throws Exception /*Non Optional*/
+    {
         Map locator = getLocator(locator_Yaml);
         String loc = locator.get("Locator").toString();
         String val = locator.get("Value").toString();
         return find_Element(webdriver, loc, val);
     }
 
-    public static WebElement find_Element(WebDriver webdriver, String type_Locator,
-                                          String value_Locator, Boolean optional_Check) throws Exception // Optional
+    public static WebElement find_Element(WebDriver webdriver, String type_Locator, String value_Locator, Boolean optional_Check) throws Exception /*Optional*/
     {
         WebElement element_01 = null;
         try {
@@ -202,8 +208,7 @@ public class CommonApplicationMethods {
         }
     }
 
-    public static WebElement find_Element(WebDriver webdriver, String locator_Yaml,
-                                          Boolean check_Optional) throws Exception // Optional
+    public static WebElement find_Element(WebDriver webdriver, String locator_Yaml, Boolean check_Optional) throws Exception /*Optional*/
     {
         Map locator = getLocator(locator_Yaml);
         String loc = locator.get("Locator").toString();
@@ -218,9 +223,9 @@ public class CommonApplicationMethods {
     }
 
     /*
-    // ------------------------------------------------------------------------------------------------------------
-    // Non Find elements
-    // ____________________________________________________________________________________________________________
+     ------------------------------------------------------------------------------------------------------------
+     Non Find elements
+     ____________________________________________________________________________________________________________
     */
     public static void verify_Text(WebDriver webdriver, String locator_Yaml, String text_to_Verify) throws Exception {
         Map loc = getLocator(locator_Yaml);
@@ -231,12 +236,13 @@ public class CommonApplicationMethods {
         assertEquals(find_Element(webdriver, loc_Yml,val_Yml ).getText(), text_to_Verify);
     }
 
-    public static void click_Element(WebDriver webdriver, String type_Locator, String value_Locator)
-        throws Exception {
+    public static void click_Element(WebDriver webdriver, String type_Locator, String value_Locator) throws Exception
+    {
         find_Element(webdriver, type_Locator, value_Locator).click();
     }
 
-    public static void accept_Alert(WebDriver webDriver) throws Exception {
+    public static void accept_Alert(WebDriver webDriver) throws Exception
+    {
         // If alert not present Throw error after few tries
         for (int i = 0; i < 14; i++) {
             try {
@@ -254,7 +260,8 @@ public class CommonApplicationMethods {
         throw new Exception("Alert Not found");
     }
 
-    public static void accept_Alert(WebDriver webDriver, int counter) throws Exception {
+    public static void accept_Alert(WebDriver webDriver, int counter) throws Exception
+    {
         // If alert not present its fine.
         for (int i = 0; i < counter; i++) {
             try {
@@ -267,7 +274,8 @@ public class CommonApplicationMethods {
         }
     }
 
-    public static void click_Element(WebDriver webDriver, String locator_Yaml) throws Exception {
+    public static void click_Element(WebDriver webDriver, String locator_Yaml) throws Exception
+    {
         try {
 
             long tStart = System.currentTimeMillis();
@@ -297,8 +305,8 @@ public class CommonApplicationMethods {
         }
     }
 
-    public static void setText_Element(WebDriver webDriver, String locator_Yaml, String textVal)
-        throws Exception {
+    public static void setText_Element(WebDriver webDriver, String locator_Yaml, String textVal) throws Exception
+    {
         try {
 
             long tStart = System.currentTimeMillis();
@@ -336,9 +344,9 @@ public class CommonApplicationMethods {
     }
 
     /*
-    // ------------------------------------------------------------------------------------------------------------
-    // Common Methods
-    // ____________________________________________________________________________________________________________
+     ------------------------------------------------------------------------------------------------------------
+     Common Methods
+     ____________________________________________________________________________________________________________
     */
 
     public static WebDriver set_Timeouts(WebDriver webDriver) throws Exception {
@@ -444,9 +452,9 @@ public class CommonApplicationMethods {
     }
 
     /*
-    // ------------------------------------------------------------------------------------------------------------
-    // Application Specific Common Methods
-    // ____________________________________________________________________________________________________________
+     ------------------------------------------------------------------------------------------------------------
+     Application Specific Common Methods
+     ____________________________________________________________________________________________________________
     */
 
     public static void deleteApplication(WebDriver webDriver, String type_Of_App,
