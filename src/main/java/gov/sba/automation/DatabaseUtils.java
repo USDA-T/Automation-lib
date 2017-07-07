@@ -1,25 +1,20 @@
 // created By deepa patri
 package gov.sba.automation;
 
-import static com.opencsv.CSVWriter.DEFAULT_QUOTE_CHARACTER;
-import static com.opencsv.CSVWriter.DEFAULT_SEPARATOR;
-import static gov.sba.automation.ConfigUtils.loadDefaultProperties;
-import static gov.sba.automation.FixtureUtils.resourcesDir;
-
-import java.io.FileReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.Properties;
-
+import com.opencsv.CSVParser;
+import com.opencsv.CSVReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVReader;
+import java.io.FileReader;
+import java.sql.*;
+import java.util.Properties;
+
+import static com.opencsv.CSVWriter.DEFAULT_QUOTE_CHARACTER;
+import static com.opencsv.CSVWriter.DEFAULT_SEPARATOR;
+import static gov.sba.automation.ConfigUtils.loadDefaultProperties;
+import static gov.sba.automation.FixtureUtils.resourcesDir;
 
 public class DatabaseUtils {
 
