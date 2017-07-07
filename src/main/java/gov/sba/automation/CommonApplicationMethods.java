@@ -145,8 +145,9 @@ public class CommonApplicationMethods {
     {
         long tStart = System.currentTimeMillis();
         double elapsed_Seconds = 0;
-        WebElement element_01;
-        logger.info(elapsed_Seconds);
+        WebElement element_01 = null;
+        Exception aa = null;
+        /*logger.info(elapsed_Seconds);*/ /*Debug*/
         for (int i = 0; i < 1000; i++) {
             try {
                 switch (type_Locator.toLowerCase()) {
@@ -171,11 +172,14 @@ public class CommonApplicationMethods {
                 }
             } catch (Exception e) {
                 elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
+
                 if (elapsed_Seconds > 12) {
                     logger.info(elapsed_Seconds);
-                    logger.info("After UnSuccessfull Find - Error");
+                    logger.info("After UnSuccessfull Find - Error:" + type_Locator + ":" + value_Locator);
                     i = 9999;
+                    throw e;
                 }
+                break;
             }
 
             elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
@@ -183,10 +187,11 @@ public class CommonApplicationMethods {
                 logger.info(elapsed_Seconds);
                 logger.info("After Successfull Find - Too Long - Check Performance");
                 i = 9999;
+                throw new Exception("Element Not Found after 12 Seconds:" + type_Locator + ":" + value_Locator);
             }
         }
         display("Trying to find BY:" + type_Locator + ":" + value_Locator);
-        throw new Exception("Element Not Found");
+        return element_01;
     }
 
     public static WebElement find_Element(WebDriver webdriver, String locator_Yaml) throws Exception /*Non Optional*/
