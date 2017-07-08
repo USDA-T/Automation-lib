@@ -21,6 +21,7 @@ public class TestHelpers {
     public static void set_Headless() {
         if (System.getProperty("os.name").startsWith("Windows")) {
             headless_Parm = "no";
+            logger.info("Set as Head Chrome");
         }
     }
     public static WebDriver getDefaultWebDriver() throws Exception {
