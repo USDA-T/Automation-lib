@@ -16,10 +16,12 @@ import static gov.sba.automation.CommonApplicationMethods.get_Stop_Execution_Fla
 public class TestHelpers {
     final public static String BASE_URL = "base_url_";
     private static final Logger logger = LogManager.getLogger(TestHelpers.class.getName());
-    public static String  headless_Parm = "No";
+    public static String  headless_Parm = "yes";
 
     public static void set_Headless() {
-        headless_Parm = "yes";
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            headless_Parm = "no";
+        }
     }
     public static WebDriver getDefaultWebDriver() throws Exception {
         get_Stop_Execution_Flag();
@@ -64,8 +66,12 @@ public class TestHelpers {
                 setSystemProperties(configKeys, props);
                 ChromeOptions options = new ChromeOptions();
                 options.addArguments("--disable-extensions");
-                if (!props.containsKey("non_headless")  || (headless_Parm.toLowerCase().indexOf("yes")<0)) {
-                    options.addArguments("headless");
+                if (headless_Parm.toLowerCase().indexOf("no") >=0){
+
+                }else{
+                    if (!props.containsKey("non_headless"))  {
+                        options.addArguments("headless");
+                    }
                 }
                 options.addArguments("--window-size=1920,1080");
                 driver = new ChromeDriver(options);
