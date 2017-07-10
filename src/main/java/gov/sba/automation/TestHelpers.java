@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import static gov.sba.automation.CommonApplicationMethods.get_Stop_Execution_Flag;
 
 public class TestHelpers {
+
     final public static String BASE_URL = "base_url_";
     private static final Logger logger = LogManager.getLogger(TestHelpers.class.getName());
     public static String  headless_Parm = "yes";
