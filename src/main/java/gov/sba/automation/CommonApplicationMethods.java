@@ -394,12 +394,14 @@ public class CommonApplicationMethods {
     if (System.getProperty("os.name").startsWith("Windows")) {
       Runtime rt = Runtime.getRuntime();
       rt.exec("Taskkill /IM chrome.exe /F");
+      rt.exec("Taskkill /IM chromedriver.exe /F");
       rt.exec("Taskkill /IM firefox.exe /F");
       Thread.sleep(1000); // Deepa Sleep needed here.
     }
     if (isUnix(systemType())) {
       Runtime rt = Runtime.getRuntime();
       rt.exec("ps aux | grep chrome | awk ' { print $2 } ' | xargs kill	 -9");
+      rt.exec("ps aux | grep chromedriver | awk ' { print $2 } ' | xargs kill	 -9");
       rt.exec("ps aux | grep firefox | awk ' { print $2 } ' | xargs kill	 -9");
       Thread.sleep(1000); // Deepa Sleep needed here
     }
