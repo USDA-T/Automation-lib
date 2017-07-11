@@ -313,7 +313,6 @@ public class CommonApplicationMethods {
           get_Element.click();
           return;
         }
-
         if (elapsed_Seconds > 12)
           throw new Exception(
               "Unable to click element as Either not displayed to Selenium Click or Hidden");
