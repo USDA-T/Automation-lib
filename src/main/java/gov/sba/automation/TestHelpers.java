@@ -49,6 +49,7 @@ public class TestHelpers {
 
         String testUrl = props.getProperty(BASE_URL + envUnderTest);
 
+
         if (testUrl == null) {
             throw new RuntimeException("You need to setup the '" + BASE_URL + envUnderTest
                 + "' in your default.properties file");
