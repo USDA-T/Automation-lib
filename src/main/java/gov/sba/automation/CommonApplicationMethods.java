@@ -371,7 +371,7 @@ public class CommonApplicationMethods {
   public static WebDriver set_Timeouts(WebDriver webDriver) throws Exception {
     webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
     webDriver.manage().timeouts().setScriptTimeout(40, TimeUnit.SECONDS);
-    webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    webDriver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
     return webDriver;
   }
 
