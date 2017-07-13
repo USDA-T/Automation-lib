@@ -45,6 +45,19 @@ public class CommonApplicationMethods {
   // All_Find_elements
   // ____________________________________________________________________________________________________________
 
+    private  static Map locator;
+
+
+
+  /* Get the Locators */
+
+  public static void set_Locators() throws  Exception{
+      YamlReader reader =
+      new YamlReader(new FileReader(FixtureUtils.fixturesDir() + "Locators.yaml"));
+      Object object = reader.read(); // System.out.println(object);
+      locator = (Map) object; // System.out.println(map.get(locatorName));
+  }
+
   /*
    -----------------------------------------------------------------------------------------------
                    All_Find_Elements Only
