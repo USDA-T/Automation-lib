@@ -45,6 +45,19 @@ public class CommonApplicationMethods {
   // All_Find_elements
   // ____________________________________________________________________________________________________________
 
+    private  static Map locator;
+
+
+
+  /* Get the Locators */
+
+  public static void set_Locators() throws  Exception{
+      YamlReader reader =
+      new YamlReader(new FileReader(FixtureUtils.fixturesDir() + "Locators.yaml"));
+      Object object = reader.read(); // System.out.println(object);
+      locator = (Map) object; // System.out.println(map.get(locatorName));
+  }
+
   /*
    * -----------------------------------------------------------------------------------------------
    * All_Find_Elements Only
@@ -108,7 +121,7 @@ public class CommonApplicationMethods {
   public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml)
       throws Exception /* Non Optional */
   {
-    Map locator = getLocator(locator_Yaml);
+    /*Map locator = getLocator(locator_Yaml);*/
     String loc = locator.get("Locator").toString();
     String val = locator.get("Value").toString();
     return find_Elements(webdriver, loc, val);
@@ -129,7 +142,7 @@ public class CommonApplicationMethods {
   public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml,
       Boolean optional_Check) throws Exception /* Optional */
   {
-    Map locator = getLocator(locator_Yaml);
+    /*Map locator = getLocator(locator_Yaml);*/
     String loc = locator.get("Locator").toString();
     String val = locator.get("Value").toString();
     List<WebElement> element_01 = null;
@@ -208,7 +221,7 @@ public class CommonApplicationMethods {
   public static WebElement find_Element(WebDriver webdriver, String locator_Yaml)
       throws Exception /* Non Optional */
   {
-    Map locator = getLocator(locator_Yaml);
+    /*Map locator = getLocator(locator_Yaml);*/
     String loc = locator.get("Locator").toString();
     String val = locator.get("Value").toString();
     return find_Element(webdriver, loc, val);
@@ -229,7 +242,7 @@ public class CommonApplicationMethods {
   public static WebElement find_Element(WebDriver webdriver, String locator_Yaml,
       Boolean check_Optional) throws Exception /* Optional */
   {
-    Map locator = getLocator(locator_Yaml);
+    /*Map locator = getLocator(locator_Yaml);*/
     String loc = locator.get("Locator").toString();
     String val = locator.get("Value").toString();
     WebElement element_01 = null;
@@ -248,8 +261,8 @@ public class CommonApplicationMethods {
    */
   public static void verify_Text(WebDriver webdriver, String locator_Yaml, String text_to_Verify)
       throws Exception {
-    Map loc = getLocator(locator_Yaml);
-    assertEquals(find_Element(webdriver, loc.get("Locator").toString(), loc.get("Value").toString())
+    /*Map loc = getLocator(locator_Yaml);*/
+    assertEquals(find_Element(webdriver, locator.get("Locator").toString(), locator.get("Value").toString())
         .getText(), text_to_Verify);
   }
 
@@ -301,7 +314,7 @@ public class CommonApplicationMethods {
       for (int i = 0; i < 9900000; i++) {
         // Start Measuring
         double elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
-        Map locator = getLocator(locator_Yaml);
+        /*Map locator = getLocator(locator_Yaml);*/
         String loc = locator.get("Locator").toString();
         String val = locator.get("Value").toString();
         WebElement get_Element = find_Element(webDriver, loc, val);
@@ -332,7 +345,7 @@ public class CommonApplicationMethods {
       for (int i = 0; i < 9900000; i++) {
         // Start Measuring
         double elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
-        Map locator = getLocator(locator_Yaml);
+        /*Map locator = getLocator(locator_Yaml);*/
         String loc = locator.get("Locator").toString();
         String val = locator.get("Value").toString();
         WebElement get_Element = find_Element(webDriver, loc, val);
@@ -377,7 +390,7 @@ public class CommonApplicationMethods {
   public static WebDriver set_Timeouts(WebDriver webDriver) throws Exception {
     webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
     webDriver.manage().timeouts().setScriptTimeout(40, TimeUnit.SECONDS);
-    webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    webDriver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
     return webDriver;
   }
 
