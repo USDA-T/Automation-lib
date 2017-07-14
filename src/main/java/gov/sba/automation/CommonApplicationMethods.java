@@ -59,10 +59,10 @@ public class CommonApplicationMethods {
   }
 
   /*
-   -----------------------------------------------------------------------------------------------
-                   All_Find_Elements Only
-   ____________________________________________________________________________________________________________
-  */
+   * -----------------------------------------------------------------------------------------------
+   * All_Find_Elements Only
+   * ____________________________________________________________________________________________________________
+   */
 
   public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator,
       String value_Locator) throws Exception /* Non Optional */
@@ -71,7 +71,7 @@ public class CommonApplicationMethods {
     logger.info(elapsed_Seconds);
     List<WebElement> element_01 = null;
     long tStart = System.currentTimeMillis();
-      for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 1000; i++) {
       try {
         switch (type_Locator.toLowerCase()) {
           case "xpath":
@@ -155,9 +155,9 @@ public class CommonApplicationMethods {
   }
 
   /*
-   -----------------------------------------------------------------------------------------------
-            All_Find_element Only
-   ____________________________________________________________________________________________________________
+   * -----------------------------------------------------------------------------------------------
+   * All_Find_element Only
+   * ____________________________________________________________________________________________________________
    */
 
   public static WebElement find_Element(WebDriver webdriver, String type_Locator,
@@ -168,7 +168,7 @@ public class CommonApplicationMethods {
     Exception aa = null;
     /* logger.info(elapsed_Seconds); */ /* Debug */
     long tStart = System.currentTimeMillis();
-      for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 1000; i++) {
       try {
         switch (type_Locator.toLowerCase()) {
           case "xpath":
@@ -192,8 +192,8 @@ public class CommonApplicationMethods {
         }
       } catch (Exception e) {
         elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
-          logger.info("Did not find element");
-          logger.info(elapsed_Seconds);
+        logger.info("Did not find element");
+        logger.info(elapsed_Seconds);
         if (elapsed_Seconds > 12) {
           logger.info(elapsed_Seconds);
           logger.info("After UnSuccessfull Find - Error:" + type_Locator + ":" + value_Locator);
@@ -203,8 +203,8 @@ public class CommonApplicationMethods {
       }
 
       elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
-          logger.info(elapsed_Seconds);
-          logger.info("try Next");
+      logger.info(elapsed_Seconds);
+      logger.info("try Next");
 
       if (elapsed_Seconds > 12) {
         logger.info(elapsed_Seconds);
@@ -355,13 +355,18 @@ public class CommonApplicationMethods {
         if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0
             && get_Element.isEnabled()) {
           get_Element.click();
-          try { get_Element.clear(); } catch (Exception e) { display("We are good"); }
+          try {
+            get_Element.clear();
+          } catch (Exception e) {
+            display("We are good");
+          }
           get_Element.sendKeys(textVal);
           return;
         }
 
         if (elapsed_Seconds > 12)
-          throw new Exception("Unable to click element as Either not displayed to Selenium Click or Hidden");
+          throw new Exception(
+              "Unable to click element as Either not displayed to Selenium Click or Hidden");
       }
 
     } catch (Exception e) {
@@ -376,9 +381,10 @@ public class CommonApplicationMethods {
    * ____________________________________________________________________________________________________________
    */
 
-  public static String get_currentTimestamp()throws  Exception{
-      String timestamp = new Timestamp(System.currentTimeMillis()).toString().replaceAll("(-|:|\\.|\\s)","");
-      return timestamp;
+  public static String get_currentTimestamp() throws Exception {
+    String timestamp =
+        new Timestamp(System.currentTimeMillis()).toString().replaceAll("(-|:|\\.|\\s)", "");
+    return timestamp;
   }
 
   public static WebDriver set_Timeouts(WebDriver webDriver) throws Exception {
@@ -388,7 +394,8 @@ public class CommonApplicationMethods {
     return webDriver;
   }
 
-  public static WebDriver set_Timeouts(WebDriver webDriver, int pageLoad, int script, int wait) throws Exception {
+  public static WebDriver set_Timeouts(WebDriver webDriver, int pageLoad, int script, int wait)
+      throws Exception {
     webDriver.manage().timeouts().pageLoadTimeout(pageLoad, TimeUnit.SECONDS);
     webDriver.manage().timeouts().setScriptTimeout(script, TimeUnit.SECONDS);
     webDriver.manage().timeouts().implicitlyWait(wait, TimeUnit.SECONDS);
