@@ -48,11 +48,11 @@ public class CommonApplicationMethods {
   private static Map locator;
 
   /* Get the Locators */
-  public void set_Locators() throws  Exception{
-      YamlReader reader =
-      new YamlReader(new FileReader(FixtureUtils.fixturesDir() + "Locators.yaml"));
-      Object object = reader.read(); // System.out.println(object);
-      locator = (Map) object; // System.out.println(map.get(locatorName));
+  public void set_Locators() throws Exception {
+    YamlReader reader =
+        new YamlReader(new FileReader(FixtureUtils.fixturesDir() + "Locators.yaml"));
+    Object object = reader.read(); // System.out.println(object);
+    locator = (Map) object; // System.out.println(map.get(locatorName));
   }
 
   /*
@@ -274,7 +274,7 @@ public class CommonApplicationMethods {
   }
 
   public static void accept_Alert(WebDriver webDriver) throws Exception {
-    /* If alert not present Throw error after few tries*/
+    /* If alert not present Throw error after few tries */
     for (int i = 0; i < 14; i++) {
       try {
         webDriver.switchTo().alert().accept();
@@ -292,13 +292,13 @@ public class CommonApplicationMethods {
   }
 
   public static void accept_Alert(WebDriver webDriver, int counter) throws Exception {
-    /* If alert not present its fine.*/
+    /* If alert not present its fine. */
     for (int i = 0; i < counter; i++) {
       try {
         webDriver.switchTo().alert().accept();
         return;
       } catch (Exception e) {
-        /* display("Trying to Accept Alert");*/
+        /* display("Trying to Accept Alert"); */
         Thread.sleep(300);
       }
     }
@@ -340,13 +340,13 @@ public class CommonApplicationMethods {
 
       long tStart = System.currentTimeMillis();
       for (int i = 0; i < 9900000; i++) {
-        /*Start Measuring*/
+        /* Start Measuring */
         double elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
         Map locator = getLocator(locator_Yaml);
         String loc = locator.get("Locator").toString();
         String val = locator.get("Value").toString();
         WebElement get_Element = find_Element(webDriver, loc, val);
-        /*display(get_Element.getText()); display(get_Element.getAttribute("innerHTML")); */
+        /* display(get_Element.getText()); display(get_Element.getAttribute("innerHTML")); */
 
         if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0
             && get_Element.isEnabled()) {
@@ -467,7 +467,7 @@ public class CommonApplicationMethods {
     display(time);
 
     try {
-      /*now copy the screenshot to the screenshot folder.*/
+      /* now copy the screenshot to the screenshot folder. */
       if (stringValueArray.length == 2) {
         FileUtils.copyFile(src, new File(
             FixtureUtils.get_SS_Dir() + stringValueArray[0] + stringValueArray[1] + time + ".png"));
@@ -589,8 +589,7 @@ public class CommonApplicationMethods {
   }
 
   public static void casesPageSearch(WebDriver webDriver, String searchValue) throws Exception {
-    setText_Element(webDriver, "Apllication_Case_Search_Text",
-        searchValue);
+    setText_Element(webDriver, "Apllication_Case_Search_Text", searchValue);
     CommonApplicationMethods.click_Element(webDriver, "Apllication_Case_Search_Button");
   }
 
@@ -602,74 +601,74 @@ public class CommonApplicationMethods {
 
   public static void navigationMenuClick(WebDriver webDriver, String which_Button)
       throws Exception {
-        switch (which_Button.toUpperCase()) {
-          case "LOGOUT":
-            click_Element(webDriver, "Navigation_Logout");
-            break;
-          case "HELP":
-            click_Element(webDriver, "Navigation_Help");
-            break;
-          case "CASES":
-            click_Element(webDriver, "Navigation_Cases");
-            break;
-          case "PROGRAMS":
-            click_Element(webDriver, "Navigation_Programs");
-            break;
-          case "DASHBOARD":
-            click_Element(webDriver, "Navigation_Dashboard");
-            break;
-          case "BUSINESS":
-            click_Element(webDriver, "Navigation_Business");
-            break;
-          case "DOCUMENTS":
-            click_Element(webDriver, "Navigation_Documents");
-            break;
-          case "HOME":
-            click_Element(webDriver, "Navigation_Home");
-            break;
-          default:
-            // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
-        }
+    switch (which_Button.toUpperCase()) {
+      case "LOGOUT":
+        click_Element(webDriver, "Navigation_Logout");
+        break;
+      case "HELP":
+        click_Element(webDriver, "Navigation_Help");
+        break;
+      case "CASES":
+        click_Element(webDriver, "Navigation_Cases");
+        break;
+      case "PROGRAMS":
+        click_Element(webDriver, "Navigation_Programs");
+        break;
+      case "DASHBOARD":
+        click_Element(webDriver, "Navigation_Dashboard");
+        break;
+      case "BUSINESS":
+        click_Element(webDriver, "Navigation_Business");
+        break;
+      case "DOCUMENTS":
+        click_Element(webDriver, "Navigation_Documents");
+        break;
+      case "HOME":
+        click_Element(webDriver, "Navigation_Home");
+        break;
+      default:
+        // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
+    }
   }
 
   public static void navigationBarClick(WebDriver webDriver, String which_Button) throws Exception {
-      try{
-          switch (which_Button.toUpperCase()) {
-          case "LOGOUT":
-            click_Element(webDriver, "Navigation_Bar_Profile");
-            click_Element(webDriver, "Navigation_Bar_Logout");
-            break;
-          case "SETTINGS":
-            click_Element(webDriver, "Navigation_Bar_Profile");
-            click_Element(webDriver, "Navigation_Bar_Settings");
-            break;
-          case "HELP":
-            click_Element(webDriver, "Navigation_Bar_Help");
-            break;
-          case "CASES":
-            click_Element(webDriver, "Navigation_Bar_Cases");
-            break;
-          case "PROGRAMS":
-            click_Element(webDriver, "Navigation_Bar_Programs");
-            break;
-          case "DASHBOARD":
-            click_Element(webDriver, "Navigation_Bar_Dashboard");
-            break;
-          case "BUSINESS":
-            click_Element(webDriver, "Navigation_Bar_Business");
-            break;
-          case "DOCUMENTS":
-            click_Element(webDriver, "Navigation_Bar_Documents");
-            break;
-          case "HOME":
-            click_Element(webDriver, "Navigation_Bar_Home");
-            break;
-          default:
-            // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
-        }
-      }catch(Exception e){
-          navigationMenuClick(webDriver, which_Button);
+    try {
+      switch (which_Button.toUpperCase()) {
+        case "LOGOUT":
+          click_Element(webDriver, "Navigation_Bar_Profile");
+          click_Element(webDriver, "Navigation_Bar_Logout");
+          break;
+        case "SETTINGS":
+          click_Element(webDriver, "Navigation_Bar_Profile");
+          click_Element(webDriver, "Navigation_Bar_Settings");
+          break;
+        case "HELP":
+          click_Element(webDriver, "Navigation_Bar_Help");
+          break;
+        case "CASES":
+          click_Element(webDriver, "Navigation_Bar_Cases");
+          break;
+        case "PROGRAMS":
+          click_Element(webDriver, "Navigation_Bar_Programs");
+          break;
+        case "DASHBOARD":
+          click_Element(webDriver, "Navigation_Bar_Dashboard");
+          break;
+        case "BUSINESS":
+          click_Element(webDriver, "Navigation_Bar_Business");
+          break;
+        case "DOCUMENTS":
+          click_Element(webDriver, "Navigation_Bar_Documents");
+          break;
+        case "HOME":
+          click_Element(webDriver, "Navigation_Bar_Home");
+          break;
+        default:
+          // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
       }
+    } catch (Exception e) {
+      navigationMenuClick(webDriver, which_Button);
+    }
 
   }
 
