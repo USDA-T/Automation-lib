@@ -602,70 +602,75 @@ public class CommonApplicationMethods {
 
   public static void navigationMenuClick(WebDriver webDriver, String which_Button)
       throws Exception {
-    switch (which_Button.toUpperCase()) {
-      case "LOGOUT":
-        click_Element(webDriver, "Navigation_Logout");
-        break;
-      case "HELP":
-        click_Element(webDriver, "Navigation_Help");
-        break;
-      case "CASES":
-        click_Element(webDriver, "Navigation_Cases");
-        break;
-      case "PROGRAMS":
-        click_Element(webDriver, "Navigation_Programs");
-        break;
-      case "DASHBOARD":
-        click_Element(webDriver, "Navigation_Dashboard");
-        break;
-      case "BUSINESS":
-        click_Element(webDriver, "Navigation_Business");
-        break;
-      case "DOCUMENTS":
-        click_Element(webDriver, "Navigation_Documents");
-        break;
-      case "HOME":
-        click_Element(webDriver, "Navigation_Home");
-        break;
-      default:
-        // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
-    }
+        switch (which_Button.toUpperCase()) {
+          case "LOGOUT":
+            click_Element(webDriver, "Navigation_Logout");
+            break;
+          case "HELP":
+            click_Element(webDriver, "Navigation_Help");
+            break;
+          case "CASES":
+            click_Element(webDriver, "Navigation_Cases");
+            break;
+          case "PROGRAMS":
+            click_Element(webDriver, "Navigation_Programs");
+            break;
+          case "DASHBOARD":
+            click_Element(webDriver, "Navigation_Dashboard");
+            break;
+          case "BUSINESS":
+            click_Element(webDriver, "Navigation_Business");
+            break;
+          case "DOCUMENTS":
+            click_Element(webDriver, "Navigation_Documents");
+            break;
+          case "HOME":
+            click_Element(webDriver, "Navigation_Home");
+            break;
+          default:
+            // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
+        }
   }
 
   public static void navigationBarClick(WebDriver webDriver, String which_Button) throws Exception {
-    switch (which_Button.toUpperCase()) {
-      case "LOGOUT":
-        click_Element(webDriver, "Navigation_Bar_Profile");
-        click_Element(webDriver, "Navigation_Bar_Logout");
-        break;
-      case "SETTINGS":
-        click_Element(webDriver, "Navigation_Bar_Profile");
-        click_Element(webDriver, "Navigation_Bar_Settings");
-        break;
-      case "HELP":
-        click_Element(webDriver, "Navigation_Bar_Help");
-        break;
-      case "CASES":
-        click_Element(webDriver, "Navigation_Bar_Cases");
-        break;
-      case "PROGRAMS":
-        click_Element(webDriver, "Navigation_Bar_Programs");
-        break;
-      case "DASHBOARD":
-        click_Element(webDriver, "Navigation_Bar_Dashboard");
-        break;
-      case "BUSINESS":
-        click_Element(webDriver, "Navigation_Bar_Business");
-        break;
-      case "DOCUMENTS":
-        click_Element(webDriver, "Navigation_Bar_Documents");
-        break;
-      case "HOME":
-        click_Element(webDriver, "Navigation_Bar_Home");
-        break;
-      default:
-        // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
-    }
+      try{
+          switch (which_Button.toUpperCase()) {
+          case "LOGOUT":
+            click_Element(webDriver, "Navigation_Bar_Profile");
+            click_Element(webDriver, "Navigation_Bar_Logout");
+            break;
+          case "SETTINGS":
+            click_Element(webDriver, "Navigation_Bar_Profile");
+            click_Element(webDriver, "Navigation_Bar_Settings");
+            break;
+          case "HELP":
+            click_Element(webDriver, "Navigation_Bar_Help");
+            break;
+          case "CASES":
+            click_Element(webDriver, "Navigation_Bar_Cases");
+            break;
+          case "PROGRAMS":
+            click_Element(webDriver, "Navigation_Bar_Programs");
+            break;
+          case "DASHBOARD":
+            click_Element(webDriver, "Navigation_Bar_Dashboard");
+            break;
+          case "BUSINESS":
+            click_Element(webDriver, "Navigation_Bar_Business");
+            break;
+          case "DOCUMENTS":
+            click_Element(webDriver, "Navigation_Bar_Documents");
+            break;
+          case "HOME":
+            click_Element(webDriver, "Navigation_Bar_Home");
+            break;
+          default:
+            // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
+        }
+      }catch(Exception e){
+          navigationMenuClick(webDriver, which_Button);
+      }
+
   }
 
   public static String getflagvalue() throws Exception {
