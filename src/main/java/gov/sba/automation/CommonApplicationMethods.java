@@ -191,7 +191,7 @@ public class CommonApplicationMethods {
         elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
         logger.info("Did not find element");
         logger.info(elapsed_Seconds);
-        //if (elapsed_Seconds > 12) { /*Deepa - change later Demo*/
+        // if (elapsed_Seconds > 12) { /*Deepa - change later Demo*/
         if (elapsed_Seconds > 4) {
           logger.info(elapsed_Seconds);
           logger.info("After UnSuccessfull Find - Error:" + type_Locator + ":" + value_Locator);
@@ -204,7 +204,7 @@ public class CommonApplicationMethods {
       logger.info(elapsed_Seconds);
       logger.info("try Next");
 
-      //if (elapsed_Seconds > 12) { /*Deepa - change later Demo*/
+      // if (elapsed_Seconds > 12) { /*Deepa - change later Demo*/
       if (elapsed_Seconds > 4) {
         logger.info(elapsed_Seconds);
         logger.info("After Successfull Find - Too Long - Check Performance");
@@ -388,7 +388,8 @@ public class CommonApplicationMethods {
   public static WebDriver set_Timeouts(WebDriver webDriver) throws Exception {
     webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
     webDriver.manage().timeouts().setScriptTimeout(40, TimeUnit.SECONDS);
-    //webDriver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS); /*Deepa - change later Demo*/
+    // webDriver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS); /*Deepa - change later
+    // Demo*/
     webDriver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     return webDriver;
   }
