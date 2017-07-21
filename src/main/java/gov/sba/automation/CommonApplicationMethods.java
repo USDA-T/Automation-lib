@@ -388,8 +388,6 @@ public class CommonApplicationMethods {
   public static WebDriver set_Timeouts(WebDriver webDriver) throws Exception {
     webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
     webDriver.manage().timeouts().setScriptTimeout(40, TimeUnit.SECONDS);
-    // webDriver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS); /*Deepa - change later
-    // Demo*/
     webDriver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     return webDriver;
   }
@@ -629,6 +627,9 @@ public class CommonApplicationMethods {
         break;
       case "HOME":
         click_Element(webDriver, "Navigation_Home");
+        break;
+      case "PREPARE":
+        click_Element(webDriver, "Navigation_Prepare");
         break;
       default:
         // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
