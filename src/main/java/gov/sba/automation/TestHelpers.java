@@ -38,8 +38,8 @@ public class TestHelpers {
     System.setProperty(Constants.BROWSER, browser);
     String envUnderTest = System.getenv(Constants.TEST_ENV);
 
-    // Default to 'development' if none is provided
-    // TODO: this should never be null, may be remove?
+    /*Default to 'development' if none is provided  TODO: this should never be null, may be remove?*/
+
     if (envUnderTest == null) {
       envUnderTest = "development";
     }
