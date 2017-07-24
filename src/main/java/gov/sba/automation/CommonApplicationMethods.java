@@ -35,22 +35,24 @@ public class CommonApplicationMethods {
   // ------------------------------------------------------------------------------------------------------------
   // Usage [ Repeat for Find Elements]
   // 1. Find element with Locator -
-  //                WebElement aa= find_Element(WebDriver webDriver, String locator_Yaml);
+  // WebElement aa= find_Element(WebDriver webDriver, String locator_Yaml);
   // 2. Find element with Values -
-  //                WebElement aa= find_Element(WebDriver webDriver, String locator_Type, String locator_Value);
+  // WebElement aa= find_Element(WebDriver webDriver, String locator_Type, String locator_Value);
   // 3. Optional Find element with Locator -
-  //                WebElement aa= find_Element(WebDriver webDriver, String locator_Yaml, Boolean true);
+  // WebElement aa= find_Element(WebDriver webDriver, String locator_Yaml, Boolean true);
   // 4. Optional Find element with Values -
-  //                WebElement aa= find_Element(WebDriver webDriver, String locator_Type, String locator_Value, Boolean true);
+  // WebElement aa= find_Element(WebDriver webDriver, String locator_Type, String locator_Value,
+  // Boolean true);
   // ____________________________________________________________________________________________________________
 
 
   /*
-    ------------------------------------------------------------------------------------------------------------
-        All_Find_elements
-    ____________________________________________________________________________________________________________
-  */
+   * -----------------------------------------------------------------------------------------------
+   * ------------- All_Find_elements
+   * ____________________________________________________________________________________________________________
+   */
   private static Map locator;
+
   /* Get the Locators */
   public void set_Locators() throws Exception {
     YamlReader reader =
@@ -60,9 +62,9 @@ public class CommonApplicationMethods {
   }
 
   /*
-   ------------------------------------------------------------------------------------------------------------
-                               All_Find_Elements Only
-   ____________________________________________________________________________________________________________
+   * -----------------------------------------------------------------------------------------------
+   * ------------- All_Find_Elements Only
+   * ____________________________________________________________________________________________________________
    */
 
   public static List<WebElement> find_Elements(WebDriver webdriver, String type_Locator,
@@ -102,7 +104,8 @@ public class CommonApplicationMethods {
 
         if (elapsed_Seconds > wait_For_Total_Seconds) {
           logger.info(elapsed_Seconds);
-          logger.info("After Successfull Find - Too Long - Check Performance:" + type_Locator + ":" +  value_Locator);
+          logger.info("After Successfull Find - Too Long - Check Performance:" + type_Locator + ":"
+              + value_Locator);
           i = 9999;
         }
 
@@ -110,12 +113,12 @@ public class CommonApplicationMethods {
         elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
         if (elapsed_Seconds > wait_For_Total_Seconds) {
           logger.info(elapsed_Seconds);
-          logger.info("After UnSuccessfull Find - Exception:" + type_Locator + ":" +  value_Locator);
+          logger.info("After UnSuccessfull Find - Exception:" + type_Locator + ":" + value_Locator);
           i = 9999;
         }
       }
     }
-    throw new Exception("Elements Not Found:" + type_Locator + ":" +  value_Locator);
+    throw new Exception("Elements Not Found:" + type_Locator + ":" + value_Locator);
   }
 
   public static List<WebElement> find_Elements(WebDriver webdriver, String locator_Yaml)
@@ -155,10 +158,10 @@ public class CommonApplicationMethods {
   }
 
   /*
-   ------------------------------------------------------------------------------------------------------------
-                               All_Find_element Only
-   ____________________________________________________________________________________________________________
-  */
+   * -----------------------------------------------------------------------------------------------
+   * ------------- All_Find_element Only
+   * ____________________________________________________________________________________________________________
+   */
 
   public static WebElement find_Element(WebDriver webdriver, String type_Locator,
       String value_Locator) throws Exception /* Non Optional */
@@ -192,7 +195,7 @@ public class CommonApplicationMethods {
         }
       } catch (Exception e) {
         elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
-        logger.info("Did not find element:" + type_Locator + ":" +  value_Locator);
+        logger.info("Did not find element:" + type_Locator + ":" + value_Locator);
         logger.info(elapsed_Seconds);
 
         if (elapsed_Seconds > wait_For_Total_Seconds) {
@@ -256,8 +259,8 @@ public class CommonApplicationMethods {
   }
 
   /*
-   * ------------------------------------------------------------------------------------------------------------
-   *                            Non Find elements
+   * -----------------------------------------------------------------------------------------------
+   * ------------- Non Find elements
    * ____________________________________________________________________________________________________________
    */
   public static void verify_Text(WebDriver webdriver, String locator_Yaml, String text_to_Verify)
@@ -279,83 +282,78 @@ public class CommonApplicationMethods {
 
   public static void accept_Alert(WebDriver webDriver) throws Exception {
 
-   if (there_Is_Any_File_To_Indicate_Currently_Running_In_Headless())
-       {
-           /* If alert not present Throw error after few tries */
-           for (int i = 0; i < 14; i++) {
-               try {
-                   JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
-                   jsExecutor.executeScript("window.alert = function(){}");
-                   jsExecutor.executeScript("window.confirm = function(){return true;}");
-                   return;
-               } catch (Exception e) {
-                   if (i >= 14) {
-                       throw new Exception("Alert Not found");
-                   } else {
-                       // display("Trying to Accept Alert");
-                       Thread.sleep(300);
-                   }
-               }
-           }
-           throw new Exception("Alert Not found");
+    if (there_Is_Any_File_To_Indicate_Currently_Running_In_Headless()) {
+      /* If alert not present Throw error after few tries */
+      for (int i = 0; i < 14; i++) {
+        try {
+          JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
+          jsExecutor.executeScript("window.alert = function(){}");
+          jsExecutor.executeScript("window.confirm = function(){return true;}");
+          return;
+        } catch (Exception e) {
+          if (i >= 14) {
+            throw new Exception("Alert Not found");
+          } else {
+            // display("Trying to Accept Alert");
+            Thread.sleep(300);
+          }
+        }
+      }
+      throw new Exception("Alert Not found");
 
-       }
-   else
-       {
+    } else {
 
-           /* If alert not present Throw error after few tries */
+      /* If alert not present Throw error after few tries */
 
-           for (int i = 0; i < 14; i++) {
-               try {
-                   webDriver.switchTo().alert().accept();
-                   return;
-               } catch (Exception e) {
-                   if (i >= 14) {
-                       throw new Exception("Alert Not found");
-                   } else {
-                       // display("Trying to Accept Alert");
-                       Thread.sleep(300);
-                   }
-               }
-           }
-           throw new Exception("Alert Not found");
+      for (int i = 0; i < 14; i++) {
+        try {
+          webDriver.switchTo().alert().accept();
+          return;
+        } catch (Exception e) {
+          if (i >= 14) {
+            throw new Exception("Alert Not found");
+          } else {
+            // display("Trying to Accept Alert");
+            Thread.sleep(300);
+          }
+        }
+      }
+      throw new Exception("Alert Not found");
 
-       }
+    }
   }
 
   public static void accept_Alert(WebDriver webDriver, int counter) throws Exception {
     /* If alert not present its fine. */
-    if (there_Is_Any_File_To_Indicate_Currently_Running_In_Headless())
-        {
-            for (int i = 0; i < counter; i++) {
-                try {
-                    JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
-                    jsExecutor.executeScript("window.alert = function(){}");
-                    jsExecutor.executeScript("window.confirm = function(){return true;}");
-                    return;
-                } catch (Exception e) {
-                    /* display("Trying to Accept Alert"); */
-                    Thread.sleep(300);
-                }
-            }
-
+    if (there_Is_Any_File_To_Indicate_Currently_Running_In_Headless()) {
+      for (int i = 0; i < counter; i++) {
+        try {
+          JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
+          jsExecutor.executeScript("window.alert = function(){}");
+          jsExecutor.executeScript("window.confirm = function(){return true;}");
+          return;
+        } catch (Exception e) {
+          /* display("Trying to Accept Alert"); */
+          Thread.sleep(300);
         }
-    else
-        {
-            //Alert aa = new WebDriverWait(webDriver, counter).ignoring(NoAlertPresentException.class).ignoring(org.openqa.selenium.TimeoutException.class).until(ExpectedConditions.alertIsPresent());
-            //aa.accept();
+      }
 
-            for (int i = 0; i < counter; i++) {
-                try {
-                    webDriver.switchTo().alert().accept(); return;
-                }
-                catch (Exception e) {
-                    /* display("Trying to Accept Alert"); */
-                     Thread.sleep(300);
-                }
-            }
+    } else {
+      // Alert aa = new WebDriverWait(webDriver,
+      // counter).ignoring(NoAlertPresentException.class).ignoring(org.openqa.selenium.TimeoutException.class).until(ExpectedConditions.alertIsPresent());
+      // aa.accept();
 
+      for (int i = 0; i < counter; i++) {
+        try {
+          webDriver.switchTo().alert().accept();
+          return;
+        } catch (Exception e) {
+          /* display("Trying to Accept Alert"); */
+          Thread.sleep(300);
         }
+      }
+
+    }
   }
 
   public static void click_Element(WebDriver webDriver, String locator_Yaml) throws Exception {
@@ -426,8 +424,8 @@ public class CommonApplicationMethods {
   }
 
   /*
-   * ------------------------------------------------------------------------------------------------------------
-   *                             Common Methods
+   * -----------------------------------------------------------------------------------------------
+   * ------------- Common Methods
    * ____________________________________________________________________________________________________________
    */
 
@@ -438,20 +436,25 @@ public class CommonApplicationMethods {
   }
 
   public static void create_File_To_Indicate_Currently_Running_In_Headless() throws Exception {
-      File f = new File(fileName_If_Running_In_Headless());
-      if (!f.exists() && !f.isDirectory()) f.createNewFile();
+    File f = new File(fileName_If_Running_In_Headless());
+    if (!f.exists() && !f.isDirectory())
+      f.createNewFile();
   }
 
   public static void delete_Any_File_To_Indicate_Currently_Running_In_Headless() throws Exception {
-      File f = new File(fileName_If_Running_In_Headless());
-      if (f.exists() && !f.isDirectory())  f.delete();
-    }
+    File f = new File(fileName_If_Running_In_Headless());
+    if (f.exists() && !f.isDirectory())
+      f.delete();
+  }
 
-  public static boolean there_Is_Any_File_To_Indicate_Currently_Running_In_Headless() throws Exception {
-        File f = new File(fileName_If_Running_In_Headless());         /*Check if file exists */
-        if (f.exists() && !f.isDirectory())     return true;
-        else                                    return false;
-    }
+  public static boolean there_Is_Any_File_To_Indicate_Currently_Running_In_Headless()
+      throws Exception {
+    File f = new File(fileName_If_Running_In_Headless()); /* Check if file exists */
+    if (f.exists() && !f.isDirectory())
+      return true;
+    else
+      return false;
+  }
 
   public static WebDriver set_Timeouts(WebDriver webDriver) throws Exception {
     webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
@@ -564,8 +567,8 @@ public class CommonApplicationMethods {
   }
 
   /*
-   * ------------------------------------------------------------------------------------------------------------
-   *                            Application Specific Common Methods
+   * -----------------------------------------------------------------------------------------------
+   * ------------- Application Specific Common Methods
    * ____________________________________________________________________________________________________________
    */
 

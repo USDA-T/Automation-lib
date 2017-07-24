@@ -34,17 +34,22 @@ public class TestHelpers {
     Properties props = ConfigUtils.loadDefaultProperties();
     WebDriver driver = null;
 
-    /*Setup the configuration based on the browser we are using*/
-    /* System.setProperty("webdriver.chrome.driver", props.getProperty("webdriver.chrome.driver"));*/
+    /* Setup the configuration based on the browser we are using */
+    /*
+     * System.setProperty("webdriver.chrome.driver", props.getProperty("webdriver.chrome.driver"));
+     */
 
-    /*Update the Property File Instead Of Hardcoding*/
+    /* Update the Property File Instead Of Hardcoding */
     String browser = props.getProperty(Constants.BROWSER);
     System.setProperty(Constants.BROWSER, browser);
     String envUnderTest = System.getenv(Constants.TEST_ENV);
 
-    /*Default to 'development' if none is provided  TODO: this should never be null, may be remove?*/
+    /*
+     * Default to 'development' if none is provided TODO: this should never be null, may be remove?
+     */
 
-    if (envUnderTest == null) envUnderTest = "development";
+    if (envUnderTest == null)
+      envUnderTest = "development";
 
     logger.debug("Your system under test :" + envUnderTest);
     System.setProperty(Constants.TEST_ENV, envUnderTest);
@@ -54,12 +59,13 @@ public class TestHelpers {
 
 
     if (testUrl == null) {
-      throw new RuntimeException("You need to setup the '" + BASE_URL + envUnderTest + "' in your default.properties file");
+      throw new RuntimeException("You need to setup the '" + BASE_URL + envUnderTest
+          + "' in your default.properties file");
     }
 
     logger.debug("FYI: your test URL:" + testUrl + " ::- And Browser: " + browser);
 
-    /*Set it so that we can use it later*/
+    /* Set it so that we can use it later */
 
     System.setProperty(BASE_URL + envUnderTest, testUrl);
 
@@ -71,9 +77,9 @@ public class TestHelpers {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-extensions");
         if (headless_Parm.toLowerCase().indexOf("no") >= 0) {
-            /*  Not Headless */
+          /* Not Headless */
         } else {
-            /*  With Headless */
+          /* With Headless */
           if (!props.containsKey("non_headless")) {
             options.addArguments("headless");
             create_File_To_Indicate_Currently_Running_In_Headless();
@@ -85,14 +91,15 @@ public class TestHelpers {
         break;
       case Constants.BROWSER_FIREFOX:
         if (ConfigUtils.isUnix(ConfigUtils.systemType())) {
-          configKeys = new String[] { /*Need to provide specific type information for Linux*/
-              "webdriver.firefox.bin", "webdriver.firefox.port" /* Note: for older version of Firefox*/
-              /*For newer version of Firefox    // "webdriver.gecko.driver"*/
+          configKeys = new String[] { /* Need to provide specific type information for Linux */
+              "webdriver.firefox.bin",
+              "webdriver.firefox.port" /* Note: for older version of Firefox */
+              /* For newer version of Firefox // "webdriver.gecko.driver" */
           };
           setSystemProperties(configKeys, props);
         }
 
-        /*TODO: verify if we need to do the same for MacOs?*/
+        /* TODO: verify if we need to do the same for MacOs? */
 
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
