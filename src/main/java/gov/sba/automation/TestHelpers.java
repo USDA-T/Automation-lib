@@ -11,12 +11,15 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+import static gov.sba.automation.CommonApplicationMethods.create_File_To_Indicate_Currently_Running_In_Headless;
+import static gov.sba.automation.CommonApplicationMethods.delete_Any_File_To_Indicate_Currently_Running_In_Headless;
 import static gov.sba.automation.CommonApplicationMethods.get_Stop_Execution_Flag;
 
 public class TestHelpers {
   final public static String BASE_URL = "base_url_";
   private static final Logger logger = LogManager.getLogger(TestHelpers.class.getName());
   public static String headless_Parm = "yes";
+
 
   public static void set_Headless() {
     if (System.getProperty("os.name").startsWith("Windows")) {
@@ -27,22 +30,21 @@ public class TestHelpers {
 
   public static WebDriver getDefaultWebDriver() throws Exception {
     get_Stop_Execution_Flag();
+    delete_Any_File_To_Indicate_Currently_Running_In_Headless();
     Properties props = ConfigUtils.loadDefaultProperties();
     WebDriver driver = null;
 
-    // Setup the configuration based on the browser we are using
-    // System.setProperty("webdriver.chrome.driver", props.getProperty("webdriver.chrome.driver"));
+    /*Setup the configuration based on the browser we are using*/
+    /* System.setProperty("webdriver.chrome.driver", props.getProperty("webdriver.chrome.driver"));*/
 
-    // Update the Property File Instead Of Hardcoding
+    /*Update the Property File Instead Of Hardcoding*/
     String browser = props.getProperty(Constants.BROWSER);
     System.setProperty(Constants.BROWSER, browser);
     String envUnderTest = System.getenv(Constants.TEST_ENV);
 
     /*Default to 'development' if none is provided  TODO: this should never be null, may be remove?*/
 
-    if (envUnderTest == null) {
-      envUnderTest = "development";
-    }
+    if (envUnderTest == null) envUnderTest = "development";
 
     logger.debug("Your system under test :" + envUnderTest);
     System.setProperty(Constants.TEST_ENV, envUnderTest);
@@ -52,14 +54,13 @@ public class TestHelpers {
 
 
     if (testUrl == null) {
-      throw new RuntimeException("You need to setup the '" + BASE_URL + envUnderTest
-          + "' in your default.properties file");
+      throw new RuntimeException("You need to setup the '" + BASE_URL + envUnderTest + "' in your default.properties file");
     }
 
-    logger.debug("FYI: your test URL:" + testUrl);
-    logger.debug("FYI: you are using the browser: " + browser);
+    logger.debug("FYI: your test URL:" + testUrl + " ::- And Browser: " + browser);
 
-    // Set it so that we can use it later
+    /*Set it so that we can use it later*/
+
     System.setProperty(BASE_URL + envUnderTest, testUrl);
 
     String[] configKeys;
@@ -70,10 +71,12 @@ public class TestHelpers {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-extensions");
         if (headless_Parm.toLowerCase().indexOf("no") >= 0) {
-
+            /*  Not Headless */
         } else {
+            /*  With Headless */
           if (!props.containsKey("non_headless")) {
             options.addArguments("headless");
+            create_File_To_Indicate_Currently_Running_In_Headless();
           }
         }
         options.addArguments("--window-size=1920,1080");
@@ -82,16 +85,15 @@ public class TestHelpers {
         break;
       case Constants.BROWSER_FIREFOX:
         if (ConfigUtils.isUnix(ConfigUtils.systemType())) {
-          // Need to provide specific type information for Linux
-          configKeys = new String[] {
-              // Note: for older version of Firefox
-              "webdriver.firefox.bin", "webdriver.firefox.port"
-              // For newer version of Firefox
-              // "webdriver.gecko.driver"
+          configKeys = new String[] { /*Need to provide specific type information for Linux*/
+              "webdriver.firefox.bin", "webdriver.firefox.port" /* Note: for older version of Firefox*/
+              /*For newer version of Firefox    // "webdriver.gecko.driver"*/
           };
           setSystemProperties(configKeys, props);
         }
-        // TODO: verify if we need to do the same for MacOs?
+
+        /*TODO: verify if we need to do the same for MacOs?*/
+
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
         break;
