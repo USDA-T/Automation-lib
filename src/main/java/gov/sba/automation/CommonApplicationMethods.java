@@ -8,8 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -31,6 +29,7 @@ import static org.junit.Assert.assertEquals;
 
 public class CommonApplicationMethods {
 
+  private static final int wait_For_Total_Seconds = 8;
   private static final Logger logger =
       LogManager.getLogger(CommonApplicationMethods.class.getName());
   // ------------------------------------------------------------------------------------------------------------
@@ -101,7 +100,7 @@ public class CommonApplicationMethods {
           return element_01;
         }
 
-        if (elapsed_Seconds > 12) {
+        if (elapsed_Seconds > wait_For_Total_Seconds) {
           logger.info(elapsed_Seconds);
           logger.info("After Successfull Find - Too Long - Check Performance:" + type_Locator + ":" +  value_Locator);
           i = 9999;
@@ -109,7 +108,7 @@ public class CommonApplicationMethods {
 
       } catch (Exception e) {
         elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
-        if (elapsed_Seconds > 12) {
+        if (elapsed_Seconds > wait_For_Total_Seconds) {
           logger.info(elapsed_Seconds);
           logger.info("After UnSuccessfull Find - Exception:" + type_Locator + ":" +  value_Locator);
           i = 9999;
@@ -195,8 +194,8 @@ public class CommonApplicationMethods {
         elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
         logger.info("Did not find element:" + type_Locator + ":" +  value_Locator);
         logger.info(elapsed_Seconds);
-        // if (elapsed_Seconds > 12) { /*Deepa - change later Demo*/
-        if (elapsed_Seconds > 4) {
+
+        if (elapsed_Seconds > wait_For_Total_Seconds) {
           logger.info(elapsed_Seconds);
           logger.info("After UnSuccessfull Find - Error:" + type_Locator + ":" + value_Locator);
           i = 9999;
@@ -208,8 +207,7 @@ public class CommonApplicationMethods {
       logger.info(elapsed_Seconds);
       logger.info("try Next");
 
-      // if (elapsed_Seconds > 12) { /*Deepa - change later Demo*/
-      if (elapsed_Seconds > 4) {
+      if (elapsed_Seconds > wait_For_Total_Seconds) {
         logger.info(elapsed_Seconds);
         logger.info("After Successfull Find - Too Long - Check Performance");
         i = 9999;
@@ -304,11 +302,9 @@ public class CommonApplicationMethods {
        }
    else
        {
-           new WebDriverWait(webDriver, 6)
-               .until(ExpectedConditions.alertIsPresent());
-           webDriver.switchTo().alert().accept();
+
            /* If alert not present Throw error after few tries */
-           /*
+
            for (int i = 0; i < 14; i++) {
                try {
                    webDriver.switchTo().alert().accept();
@@ -323,7 +319,7 @@ public class CommonApplicationMethods {
                }
            }
            throw new Exception("Alert Not found");
-           */
+
        }
   }
 
@@ -346,22 +342,19 @@ public class CommonApplicationMethods {
         }
     else
         {
-            new WebDriverWait(webDriver, counter)
-                .ignoring(NoAlertPresentException.class)
-                .until(ExpectedConditions.alertIsPresent());
-            webDriver.switchTo().alert().accept();
+            //Alert aa = new WebDriverWait(webDriver, counter).ignoring(NoAlertPresentException.class).ignoring(org.openqa.selenium.TimeoutException.class).until(ExpectedConditions.alertIsPresent());
+            //aa.accept();
 
-            /*
             for (int i = 0; i < counter; i++) {
                 try {
                     webDriver.switchTo().alert().accept(); return;
                 }
                 catch (Exception e) {
-                    *//* display("Trying to Accept Alert"); *//*
+                    /* display("Trying to Accept Alert"); */
                      Thread.sleep(300);
                 }
             }
-            */
+
         }
   }
 
@@ -385,7 +378,7 @@ public class CommonApplicationMethods {
           return;
         }
 
-        if (elapsed_Seconds > 12)
+        if (elapsed_Seconds > wait_For_Total_Seconds)
           throw new Exception(
               "Unable to click element as Either not displayed to Selenium Click or Hidden");
       }
@@ -421,7 +414,7 @@ public class CommonApplicationMethods {
           return;
         }
 
-        if (elapsed_Seconds > 12)
+        if (elapsed_Seconds > wait_For_Total_Seconds)
           throw new Exception(
               "Unable to click element as Either not displayed to Selenium Click or Hidden");
       }
