@@ -98,22 +98,21 @@ public class CommonApplicationMethods {
         }
         elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
         if (element_01.size() > 0) {
-          logger.info(elapsed_Seconds);
+          /*logger.debug(elapsed_Seconds);*/
           return element_01;
         }
 
         if (elapsed_Seconds > wait_For_Total_Seconds) {
-          logger.info(elapsed_Seconds);
-          logger.info("After Successfull Find - Too Long - Check Performance:" + type_Locator + ":"
-              + value_Locator);
+          /*logger.info(elapsed_Seconds);*/
+          logger.debug("UnSuccessfull Find:Too Long:Check Performance:" + type_Locator + ":" + value_Locator);
           i = 9999;
         }
 
       } catch (Exception e) {
         elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
         if (elapsed_Seconds > wait_For_Total_Seconds) {
-          logger.info(elapsed_Seconds);
-          logger.info("After UnSuccessfull Find - Exception:" + type_Locator + ":" + value_Locator);
+          /*logger.info(elapsed_Seconds);*/
+          logger.debug("Elements Not Found:" + type_Locator + ":" + value_Locator);
           i = 9999;
         }
       }
@@ -195,30 +194,29 @@ public class CommonApplicationMethods {
         }
       } catch (Exception e) {
         elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
-        logger.info("Did not find element:" + type_Locator + ":" + value_Locator);
-        logger.info(elapsed_Seconds);
+        logger.debug("Element Not found:" + type_Locator + ":" + value_Locator);
+        /*logger.info(elapsed_Seconds);*/
 
         if (elapsed_Seconds > wait_For_Total_Seconds) {
-          logger.info(elapsed_Seconds);
-          logger.info("After UnSuccessfull Find - Error:" + type_Locator + ":" + value_Locator);
+          /*logger.info(elapsed_Seconds);*/
+          logger.debug("UnSuccessfull Find:Error:" + type_Locator + ":" + value_Locator);
           i = 9999;
           throw e;
         }
       }
 
       elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
-      logger.info(elapsed_Seconds);
-      logger.info("try Next");
+      /*logger.info(elapsed_Seconds);*/
+      /*logger.info("try Next");*/
 
       if (elapsed_Seconds > wait_For_Total_Seconds) {
-        logger.info(elapsed_Seconds);
-        logger.info("After Successfull Find - Too Long - Check Performance");
+        /*logger.debug(elapsed_Seconds);*/
+        logger.debug("Successfull Find:Too Long:Check Performance");
         i = 9999;
-        throw new Exception(
-            "Element Not Found after 12 Seconds:" + type_Locator + ":" + value_Locator);
+        throw new Exception("Element Not Found>12 Sec:" + type_Locator + ":" + value_Locator);
       }
     }
-    display("Trying to find BY:" + type_Locator + ":" + value_Locator);
+    /*display("Trying to find BY:" + type_Locator + ":" + value_Locator);*/
     return element_01;
   }
 
@@ -231,8 +229,7 @@ public class CommonApplicationMethods {
     return find_Element(webdriver, loc, val);
   }
 
-  public static WebElement find_Element(WebDriver webdriver, String type_Locator,
-      String value_Locator, Boolean optional_Check) throws Exception /* Optional */
+  public static WebElement find_Element(WebDriver webdriver, String type_Locator, String value_Locator, Boolean optional_Check) throws Exception /* Optional */
   {
     WebElement element_01 = null;
     try {
@@ -243,8 +240,7 @@ public class CommonApplicationMethods {
     }
   }
 
-  public static WebElement find_Element(WebDriver webdriver, String locator_Yaml,
-      Boolean check_Optional) throws Exception /* Optional */
+  public static WebElement find_Element(WebDriver webdriver, String locator_Yaml, Boolean check_Optional) throws Exception /* Optional */
   {
     Map locator = getLocator(locator_Yaml);
     String loc = locator.get("Locator").toString();
@@ -406,7 +402,7 @@ public class CommonApplicationMethods {
           try {
             get_Element.clear();
           } catch (Exception e) {
-            display("We are good");
+            /*display("We are good");*/
           }
           get_Element.sendKeys(textVal);
           return;
@@ -463,8 +459,7 @@ public class CommonApplicationMethods {
     return webDriver;
   }
 
-  public static WebDriver set_Timeouts(WebDriver webDriver, int pageLoad, int script, int wait)
-      throws Exception {
+  public static WebDriver set_Timeouts(WebDriver webDriver, int pageLoad, int script, int wait) throws Exception {
     webDriver.manage().timeouts().pageLoadTimeout(pageLoad, TimeUnit.SECONDS);
     webDriver.manage().timeouts().setScriptTimeout(script, TimeUnit.SECONDS);
     webDriver.manage().timeouts().implicitlyWait(wait, TimeUnit.SECONDS);
