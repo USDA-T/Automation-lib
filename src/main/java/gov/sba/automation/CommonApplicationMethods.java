@@ -27,6 +27,7 @@ import static gov.sba.automation.ConfigUtils.systemType;
 import static gov.sba.automation.FixtureUtils.fileName_If_Running_In_Headless;
 import static org.junit.Assert.assertEquals;
 
+
 public class CommonApplicationMethods {
 
   private static final int wait_For_Total_Seconds = 8;
