@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.interactions.Actions;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -274,7 +275,9 @@ public class CommonApplicationMethods {
 
   public static void click_Element(WebDriver webdriver, String type_Locator, String value_Locator)
       throws Exception {
-    find_Element(webdriver, type_Locator, value_Locator).click();
+        WebElement aa = find_Element(webdriver, type_Locator, value_Locator);
+      ((JavascriptExecutor) webdriver).executeScript("arguments[0].scrollIntoView(true);", aa);
+      aa.click();
   }
 
   public static void accept_Alert(WebDriver webDriver) throws Exception {
@@ -369,7 +372,13 @@ public class CommonApplicationMethods {
         Dimension get_Element_D = get_Element.getSize();
         if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0
             && get_Element.isEnabled()) {
-          get_Element.click();
+            ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", get_Element);
+
+            Actions actions = new Actions(webDriver);
+            actions.moveToElement(get_Element);
+            actions.click();
+            actions.perform();
+            //get_Element.click();
           return;
         }
 
@@ -399,6 +408,7 @@ public class CommonApplicationMethods {
 
         if (get_Element.getSize().getWidth() > 0 && get_Element.getSize().getHeight() > 0
             && get_Element.isEnabled()) {
+            ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", get_Element);
           get_Element.click();
           try {
             get_Element.clear();
@@ -456,7 +466,7 @@ public class CommonApplicationMethods {
   public static WebDriver set_Timeouts(WebDriver webDriver) throws Exception {
     webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
     webDriver.manage().timeouts().setScriptTimeout(40, TimeUnit.SECONDS);
-    webDriver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+    webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     return webDriver;
   }
 
