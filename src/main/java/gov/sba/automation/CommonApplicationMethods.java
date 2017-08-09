@@ -73,7 +73,7 @@ public class CommonApplicationMethods {
       String value_Locator) throws Exception /* Non Optional */
   {
     double elapsed_Seconds = 0;
-    logger.info(elapsed_Seconds);
+    //logger.info(elapsed_Seconds);
     List<WebElement> element_01 = null;
     long tStart = System.currentTimeMillis();
     for (int i = 0; i < 1000; i++) {
