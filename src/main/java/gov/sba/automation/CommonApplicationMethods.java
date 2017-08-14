@@ -106,8 +106,7 @@ public class CommonApplicationMethods {
 
         if (elapsed_Seconds > wait_For_Total_Seconds) {
           /* logger.info(elapsed_Seconds); */
-          logger.debug("UnSuccessfull Find:Too Long:Check Performance:" + type_Locator + ":"
-              + value_Locator);
+          //logger.debug("UnSuccessfull Find:Too Long:Check Performance:" + type_Locator + ":" + value_Locator);
           i = 9999;
         }
 
@@ -115,7 +114,7 @@ public class CommonApplicationMethods {
         elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
         if (elapsed_Seconds > wait_For_Total_Seconds) {
           /* logger.info(elapsed_Seconds); */
-          logger.debug("Elements Not Found:" + type_Locator + ":" + value_Locator);
+          //logger.debug("Elements Not Found:" + type_Locator + ":" + value_Locator);
           i = 9999;
         }
       }
@@ -197,7 +196,7 @@ public class CommonApplicationMethods {
         }
       } catch (Exception e) {
         elapsed_Seconds = (System.currentTimeMillis() - tStart) / 1000.0;
-        logger.debug("Element Not found:" + type_Locator + ":" + value_Locator);
+        //logger.debug("Element Not found:" + type_Locator + ":" + value_Locator);
         /* logger.info(elapsed_Seconds); */
 
         if (elapsed_Seconds > wait_For_Total_Seconds) {
