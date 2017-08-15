@@ -32,8 +32,7 @@ import static org.junit.Assert.assertEquals;
 public class CommonApplicationMethods {
 
   private static final int wait_For_Total_Seconds = 8;
-  private static final Logger logger =
-      LogManager.getLogger(CommonApplicationMethods.class.getName());
+  private static final Logger logger = LogManager.getLogger(CommonApplicationMethods.class.getName());
   // ------------------------------------------------------------------------------------------------------------
   // Usage [ Repeat for Find Elements]
   // 1. Find element with Locator -
@@ -452,7 +451,7 @@ public class CommonApplicationMethods {
       f.createNewFile();
   }
 
-  public static void delete_Any_File_To_Indicate_Currently_Running_In_Headless() throws Exception {
+  public static void delete_Any_File_For_Headless() throws Exception {
     File f = new File(fileName_If_Running_In_Headless());
     if (f.exists() && !f.isDirectory())
       f.delete();

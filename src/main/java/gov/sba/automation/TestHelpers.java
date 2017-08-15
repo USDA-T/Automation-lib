@@ -12,7 +12,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import static gov.sba.automation.CommonApplicationMethods.create_File_To_Indicate_Currently_Running_In_Headless;
-import static gov.sba.automation.CommonApplicationMethods.delete_Any_File_To_Indicate_Currently_Running_In_Headless;
+import static gov.sba.automation.CommonApplicationMethods.delete_Any_File_For_Headless;
 import static gov.sba.automation.CommonApplicationMethods.get_Stop_Execution_Flag;
 
 public class TestHelpers {
@@ -30,7 +30,7 @@ public class TestHelpers {
 
   public static WebDriver getDefaultWebDriver() throws Exception {
     get_Stop_Execution_Flag();
-    delete_Any_File_To_Indicate_Currently_Running_In_Headless();
+    delete_Any_File_For_Headless();
     Properties props = ConfigUtils.loadDefaultProperties();
     WebDriver driver = null;
 
