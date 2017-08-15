@@ -371,16 +371,13 @@ public class CommonApplicationMethods {
         // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); //
         // //Debug
         Dimension get_Element_D = get_Element.getSize();
-        if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0
-            && get_Element.isEnabled()) {
-          ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);",
-              get_Element);
+        if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0 && get_Element.isEnabled()) {
 
-          Actions actions = new Actions(webDriver);
-          actions.moveToElement(get_Element);
-          actions.click();
-          actions.perform();
-          // get_Element.click();
+          ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", get_Element);
+
+
+          get_Element.click();
+
           return;
         }
 

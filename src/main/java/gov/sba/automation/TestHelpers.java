@@ -90,6 +90,7 @@ public class TestHelpers {
         driver.manage().window().maximize();
         break;
       case Constants.BROWSER_FIREFOX:
+
         if (ConfigUtils.isUnix(ConfigUtils.systemType())) {
           configKeys = new String[] { /* Need to provide specific type information for Linux */
               "webdriver.firefox.bin",
@@ -98,6 +99,11 @@ public class TestHelpers {
           };
           setSystemProperties(configKeys, props);
         }
+
+        if (props.containsKey("webdriver.gecko.driver")){
+          System.setProperty("webdriver.gecko.driver", props.getProperty("webdriver.gecko.driver"));
+        }
+
 
         /* TODO: verify if we need to do the same for MacOs? */
 
