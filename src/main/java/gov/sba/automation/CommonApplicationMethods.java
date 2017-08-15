@@ -377,11 +377,11 @@ public class CommonApplicationMethods {
           ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);",
               get_Element);
 
-          Actions actions = new Actions(webDriver);
-          actions.moveToElement(get_Element);
-          actions.click();
-          actions.perform();
-          // get_Element.click();
+          //Actions actions = new Actions(webDriver);
+          //actions.moveToElement(get_Element);
+          //actions.click();
+          //actions.perform();
+           get_Element.click();
           return;
         }
 
