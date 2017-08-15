@@ -32,8 +32,7 @@ import static org.junit.Assert.assertEquals;
 public class CommonApplicationMethods {
 
   private static final int wait_For_Total_Seconds = 8;
-  private static final Logger logger =
-      LogManager.getLogger(CommonApplicationMethods.class.getName());
+  private static final Logger logger = LogManager.getLogger(CommonApplicationMethods.class.getName());
   // ------------------------------------------------------------------------------------------------------------
   // Usage [ Repeat for Find Elements]
   // 1. Find element with Locator -
@@ -372,16 +371,13 @@ public class CommonApplicationMethods {
         // display(get_Element.getText()); // display(get_Element.getAttribute("innerHTML")); //
         // //Debug
         Dimension get_Element_D = get_Element.getSize();
-        if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0
-            && get_Element.isEnabled()) {
-          ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);",
-              get_Element);
+        if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0 && get_Element.isEnabled()) {
 
-          Actions actions = new Actions(webDriver);
-          actions.moveToElement(get_Element);
-          actions.click();
-          actions.perform();
-          // get_Element.click();
+          ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", get_Element);
+
+
+          get_Element.click();
+
           return;
         }
 
@@ -452,7 +448,7 @@ public class CommonApplicationMethods {
       f.createNewFile();
   }
 
-  public static void delete_Any_File_To_Indicate_Currently_Running_In_Headless() throws Exception {
+  public static void delete_Any_File_For_Headless() throws Exception {
     File f = new File(fileName_If_Running_In_Headless());
     if (f.exists() && !f.isDirectory())
       f.delete();

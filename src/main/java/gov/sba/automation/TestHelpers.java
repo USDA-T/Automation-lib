@@ -12,7 +12,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import static gov.sba.automation.CommonApplicationMethods.create_File_To_Indicate_Currently_Running_In_Headless;
-import static gov.sba.automation.CommonApplicationMethods.delete_Any_File_To_Indicate_Currently_Running_In_Headless;
+import static gov.sba.automation.CommonApplicationMethods.delete_Any_File_For_Headless;
 import static gov.sba.automation.CommonApplicationMethods.get_Stop_Execution_Flag;
 
 public class TestHelpers {
@@ -30,7 +30,7 @@ public class TestHelpers {
 
   public static WebDriver getDefaultWebDriver() throws Exception {
     get_Stop_Execution_Flag();
-    delete_Any_File_To_Indicate_Currently_Running_In_Headless();
+    delete_Any_File_For_Headless();
     Properties props = ConfigUtils.loadDefaultProperties();
     WebDriver driver = null;
 
@@ -90,6 +90,7 @@ public class TestHelpers {
         driver.manage().window().maximize();
         break;
       case Constants.BROWSER_FIREFOX:
+
         if (ConfigUtils.isUnix(ConfigUtils.systemType())) {
           configKeys = new String[] { /* Need to provide specific type information for Linux */
               "webdriver.firefox.bin",
@@ -98,6 +99,11 @@ public class TestHelpers {
           };
           setSystemProperties(configKeys, props);
         }
+
+        if (props.containsKey("webdriver.gecko.driver")){
+          System.setProperty("webdriver.gecko.driver", props.getProperty("webdriver.gecko.driver"));
+        }
+
 
         /* TODO: verify if we need to do the same for MacOs? */
 
