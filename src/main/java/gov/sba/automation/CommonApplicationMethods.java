@@ -372,12 +372,8 @@ public class CommonApplicationMethods {
         // //Debug
         Dimension get_Element_D = get_Element.getSize();
         if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0 && get_Element.isEnabled()) {
-
-          ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", get_Element);
-
-
-          get_Element.click();
-
+            ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", get_Element);
+              get_Element.click();
           return;
         }
 
@@ -681,31 +677,33 @@ public class CommonApplicationMethods {
       throws Exception {
     switch (which_Button.toUpperCase()) {
       case "LOGOUT":
-        click_Element(webDriver, "Navigation_Logout");
+        click_Element(webDriver, "Navigation_Logout_02");
         break;
       case "HELP":
-        click_Element(webDriver, "Navigation_Help");
+        click_Element(webDriver, "Navigation_Help_02");
         break;
       case "CASES":
-        click_Element(webDriver, "Navigation_Cases");
+        click_Element(webDriver, "Navigation_Cases_02");
         break;
       case "PROGRAMS":
-        click_Element(webDriver, "Navigation_Programs");
+        click_Element(webDriver, "Navigation_Programs_02");
         break;
       case "DASHBOARD":
-        click_Element(webDriver, "Navigation_Dashboard");
+        //Example Documentation: Use _02 instead for newer elements. Older elements have been  retained.
+        //click_Element(webDriver, "Navigation_Dashboard");
+        click_Element(webDriver, "Navigation_Dashboard_02");
         break;
       case "BUSINESS":
-        click_Element(webDriver, "Navigation_Business");
+        click_Element(webDriver, "Navigation_Business_02");
         break;
       case "DOCUMENTS":
-        click_Element(webDriver, "Navigation_Documents");
+        click_Element(webDriver, "Navigation_Documents_02");
         break;
       case "HOME":
-        click_Element(webDriver, "Navigation_Home");
+        click_Element(webDriver, "Navigation_Home_02");
         break;
       case "PREPARE":
-        click_Element(webDriver, "Navigation_Prepare");
+        click_Element(webDriver, "Navigation_Prepare_02");
         break;
       default:
         // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
