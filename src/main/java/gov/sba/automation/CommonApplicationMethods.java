@@ -374,7 +374,7 @@ public class CommonApplicationMethods {
         if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0 && get_Element.isEnabled()) {
             ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", get_Element);
               get_Element.click();
-          return;
+             return;
         }
 
         if (elapsed_Seconds > wait_For_Total_Seconds)
@@ -673,36 +673,56 @@ public class CommonApplicationMethods {
     click_Element(webDriver, "Search_Duns_Cases_Submit");
   }
 
-  public static void navigationMenuClick(WebDriver webDriver, String which_Button)
-      throws Exception {
+  public static void navigationMenuClick(WebDriver webDriver, String which_Button) throws Exception {
+
+    /*
+    WebElement check = find_Element(webDriver, "Navigation_Present_Or_Not", false);
+        if (check == null){
+      navigationBarClick( webDriver, which_Button);
+      return;
+    }
+    */
     switch (which_Button.toUpperCase()) {
       case "LOGOUT":
-        click_Element(webDriver, "Navigation_Logout_02");
+        try {
+          click_Element(webDriver, "Navigation_Logout_02");
+        }
+        catch(Exception e) {
+          navigationBarClick(webDriver, which_Button);
+        }
         break;
       case "HELP":
+        click_Element(webDriver, "Navigation_Help_02");
         click_Element(webDriver, "Navigation_Help_02");
         break;
       case "CASES":
         click_Element(webDriver, "Navigation_Cases_02");
+        click_Element(webDriver, "Navigation_Cases_02");
         break;
       case "PROGRAMS":
+        click_Element(webDriver, "Navigation_Programs_02");
         click_Element(webDriver, "Navigation_Programs_02");
         break;
       case "DASHBOARD":
         //Example Documentation: Use _02 instead for newer elements. Older elements have been  retained.
         //click_Element(webDriver, "Navigation_Dashboard");
         click_Element(webDriver, "Navigation_Dashboard_02");
+        click_Element(webDriver, "Navigation_Dashboard_02");
         break;
       case "BUSINESS":
+        click_Element(webDriver, "Navigation_Business_02");
         click_Element(webDriver, "Navigation_Business_02");
         break;
       case "DOCUMENTS":
         click_Element(webDriver, "Navigation_Documents_02");
+        click_Element(webDriver, "Navigation_Documents_02");
         break;
       case "HOME":
         click_Element(webDriver, "Navigation_Home_02");
+        click_Element(webDriver, "Navigation_Home_02");
         break;
       case "PREPARE":
+        click_Element(webDriver, "Navigation_Prepare_02");
         click_Element(webDriver, "Navigation_Prepare_02");
         break;
       default:
@@ -716,6 +736,9 @@ public class CommonApplicationMethods {
         case "LOGOUT":
           click_Element(webDriver, "Navigation_Bar_Profile");
           click_Element(webDriver, "Navigation_Bar_Logout");
+          try {
+            click_Element(webDriver, "Navigation_Bar_Logout");
+          }catch(Exception e) { }
           break;
         case "SETTINGS":
           click_Element(webDriver, "Navigation_Bar_Profile");
