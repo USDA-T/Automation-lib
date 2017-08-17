@@ -281,6 +281,14 @@ public class CommonApplicationMethods {
     aa.click();
   }
 
+
+  public static void double_Click_Element(WebDriver webDriver,String type_Locator,String value_Locator) throws Exception{
+
+    WebElement element_Name = find_Element(webDriver, type_Locator,value_Locator);
+    ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", element_Name);
+    new Actions(webDriver).doubleClick(element_Name).build().perform();
+  }
+
   public static void accept_Alert(WebDriver webDriver) throws Exception {
 
     if (there_Is_Any_File_To_Indicate_Currently_Running_In_Headless()) {
@@ -372,7 +380,7 @@ public class CommonApplicationMethods {
         // //Debug
         Dimension get_Element_D = get_Element.getSize();
         if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0 && get_Element.isEnabled()) {
-            ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", get_Element);
+          ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", get_Element);
               get_Element.click();
              return;
         }
@@ -384,6 +392,24 @@ public class CommonApplicationMethods {
     } catch (Exception e) {
       display(e.toString());
       throw e;
+    }
+  }
+
+  public static void  double_Click_Element(WebDriver webDriver,String locator_Yaml) throws  Exception {
+    long start_Time = System.currentTimeMillis();
+    for (int i = 0; i < 5000; i++) {
+      double time_Taken = (System.currentTimeMillis() - start_Time) / 1000;
+      if (time_Taken > wait_For_Total_Seconds) {
+        throw new Exception("Double Click taking too long");
+      }
+
+      try {
+        WebElement element_Name = find_Element(webDriver,locator_Yaml);
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", element_Name);
+        new Actions(webDriver).doubleClick(element_Name).build().perform();
+
+      } catch (Exception e) {
+      }
     }
   }
 
