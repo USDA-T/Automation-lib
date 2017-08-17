@@ -281,6 +281,14 @@ public class CommonApplicationMethods {
     aa.click();
   }
 
+
+  public static void double_Click_Element(WebDriver webDriver,String type_Locator,String value_Locator) throws Exception{
+
+    WebElement element_Name = find_Element(webDriver, type_Locator,value_Locator);
+    ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", element_Name);
+    new Actions(webDriver).doubleClick(element_Name).build().perform();
+  }
+
   public static void accept_Alert(WebDriver webDriver) throws Exception {
 
     if (there_Is_Any_File_To_Indicate_Currently_Running_In_Headless()) {
@@ -372,13 +380,9 @@ public class CommonApplicationMethods {
         // //Debug
         Dimension get_Element_D = get_Element.getSize();
         if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0 && get_Element.isEnabled()) {
-
           ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", get_Element);
-
-
-          get_Element.click();
-
-          return;
+              get_Element.click();
+             return;
         }
 
         if (elapsed_Seconds > wait_For_Total_Seconds)
@@ -388,6 +392,24 @@ public class CommonApplicationMethods {
     } catch (Exception e) {
       display(e.toString());
       throw e;
+    }
+  }
+
+  public static void  double_Click_Element(WebDriver webDriver,String locator_Yaml) throws  Exception {
+    long start_Time = System.currentTimeMillis();
+    for (int i = 0; i < 5000; i++) {
+      double time_Taken = (System.currentTimeMillis() - start_Time) / 1000;
+      if (time_Taken > wait_For_Total_Seconds) {
+        throw new Exception("Double Click taking too long");
+      }
+
+      try {
+        WebElement element_Name = find_Element(webDriver,locator_Yaml);
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", element_Name);
+        new Actions(webDriver).doubleClick(element_Name).build().perform();
+
+      } catch (Exception e) {
+      }
     }
   }
 
@@ -677,35 +699,57 @@ public class CommonApplicationMethods {
     click_Element(webDriver, "Search_Duns_Cases_Submit");
   }
 
-  public static void navigationMenuClick(WebDriver webDriver, String which_Button)
-      throws Exception {
+  public static void navigationMenuClick(WebDriver webDriver, String which_Button) throws Exception {
+
+    /*
+    WebElement check = find_Element(webDriver, "Navigation_Present_Or_Not", false);
+        if (check == null){
+      navigationBarClick( webDriver, which_Button);
+      return;
+    }
+    */
     switch (which_Button.toUpperCase()) {
       case "LOGOUT":
-        click_Element(webDriver, "Navigation_Logout");
+        try {
+          click_Element(webDriver, "Navigation_Logout_02");
+        }
+        catch(Exception e) {
+          navigationBarClick(webDriver, which_Button);
+        }
         break;
       case "HELP":
-        click_Element(webDriver, "Navigation_Help");
+        click_Element(webDriver, "Navigation_Help_02");
+        click_Element(webDriver, "Navigation_Help_02");
         break;
       case "CASES":
-        click_Element(webDriver, "Navigation_Cases");
+        click_Element(webDriver, "Navigation_Cases_02");
+        click_Element(webDriver, "Navigation_Cases_02");
         break;
       case "PROGRAMS":
-        click_Element(webDriver, "Navigation_Programs");
+        click_Element(webDriver, "Navigation_Programs_02");
+        click_Element(webDriver, "Navigation_Programs_02");
         break;
       case "DASHBOARD":
-        click_Element(webDriver, "Navigation_Dashboard");
+        //Example Documentation: Use _02 instead for newer elements. Older elements have been  retained.
+        //click_Element(webDriver, "Navigation_Dashboard");
+        click_Element(webDriver, "Navigation_Dashboard_02");
+        click_Element(webDriver, "Navigation_Dashboard_02");
         break;
       case "BUSINESS":
-        click_Element(webDriver, "Navigation_Business");
+        click_Element(webDriver, "Navigation_Business_02");
+        click_Element(webDriver, "Navigation_Business_02");
         break;
       case "DOCUMENTS":
-        click_Element(webDriver, "Navigation_Documents");
+        click_Element(webDriver, "Navigation_Documents_02");
+        click_Element(webDriver, "Navigation_Documents_02");
         break;
       case "HOME":
-        click_Element(webDriver, "Navigation_Home");
+        click_Element(webDriver, "Navigation_Home_02");
+        click_Element(webDriver, "Navigation_Home_02");
         break;
       case "PREPARE":
-        click_Element(webDriver, "Navigation_Prepare");
+        click_Element(webDriver, "Navigation_Prepare_02");
+        click_Element(webDriver, "Navigation_Prepare_02");
         break;
       default:
         // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
@@ -718,6 +762,9 @@ public class CommonApplicationMethods {
         case "LOGOUT":
           click_Element(webDriver, "Navigation_Bar_Profile");
           click_Element(webDriver, "Navigation_Bar_Logout");
+          try {
+            click_Element(webDriver, "Navigation_Bar_Logout");
+          }catch(Exception e) { }
           break;
         case "SETTINGS":
           click_Element(webDriver, "Navigation_Bar_Profile");
