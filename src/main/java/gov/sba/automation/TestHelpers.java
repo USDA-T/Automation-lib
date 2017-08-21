@@ -6,7 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -84,7 +86,14 @@ public class TestHelpers {
             options.addArguments("headless");
             create_File_To_Indicate_Currently_Running_In_Headless();
           }
+
         }
+        if (props.containsKey("binary_Chrome")) {
+          String chrome_Binary = props.getProperty("binary_Chrome");
+          options.setBinary(chrome_Binary);
+          create_File_To_Indicate_Currently_Running_In_Headless();
+        }
+
         options.addArguments("--window-size=1920,1080");
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
@@ -107,10 +116,22 @@ public class TestHelpers {
 
         /* TODO: verify if we need to do the same for MacOs? */
 
-        driver = new FirefoxDriver();
+        //Populate Profile
+        FirefoxProfile profile = new FirefoxProfile();
+              profile.setPreference("base_url_development","https://certify.newqa.sba-one.net/");
+              profile.setAcceptUntrustedCertificates(true);
+              profile.setAssumeUntrustedCertificateIssuer(true);
+
+        //Populate DC
+        DesiredCapabilities dc  = DesiredCapabilities.firefox();
+            dc.setCapability(FirefoxDriver.PROFILE, profile);
+            dc.setCapability("acceptInsecureCerts", true);
+
+        //Start Driver
+        driver = new FirefoxDriver(dc);
         driver.manage().window().maximize();
         break;
-      case Constants.BROWSER_PHANTOMJS:
+    case Constants.BROWSER_PHANTOMJS:
         configKeys = new String[] {};
         setSystemProperties(configKeys, props);
         driver = new PhantomJSDriver();

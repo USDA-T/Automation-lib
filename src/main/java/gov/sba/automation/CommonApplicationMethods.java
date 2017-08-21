@@ -285,13 +285,13 @@ public class CommonApplicationMethods {
   public static void double_Click_Element(WebDriver webDriver,String type_Locator,String value_Locator) throws Exception{
 
     WebElement element_Name = find_Element(webDriver, type_Locator,value_Locator);
-    ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", element_Name);
+   // ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", element_Name);
     new Actions(webDriver).doubleClick(element_Name).build().perform();
   }
 
   public static void accept_Alert(WebDriver webDriver) throws Exception {
 
-    if (there_Is_Any_File_To_Indicate_Currently_Running_In_Headless()) {
+    if (!there_Is_Any_File_To_Indicate_Currently_Running_In_Headless()) {
       /* If alert not present Throw error after few tries */
       for (int i = 0; i < 14; i++) {
         try {
@@ -334,7 +334,7 @@ public class CommonApplicationMethods {
 
   public static void accept_Alert(WebDriver webDriver, int counter) throws Exception {
     /* If alert not present its fine. */
-    if (there_Is_Any_File_To_Indicate_Currently_Running_In_Headless()) {
+    if (!there_Is_Any_File_To_Indicate_Currently_Running_In_Headless()) {
       for (int i = 0; i < counter; i++) {
         try {
           JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
@@ -405,7 +405,7 @@ public class CommonApplicationMethods {
 
       try {
         WebElement element_Name = find_Element(webDriver,locator_Yaml);
-        ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", element_Name);
+       // ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", element_Name);
         new Actions(webDriver).doubleClick(element_Name).build().perform();
 
       } catch (Exception e) {
@@ -699,6 +699,19 @@ public class CommonApplicationMethods {
     click_Element(webDriver, "Search_Duns_Cases_Submit");
   }
 
+  public static void navigationClick(WebDriver webDriver, String  what_To_Click) throws Exception{
+    //On Newqa serever the navaigtion bar
+    WebElement  aa = find_Element(webDriver, "Navigation_Bar_Link_1", false);
+    if  (aa != null) {
+      navigationMenuClickNewQA(webDriver, what_To_Click);
+    return;
+    }
+    else {
+      navigationMenuClick(webDriver, what_To_Click);
+        return;
+      }
+
+  }
   public static void navigationMenuClick(WebDriver webDriver, String which_Button) throws Exception {
 
     /*
@@ -711,10 +724,12 @@ public class CommonApplicationMethods {
     switch (which_Button.toUpperCase()) {
       case "LOGOUT":
         try {
-          click_Element(webDriver, "Navigation_Logout_02");
+         // click_Element(webDriver, "Navigation_Logout_02");
+          navigationBarClick(webDriver, which_Button);
         }
         catch(Exception e) {
-          navigationBarClick(webDriver, which_Button);
+          //navigationBarClick(webDriver, which_Button);
+          navigationMenuClickNewQA(webDriver,which_Button);
         }
         break;
       case "HELP":
@@ -755,6 +770,53 @@ public class CommonApplicationMethods {
         // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
     }
   }
+  public static void navigationMenuClickNewQA(WebDriver webDriver, String which_Button) throws Exception {
+
+    /*
+    WebElement check = find_Element(webDriver, "Navigation_Present_Or_Not", false);
+        if (check == null){
+      navigationBarClick( webDriver, which_Button);
+      return;
+    }
+    */
+    switch (which_Button.toUpperCase()) {
+      case "LOGOUT":
+        click_Element(webDriver, "Navigation_Logout");
+        break;
+      case "HELP":
+        click_Element(webDriver, "Navigation_Help");
+        break;
+      case "CASES":
+        click_Element(webDriver, "Navigation_Cases");
+            break;
+      case "PROGRAMS":
+        click_Element(webDriver, "Navigation_Programs");
+        click_Element(webDriver, "Navigation_Programs");
+         break;
+      case "DASHBOARD":
+        //Example Documentation: Use _02 instead for newer elements. Older elements have been  retained.
+        //click_Element(webDriver, "Navigation_Dashboard");
+        click_Element(webDriver, "Navigation_Dashboard");
+        click_Element(webDriver, "Navigation_Dashboard");
+        break;
+      case "BUSINESS":
+        click_Element(webDriver, "Navigation_Business");
+        click_Element(webDriver, "Navigation_Business");
+        break;
+      case "DOCUMENTS":
+        click_Element(webDriver, "Navigation_Documents");
+        click_Element(webDriver, "Navigation_Documents");
+        break;
+      case "HOME":
+        click_Element(webDriver, "Navigation_Home");
+        break;
+      case "PREPARE":
+        click_Element(webDriver, "Navigation_Prepare");
+        break;
+      default:
+        // Assert.assertEquals("Navigation Menu Not correct", "among present Options");
+    }
+  }
 
   public static void navigationBarClick(WebDriver webDriver, String which_Button) throws Exception {
     try {
@@ -774,6 +836,7 @@ public class CommonApplicationMethods {
           click_Element(webDriver, "Navigation_Bar_Help");
           break;
         case "CASES":
+          click_Element(webDriver, "Navigation_Bar_Cases");
           click_Element(webDriver, "Navigation_Bar_Cases");
           break;
         case "PROGRAMS":
