@@ -302,6 +302,7 @@ public class CommonApplicationMethods {
       try {
 
        webDriver.switchTo().alert().accept();
+       return;
 
       } catch (Exception e) {
 
@@ -311,6 +312,7 @@ public class CommonApplicationMethods {
           JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
           jsExecutor.executeScript("window.alert = function(){}");
           jsExecutor.executeScript("window.confirm = function(){return true;}");
+          return;
 
         }
         catch (Exception e1){
@@ -320,6 +322,7 @@ public class CommonApplicationMethods {
 
       }
     }
+    throw new Exception("was not able to click alert");
   }
 
   public static void click_Element(WebDriver webDriver, String locator_Yaml) throws Exception {
