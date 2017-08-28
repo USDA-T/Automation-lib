@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -290,79 +292,37 @@ public class CommonApplicationMethods {
   }
 
   public static void accept_Alert(WebDriver webDriver) throws Exception {
-
-    if (!there_Is_Any_File_To_Indicate_Currently_Running_In_Headless()) {
-      /* If alert not present Throw error after few tries */
-      for (int i = 0; i < 14; i++) {
-        try {
-          JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
-          jsExecutor.executeScript("window.alert = function(){}");
-          jsExecutor.executeScript("window.confirm = function(){return true;}");
-          return;
-        } catch (Exception e) {
-          if (i >= 14) {
-            throw new Exception("Alert Not found");
-          } else {
-            // display("Trying to Accept Alert");
-            Thread.sleep(300);
-          }
-        }
-      }
-      throw new Exception("Alert Not found");
-
-    } else {
-
-      /* If alert not present Throw error after few tries */
-
-      for (int i = 0; i < 14; i++) {
-        try {
-          webDriver.switchTo().alert().accept();
-          return;
-        } catch (Exception e) {
-          if (i >= 14) {
-            throw new Exception("Alert Not found");
-          } else {
-            // display("Trying to Accept Alert");
-            Thread.sleep(300);
-          }
-        }
-      }
-      throw new Exception("Alert Not found");
-
-    }
+    accept_Alert(webDriver, 15);
   }
+
 
   public static void accept_Alert(WebDriver webDriver, int counter) throws Exception {
     /* If alert not present its fine. */
-    if (!there_Is_Any_File_To_Indicate_Currently_Running_In_Headless()) {
-      for (int i = 0; i < counter; i++) {
+    for (int i = 0; i < counter; i++) {
+      try {
+
+       webDriver.switchTo().alert().accept();
+       return;
+
+      } catch (Exception e) {
+
+        Thread.sleep(500);
         try {
+
           JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
           jsExecutor.executeScript("window.alert = function(){}");
           jsExecutor.executeScript("window.confirm = function(){return true;}");
           return;
-        } catch (Exception e) {
-          /* display("Trying to Accept Alert"); */
-          Thread.sleep(300);
+
         }
-      }
+        catch (Exception e1){
 
-    } else {
-      // Alert aa = new WebDriverWait(webDriver,
-      // counter).ignoring(NoAlertPresentException.class).ignoring(org.openqa.selenium.TimeoutException.class).until(ExpectedConditions.alertIsPresent());
-      // aa.accept();
-
-      for (int i = 0; i < counter; i++) {
-        try {
-          webDriver.switchTo().alert().accept();
-          return;
-        } catch (Exception e) {
-          /* display("Trying to Accept Alert"); */
-          Thread.sleep(300);
         }
-      }
 
+
+      }
     }
+    throw new Exception("was not able to click alert");
   }
 
   public static void click_Element(WebDriver webDriver, String locator_Yaml) throws Exception {
