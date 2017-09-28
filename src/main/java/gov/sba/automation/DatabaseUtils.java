@@ -163,6 +163,15 @@ public class DatabaseUtils {
     throw new Exception("No valid Duns number available. Please check your fixture files");
   }
 
+  public static String[][] getApplication_Firm(String dunsNumber) throws  Exception {
+
+    String appFirmData = "select legal_business_name,sam_address_2,sam_province_or_state from sbaone.mvw_sam_organizations where duns =  '"
+            + dunsNumber + "'";
+    getDatabaseConnection();
+    String [][] appFirm = queryForData(appFirmData,1,3);
+    return appFirm;
+  }
+
   public static void deleteApplication_SetCert_Set_App_Tables(WebDriver webDriver,
       Integer certificate_ID, String duns_Number) throws Exception {
 
