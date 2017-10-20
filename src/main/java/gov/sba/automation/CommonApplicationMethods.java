@@ -340,7 +340,7 @@ public class CommonApplicationMethods {
         // //Debug
         Dimension get_Element_D = get_Element.getSize();
         if (get_Element_D.getWidth() > 0 && get_Element_D.getHeight() > 0 && get_Element.isEnabled()) {
-          ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", get_Element);
+          //((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", get_Element);
               get_Element.click();
              return;
         }
@@ -435,6 +435,32 @@ public class CommonApplicationMethods {
     if (f.exists() && !f.isDirectory())
       f.delete();
   }
+
+  public static void delete_Any_File(String filename) throws Exception {
+
+    File file01 = new File(filename);
+    if (file01.exists()){
+      file01.delete();
+    }
+
+  }
+
+  public static void create_Any_File(String filename) throws Exception {
+    File file02 = new File(filename);
+    if(!file02.exists()){
+       file02.createNewFile();
+    }
+  }
+ public static void write_file(String filename,String data) throws Exception {
+    File file03 = new File(filename);
+    if(file03.exists()){
+
+      FileWriter file_Writer = new FileWriter(file03,true);
+      file_Writer.write(data);
+      file_Writer.close();
+
+    }
+ }
 
   public static boolean there_Is_Any_File_To_Indicate_Currently_Running_In_Headless()
       throws Exception {
