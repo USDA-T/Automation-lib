@@ -1,5 +1,5 @@
 //
-package gov.sba.automation;
+package gov.usda.automation;
 
 import java.io.IOException;
 import java.util.Properties;

@@ -1,4 +1,4 @@
-package gov.sba.automation;
+package gov.usda.automation;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,12 +10,12 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import static gov.usda.automation.CommonApplicationMethods.create_File_To_Indicate_Currently_Running_In_Headless;
+import static gov.usda.automation.CommonApplicationMethods.delete_Any_File_For_Headless;
+import static gov.usda.automation.CommonApplicationMethods.get_Stop_Execution_Flag;
+
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
-
-import static gov.sba.automation.CommonApplicationMethods.create_File_To_Indicate_Currently_Running_In_Headless;
-import static gov.sba.automation.CommonApplicationMethods.delete_Any_File_For_Headless;
-import static gov.sba.automation.CommonApplicationMethods.get_Stop_Execution_Flag;
 
 public class TestHelpers {
   final public static String BASE_URL = "base_url_";

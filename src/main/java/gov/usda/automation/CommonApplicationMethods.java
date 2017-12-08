@@ -1,5 +1,5 @@
 // TS Created By Deepa_Patri
-package gov.sba.automation;
+package gov.usda.automation;
 
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
@@ -25,9 +25,9 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static gov.sba.automation.ConfigUtils.isUnix;
-import static gov.sba.automation.ConfigUtils.systemType;
-import static gov.sba.automation.FixtureUtils.fileName_If_Running_In_Headless;
+import static gov.usda.automation.ConfigUtils.isUnix;
+import static gov.usda.automation.ConfigUtils.systemType;
+import static gov.usda.automation.FixtureUtils.fileName_If_Running_In_Headless;
 import static org.junit.Assert.assertEquals;
 
 

@@ -8,5 +8,5 @@
   <root level="INFO">
     <appender-ref ref="STDOUT" />
   </root>
-  <logger name="gov.sba.automation" level="WARN"/>
+  <logger name="gov.usda.automation" level="WARN"/>
 </configuration>
