@@ -1,2 +1,2 @@
 #!/usr/sbin/env bash
-mvn exec:java -Dexec.mainClass="gov.sba.automation.AutomationUtils"
+mvn exec:java -Dexec.mainClass="gov.usda.automation.AutomationUtils"

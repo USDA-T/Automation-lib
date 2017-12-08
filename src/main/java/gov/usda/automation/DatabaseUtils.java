@@ -1,5 +1,5 @@
 // created By deepa patri
-package gov.sba.automation;
+package gov.usda.automation;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVReader;
@@ -13,8 +13,8 @@ import java.util.Properties;
 
 import static com.opencsv.CSVWriter.DEFAULT_QUOTE_CHARACTER;
 import static com.opencsv.CSVWriter.DEFAULT_SEPARATOR;
-import static gov.sba.automation.ConfigUtils.loadDefaultProperties;
-import static gov.sba.automation.FixtureUtils.resourcesDir;
+import static gov.usda.automation.ConfigUtils.loadDefaultProperties;
+import static gov.usda.automation.FixtureUtils.resourcesDir;
 
 public class DatabaseUtils {
 
