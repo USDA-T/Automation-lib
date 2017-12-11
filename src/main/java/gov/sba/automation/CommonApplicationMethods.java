@@ -1,4 +1,3 @@
-// TS Created By Deepa_Patri
 package gov.sba.automation;
 
 import com.esotericsoftware.yamlbeans.YamlException;
