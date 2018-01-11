@@ -5,7 +5,7 @@
   <groupId>gov.sba.automation</groupId>
   <artifactId>automation_libs</artifactId>
   <version>1.1.0</version>
-  <name>Common reusable component for usda-automation</name>
+  <name>Common reusable component for sba-automation</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <selenium.version>3.4.0</selenium.version>
